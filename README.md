@@ -19,8 +19,8 @@ A tela principal exibe uma lista de todos os documentos PDF que foram gerados, m
 ## Preview
 
 <div>
-<img src="screenshots/1.jpg" alt="drawing" style="width:600px;"/>
-<img src="screenshots/2.jpg" alt="drawing" style="width:600px;"/>
+<img src="screenshots/1.jpg" alt="drawing" style="width:300px;"/>
+<img src="screenshots/2.jpg" alt="drawing" style="width:300px;"/>
 </div>
 
 ## Tecnologias e Dependências
