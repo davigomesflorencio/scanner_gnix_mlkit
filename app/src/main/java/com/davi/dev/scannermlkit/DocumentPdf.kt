@@ -64,9 +64,11 @@ fun PdfListItem(file: File) {
     ) {
         PdfPreview(file = file, modifier = Modifier.width(64.dp))
 
-        Column(modifier = Modifier
-            .padding(start = 16.dp)
-            .weight(1f)) {
+        Column(
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .weight(1f)
+        ) {
             Text(
                 text = file.name,
                 style = MaterialTheme.typography.bodyLarge,
@@ -132,9 +134,11 @@ fun PdfPreview(file: File, modifier: Modifier = Modifier) {
             )
         } else {
             // Placeholder in case of an error
-            Box(modifier = Modifier
-                .aspectRatio(1f / 1.41f)
-                .fillMaxWidth())
+            Box(
+                modifier = Modifier
+                    .aspectRatio(1f / 1.41f)
+                    .fillMaxWidth()
+            )
         }
     }
 }

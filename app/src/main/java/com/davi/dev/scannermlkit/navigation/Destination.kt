@@ -12,6 +12,6 @@ enum class Destination(
     val icon: ImageVector,
     val contentDescription: String
 ) {
-    SONGS( ListDocument, "Documentos", Icons.Default.List, "Documentos"),
+    SONGS(ListDocument, "Documentos", Icons.Default.List, "Documentos"),
     ALBUM(ScanPdf, "Scanner", Icons.Default.Share, "Scanner"),
 }

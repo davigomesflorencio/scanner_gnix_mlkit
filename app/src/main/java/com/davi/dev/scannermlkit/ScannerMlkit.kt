@@ -47,7 +47,7 @@ fun ScannerMlkit(scanner: GmsDocumentScanner, backStack: SnapshotStateList<Any>)
         onResult = {
             if (it.resultCode == RESULT_OK) {
                 val result = GmsDocumentScanningResult.fromActivityResultIntent(it.data)
-                imageUris = result?.pages?.map { it.imageUri } ?: emptyList()
+                imageUris = result?.pages?.map { xi -> xi.imageUri } ?: emptyList()
 
                 result?.pdf?.let { pdf ->
                     val file = File(filesDir, "scan_${System.currentTimeMillis()}.pdf")
@@ -77,8 +77,8 @@ fun ScannerMlkit(scanner: GmsDocumentScanner, backStack: SnapshotStateList<Any>)
         Button(onClick = {
             activity?.let {
                 scanner.getStartScanIntent(it)
-                    .addOnFailureListener {
-                        Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                    .addOnFailureListener { ix ->
+                        Toast.makeText(context, ix.message, Toast.LENGTH_SHORT).show()
                     }
                     .addOnSuccessListener { intent ->
                         scannerLauncher.launch(IntentSenderRequest.Builder(intent).build())
