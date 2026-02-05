@@ -1,6 +1,7 @@
 package com.davi.dev.scannermlkit.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -12,6 +13,6 @@ enum class Destination(
     val icon: ImageVector,
     val contentDescription: String
 ) {
-    SONGS(ListDocument, "Documentos", Icons.Default.List, "Documentos"),
-    ALBUM(ScanPdf, "Scanner", Icons.Default.Share, "Scanner"),
+    DOCUMENTS(ListDocument, "Documentos", Icons.AutoMirrored.Default.List, "Documentos"),
+    SCANNER(ScanPdf, "Scanner", Icons.Default.Share, "Scanner"),
 }

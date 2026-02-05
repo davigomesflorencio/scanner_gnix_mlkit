@@ -28,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavEntry
@@ -35,6 +36,8 @@ import androidx.navigation3.ui.NavDisplay
 import com.davi.dev.scannermlkit.DocumentPdf
 import com.davi.dev.scannermlkit.R
 import com.davi.dev.scannermlkit.ScannerMlkit
+import com.google.android.gms.common.moduleinstall.ModuleInstall
+import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_JPEG
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_PDF
@@ -45,9 +48,10 @@ import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
 @Composable
 fun AppNavHost() {
     val backStack = remember { mutableStateListOf<Any>(ListDocument) }
-    val startDestination = Destination.SONGS
+    val startDestination = Destination.DOCUMENTS
     var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
 
+    val moduleInstallClient = ModuleInstall.getClient(LocalContext.current)
 
     val options = GmsDocumentScannerOptions.Builder()
         .setScannerMode(SCANNER_MODE_FULL)
@@ -57,6 +61,19 @@ fun AppNavHost() {
         .build()
 
     val scanner = GmsDocumentScanning.getClient(options)
+
+    moduleInstallClient.areModulesAvailable(scanner)
+        .addOnSuccessListener {
+
+        }
+        .addOnFailureListener {
+            val moduleInstallRequest =
+                ModuleInstallRequest.newBuilder()
+                    .addApi(scanner)
+                    .build()
+            moduleInstallClient.installModules(moduleInstallRequest)
+        }
+
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
