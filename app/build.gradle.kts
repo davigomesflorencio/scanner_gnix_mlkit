@@ -22,8 +22,8 @@ android {
         applicationId = "com.davi.dev.scannermlkit"
         minSdk = 34
         targetSdk = 36
-        versionCode = 5
-        versionName = "1.4"
+        versionCode = 7
+        versionName = "1.6.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -39,8 +39,8 @@ android {
 
     buildTypes {
         getByName("release"){
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
         release {
             signingConfig = signingConfigs.getByName("release")

@@ -38,6 +38,7 @@ import com.davi.dev.scannermlkit.R
 import com.davi.dev.scannermlkit.ScannerMlkit
 import com.google.android.gms.common.moduleinstall.ModuleInstall
 import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
+import com.google.mlkit.vision.documentscanner.GmsDocumentScanner
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_JPEG
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_PDF
@@ -46,34 +47,10 @@ import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppNavHost() {
+fun AppNavHost(scanner: GmsDocumentScanner) {
     val backStack = remember { mutableStateListOf<Any>(ListDocument) }
     val startDestination = Destination.DOCUMENTS
     var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
-
-    val moduleInstallClient = ModuleInstall.getClient(LocalContext.current)
-
-    val options = GmsDocumentScannerOptions.Builder()
-        .setScannerMode(SCANNER_MODE_FULL)
-        .setGalleryImportAllowed(true)
-        .setPageLimit(5)
-        .setResultFormats(RESULT_FORMAT_JPEG, RESULT_FORMAT_PDF)
-        .build()
-
-    val scanner = GmsDocumentScanning.getClient(options)
-
-    moduleInstallClient.areModulesAvailable(scanner)
-        .addOnSuccessListener {
-
-        }
-        .addOnFailureListener {
-            val moduleInstallRequest =
-                ModuleInstallRequest.newBuilder()
-                    .addApi(scanner)
-                    .build()
-            moduleInstallClient.installModules(moduleInstallRequest)
-        }
-
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
