@@ -8,11 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import com.davi.dev.scannermlkit.navigation.AppNavHost
-import com.davi.dev.scannermlkit.ui.theme.ScannermlkitTheme
-import com.google.android.gms.common.moduleinstall.ModuleInstall
-import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
+import com.davi.dev.scannermlkit.presentation.navigation.AppNavHost
+import com.davi.dev.scannermlkit.presentation.theme.ScannermlkitTheme
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_JPEG
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_PDF
@@ -38,7 +35,7 @@ class MainActivity : ComponentActivity() {
             ScannermlkitTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.surface
                 ) {
                     AppNavHost(scanner)
                 }

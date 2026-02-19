@@ -54,6 +54,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.1.1"
+    }
+
     buildFeatures {
         compose = true
     }
@@ -67,7 +71,13 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
+//    implementation(libs.androidx.compose.material3)
+
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+
+    implementation("androidx.compose.material3:material3:1.4.0")
+    implementation("androidx.compose.material3:material3-window-size-class:1.4.0")
+    implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.5.0-alpha14")
 
     implementation(libs.play.services.mlkit.document.scanner)
     implementation(libs.coil.compose)
