@@ -1,4 +1,4 @@
-package com.davi.dev.scannermlkit
+package com.davi.dev.scannermlkit.presentation.screens.scanner
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent

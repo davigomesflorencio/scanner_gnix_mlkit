@@ -1,8 +1,7 @@
-package com.davi.dev.scannermlkit.navigation
+package com.davi.dev.scannermlkit.presentation.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation3.runtime.NavKey

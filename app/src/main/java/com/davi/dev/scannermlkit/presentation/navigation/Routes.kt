@@ -1,4 +1,4 @@
-package com.davi.dev.scannermlkit.navigation
+package com.davi.dev.scannermlkit.presentation.navigation
 
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable

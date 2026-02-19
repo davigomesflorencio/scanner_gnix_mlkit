@@ -1,7 +1,6 @@
-package com.davi.dev.scannermlkit.navigation
+package com.davi.dev.scannermlkit.presentation.navigation
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,23 +26,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
-import com.davi.dev.scannermlkit.DocumentPdf
+import com.davi.dev.scannermlkit.presentation.DocumentPdf
 import com.davi.dev.scannermlkit.R
-import com.davi.dev.scannermlkit.ScannerMlkit
-import com.google.android.gms.common.moduleinstall.ModuleInstall
-import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
+import com.davi.dev.scannermlkit.presentation.ScannerMlkit
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanner
-import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
-import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_JPEG
-import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_PDF
-import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.SCANNER_MODE_FULL
-import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +47,7 @@ fun AppNavHost(scanner: GmsDocumentScanner) {
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = MaterialTheme.colorScheme.background,
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
@@ -72,7 +62,8 @@ fun AppNavHost(scanner: GmsDocumentScanner) {
                         )
                         Text(
                             "Scanner MLKIT", style = MaterialTheme.typography
-                                .titleLarge, modifier = Modifier.padding(start = 8.dp)
+                                .titleLarge,
+                            modifier = Modifier.padding(start = 8.dp)
                         )
                     }
                 }
@@ -108,7 +99,6 @@ fun AppNavHost(scanner: GmsDocumentScanner) {
             modifier = Modifier
                 .padding(contentPadding)
                 .fillMaxSize()
-                .background(Color.Black)
         ) {
             NavDisplay(
                 backStack = backStack,
