@@ -19,12 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.davi.dev.scannermlkit.domain.enums.UseCaseOptions
 import com.davi.dev.scannermlkit.presentation.navigation.ScanQrCode
 import com.davi.dev.scannermlkit.presentation.screens.scannerqrcode.ScannerQrCode
 
 @Composable
-fun FunctionsHomeApp(bacbackStack: SnapshotStateList<Any>) {
+fun FunctionsHomeApp(backStack:NavBackStack<NavKey>) {
     LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 120.dp),
         modifier = Modifier.padding(vertical = 10.dp)) {
         items(UseCaseOptions.entries.toTypedArray()) {
@@ -35,7 +37,7 @@ fun FunctionsHomeApp(bacbackStack: SnapshotStateList<Any>) {
             ) {
                 Button(
                     onClick = {
-                        bacbackStack.add(ScanQrCode)
+                        backStack.add(ScanQrCode)
                     },
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(

@@ -6,12 +6,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.davi.dev.scannermlkit.presentation.components.AppBar
 import com.davi.dev.scannermlkit.presentation.components.BottomBar
@@ -20,16 +17,13 @@ import com.davi.dev.scannermlkit.presentation.screens.scanner.DocumentViewer
 import com.davi.dev.scannermlkit.presentation.screens.scanner.ScannerMlkit
 import com.davi.dev.scannermlkit.presentation.screens.scannerqrcode.ScannerQrCode
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerQrCodeViewModel
-import com.google.mlkit.vision.documentscanner.GmsDocumentScanner
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppNavHost(scanner: GmsDocumentScanner) {
-    val backStack = remember { mutableStateListOf<Any>(ListDocument) }
-    val startDestination = Destination.DOCUMENTS
-    val selectedDestination = rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
+fun AppNavHost() {
+    val backStack = rememberNavBackStack(ListDocument)
 
-    val qrcodeViewModel = ScannerQrCodeViewModel()
+    val scannerViewModel = ScannerQrCodeViewModel()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -37,7 +31,7 @@ fun AppNavHost(scanner: GmsDocumentScanner) {
             AppBar()
         },
         bottomBar = {
-            BottomBar(backStack, selectedDestination)
+            BottomBar(backStack)
         }
     ) { contentPadding ->
         Column(
@@ -55,11 +49,11 @@ fun AppNavHost(scanner: GmsDocumentScanner) {
                         }
 
                         is ScanPdf -> NavEntry(key) {
-                            ScannerMlkit(scanner, backStack)
+                            ScannerMlkit(scannerViewModel.scanner, backStack)
                         }
 
                         is ScanQrCode -> NavEntry(key) {
-                            ScannerQrCode(qrcodeViewModel)
+                            ScannerQrCode(scannerViewModel)
                         }
 
                         is ViewPDF -> NavEntry(key) {

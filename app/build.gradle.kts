@@ -38,7 +38,7 @@ android {
     }
 
     buildTypes {
-        getByName("release"){
+        getByName("release") {
             isMinifyEnabled = false
             isShrinkResources = false
         }
@@ -72,7 +72,8 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
-//    implementation(libs.androidx.compose.material3)
+
+    implementation(libs.androidx.compose.material)
 
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
@@ -87,9 +88,6 @@ dependencies {
     implementation("com.itextpdf.android:kernel-android:8.0.2")
     implementation("com.itextpdf.android:io-android:8.0.2")
     implementation("com.itextpdf.android:layout-android:8.0.2")
-
-//    implementation("androidx.pdf:pdf-viewer-fragment:1.0.0-alpha13")
-
 
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
     // CameraX Dependencies

@@ -31,7 +31,6 @@ fun ScannerQrCode(viewModel: ScannerQrCodeViewModel) {
         }
     }
 
-
     val qrCodeData by viewModel.qrCodeData.collectAsState()
 
     Column(

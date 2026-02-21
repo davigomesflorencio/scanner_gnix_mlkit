@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.createBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -69,11 +70,7 @@ fun PdfPageItem(renderer: PdfRenderer, pageIndex: Int) {
         withContext(Dispatchers.IO) {
             val page = renderer.openPage(pageIndex)
             // Calculamos o tamanho (pode ajustar para economizar memória)
-            val destinationBitmap = Bitmap.createBitmap(
-                page.width,
-                page.height,
-                Bitmap.Config.ARGB_8888
-            )
+            val destinationBitmap = createBitmap(page.width, page.height)
             page.render(destinationBitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
             bitmap = destinationBitmap
             page.close()

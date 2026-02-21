@@ -8,29 +8,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.fragment.app.FragmentActivity
 import com.davi.dev.scannermlkit.presentation.navigation.AppNavHost
 import com.davi.dev.scannermlkit.presentation.theme.ScannermlkitTheme
-import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
-import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_JPEG
-import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_PDF
-import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.SCANNER_MODE_FULL
-import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
 
-class MainActivity : FragmentActivity() {
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        val options = GmsDocumentScannerOptions.Builder()
-            .setScannerMode(SCANNER_MODE_FULL)
-            .setGalleryImportAllowed(true)
-            .setPageLimit(5)
-            .setResultFormats(RESULT_FORMAT_JPEG, RESULT_FORMAT_PDF)
-            .build()
-
-        val scanner = GmsDocumentScanning.getClient(options)
 
         setContent {
             ScannermlkitTheme {
@@ -38,7 +23,7 @@ class MainActivity : FragmentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.surface
                 ) {
-                    AppNavHost(scanner)
+                    AppNavHost()
                 }
             }
         }

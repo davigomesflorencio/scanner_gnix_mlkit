@@ -7,15 +7,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.davi.dev.scannermlkit.presentation.components.CustomDivider
 import com.davi.dev.scannermlkit.presentation.components.FunctionsHomeApp
 
 @Composable
-fun DocumentPdf(backStack: SnapshotStateList<Any>) {
+fun DocumentPdf(backStack: NavBackStack<NavKey>) {
     val context = LocalContext.current
     val filesDir = context.filesDir
     val pdfFiles = remember {
