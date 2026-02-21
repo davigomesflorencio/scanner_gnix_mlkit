@@ -60,6 +60,7 @@ android {
 
     buildFeatures {
         compose = true
+        viewBinding = true
     }
 }
 
@@ -79,12 +80,36 @@ dependencies {
     implementation("androidx.compose.material3:material3-window-size-class:1.4.0")
     implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.5.0-alpha14")
 
+    implementation("com.google.accompanist:accompanist-permissions:0.37.3")
+
     implementation(libs.play.services.mlkit.document.scanner)
+
+    implementation("com.itextpdf.android:kernel-android:8.0.2")
+    implementation("com.itextpdf.android:io-android:8.0.2")
+    implementation("com.itextpdf.android:layout-android:8.0.2")
+
+//    implementation("androidx.pdf:pdf-viewer-fragment:1.0.0-alpha13")
+
+
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
+    // CameraX Dependencies
+    implementation("androidx.camera:camera-core:1.3.4")
+    implementation("androidx.camera:camera-camera2:1.3.4")
+    implementation("androidx.camera:camera-lifecycle:1.3.4")
+    implementation("androidx.camera:camera-view:1.3.4")
+
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.fragment.compose)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

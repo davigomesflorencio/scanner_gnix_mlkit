@@ -14,14 +14,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.davi.dev.scannermlkit.domain.enums.UseCaseOptions
+import com.davi.dev.scannermlkit.presentation.navigation.ScanQrCode
+import com.davi.dev.scannermlkit.presentation.screens.scannerqrcode.ScannerQrCode
 
 @Composable
-fun FunctionsHomeApp() {
+fun FunctionsHomeApp(bacbackStack: SnapshotStateList<Any>) {
     LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 120.dp),
         modifier = Modifier.padding(vertical = 10.dp)) {
         items(UseCaseOptions.entries.toTypedArray()) {
@@ -31,10 +34,12 @@ fun FunctionsHomeApp() {
                 modifier = Modifier.padding(vertical = 5.dp)
             ) {
                 Button(
-                    onClick = { },
+                    onClick = {
+                        bacbackStack.add(ScanQrCode)
+                    },
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = it.color.copy(alpha = 0.7f)
+                        containerColor = it.backgroundColor
                     ),
                     modifier = Modifier.size(74.dp)
                 ) {

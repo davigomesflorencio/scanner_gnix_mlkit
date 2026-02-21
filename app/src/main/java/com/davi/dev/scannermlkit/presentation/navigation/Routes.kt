@@ -9,3 +9,9 @@ data object ListDocument : NavKey
 
 @Serializable
 data object ScanPdf : NavKey
+
+@Serializable
+data object ScanQrCode : NavKey
+
+@Serializable
+data object ViewPDF : NavKey

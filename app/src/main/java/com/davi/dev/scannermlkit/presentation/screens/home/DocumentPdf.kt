@@ -23,7 +23,7 @@ fun DocumentPdf(backStack: SnapshotStateList<Any>) {
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        FunctionsHomeApp()
+        FunctionsHomeApp(backStack)
 
         CustomDivider()
 

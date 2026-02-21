@@ -15,5 +15,5 @@ enum class Destination(
 ) {
     DOCUMENTS(ListDocument, "Documentos", Icons.AutoMirrored.Default.List, "Documentos"),
     SCANNER(ScanPdf, "Scanner", Icons.Default.Share, "Scanner"),
-    ACCOUNT(ScanPdf, "Account", Icons.Default.Person, "Account"),
+    ACCOUNT(ViewPDF, "Account", Icons.Default.Person, "Account"),
 }

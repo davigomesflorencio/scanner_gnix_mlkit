@@ -16,7 +16,10 @@ import androidx.navigation3.ui.NavDisplay
 import com.davi.dev.scannermlkit.presentation.components.AppBar
 import com.davi.dev.scannermlkit.presentation.components.BottomBar
 import com.davi.dev.scannermlkit.presentation.screens.home.DocumentPdf
+import com.davi.dev.scannermlkit.presentation.screens.scanner.DocumentViewer
 import com.davi.dev.scannermlkit.presentation.screens.scanner.ScannerMlkit
+import com.davi.dev.scannermlkit.presentation.screens.scannerqrcode.ScannerQrCode
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerQrCodeViewModel
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanner
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,6 +28,8 @@ fun AppNavHost(scanner: GmsDocumentScanner) {
     val backStack = remember { mutableStateListOf<Any>(ListDocument) }
     val startDestination = Destination.DOCUMENTS
     val selectedDestination = rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
+
+    val qrcodeViewModel = ScannerQrCodeViewModel()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -51,6 +56,14 @@ fun AppNavHost(scanner: GmsDocumentScanner) {
 
                         is ScanPdf -> NavEntry(key) {
                             ScannerMlkit(scanner, backStack)
+                        }
+
+                        is ScanQrCode -> NavEntry(key) {
+                            ScannerQrCode(qrcodeViewModel)
+                        }
+
+                        is ViewPDF -> NavEntry(key) {
+                            DocumentViewer()
                         }
 
                         else -> {

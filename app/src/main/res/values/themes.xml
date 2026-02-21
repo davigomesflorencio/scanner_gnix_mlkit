@@ -2,4 +2,11 @@
 <resources>
 
     <style name="Theme.Scannermlkit" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.ScannermlkitPDF" parent="Theme.AppCompat.Light.NoActionBar" />
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Scannermlkit" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
 </resources>
