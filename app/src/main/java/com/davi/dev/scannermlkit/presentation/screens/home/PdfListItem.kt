@@ -47,7 +47,7 @@ fun PdfListItem(file: File) {
     Card(
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp),
         modifier = Modifier
-            .clickable{
+            .clickable {
                 val viewIntent = Intent().apply {
                     action = Intent.ACTION_VIEW
                     setDataAndType(pdfUri, "application/pdf")
@@ -112,7 +112,7 @@ fun PdfListItem(file: File) {
 
                 // Botão para compartilhar/download do PDF
                 IconButton(onClick = {
-                    }) {
+                }) {
                     Icon(
                         painterResource(R.drawable.ic_ellipsis_vertical),
                         contentDescription = "Share doc"

@@ -32,6 +32,23 @@ fun AppNavHost() {
         },
         bottomBar = {
             BottomBar(backStack)
+        },
+        floatingActionButton = {
+//            if (backStack.lastOrNull() is ViewPDF) {
+//                Column(
+//                    horizontalAlignment = androidx.compose.ui.Alignment.End,
+//                ) {
+//                    FloatingActionButton(
+//                        onClick = { /* Abrir canvas para assinar */ },
+//                        modifier = Modifier.padding(bottom = 8.dp)
+//                    ) {
+//                        Icon(
+//                            imageVector = androidx.compose.material.icons.Icons.Default.Edit,
+//                            contentDescription = "Assinar Canvas"
+//                        )
+//                    }
+//                }
+//            }
         }
     ) { contentPadding ->
         Column(

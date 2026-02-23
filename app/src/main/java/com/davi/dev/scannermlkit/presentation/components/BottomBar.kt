@@ -5,6 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,6 +19,7 @@ import com.davi.dev.scannermlkit.presentation.navigation.Destination
 fun BottomBar(backStack: NavBackStack<NavKey>) {
 
     BottomNavigation(
+        backgroundColor = MaterialTheme.colorScheme.onTertiary,
         modifier = Modifier
             .padding(30.dp)
             .clip(RoundedCornerShape(30.dp))

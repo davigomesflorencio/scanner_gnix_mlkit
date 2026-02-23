@@ -14,7 +14,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -23,12 +22,13 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.davi.dev.scannermlkit.domain.enums.UseCaseOptions
 import com.davi.dev.scannermlkit.presentation.navigation.ScanQrCode
-import com.davi.dev.scannermlkit.presentation.screens.scannerqrcode.ScannerQrCode
 
 @Composable
-fun FunctionsHomeApp(backStack:NavBackStack<NavKey>) {
-    LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 120.dp),
-        modifier = Modifier.padding(vertical = 10.dp)) {
+fun FunctionsHomeApp(backStack: NavBackStack<NavKey>) {
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 120.dp),
+        modifier = Modifier.padding(vertical = 10.dp)
+    ) {
         items(UseCaseOptions.entries.toTypedArray()) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -53,8 +53,10 @@ fun FunctionsHomeApp(backStack:NavBackStack<NavKey>) {
                     )
                 }
 
-                Text(it.title, style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(top = 6.dp))
+                Text(
+                    it.title, style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(top = 6.dp)
+                )
 
             }
         }
