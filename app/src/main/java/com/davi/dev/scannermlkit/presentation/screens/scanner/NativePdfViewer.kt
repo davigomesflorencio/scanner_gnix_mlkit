@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Draw
@@ -36,9 +38,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
@@ -94,7 +100,7 @@ fun NativePdfViewer(uri: Uri) {
             if (rendererResource != null) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
+//                    contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -138,7 +144,7 @@ fun NativePdfViewer(uri: Uri) {
             signaturePath?.let { path ->
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .wrapContentHeight()
                         .offset { IntOffset(signatureOffset.x.roundToInt(), signatureOffset.y.roundToInt()) }
                         .pointerInput(Unit) {
                             detectTransformGestures { _, pan, zoom, _ ->
@@ -146,12 +152,21 @@ fun NativePdfViewer(uri: Uri) {
                                 signatureOffset += pan
                             }
                         }
+                        .scale(signatureScale)
+                        .drawBehind {
+                            val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+                            drawRoundRect(
+                                color = Color.Red,
+                                style = Stroke(width = 4.dp.toPx(), pathEffect = pathEffect),
+                                cornerRadius = CornerRadius(16.dp.toPx())
+                            )
+                        }
                 ) {
                     Canvas(modifier = Modifier.fillMaxSize()) {
                         drawPath(
                             path = path,
                             color = Color.Black,
-                            style = Stroke(width = 4.dp.toPx() * signatureScale)
+                            style = Stroke(width = 4.dp.toPx())
                         )
                     }
                 }
