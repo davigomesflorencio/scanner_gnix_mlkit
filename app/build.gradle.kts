@@ -17,7 +17,7 @@ android {
     compileSdk {
         version = release(36)
     }
-    ndkVersion = "27.0.12077973"
+    ndkVersion = "28.0.12433566"
 
     defaultConfig {
         applicationId = "com.davi.dev.scannermlkit"
@@ -37,11 +37,10 @@ android {
         }
     }
 
-    packagingOptions {
+    // Opcional: Garante que as libs não sejam comprimidas no APK
+    packaging {
         jniLibs {
-            // Setting to false ensures native libraries are stored uncompressed and aligned.
-            // This is the default for AGP 3.6+ but explicitly set for clarity.
-            useLegacyPackaging = true
+            useLegacyPackaging = false
         }
     }
 
@@ -56,7 +55,7 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             isShrinkResources = false
         }
         release {
@@ -102,16 +101,16 @@ dependencies {
 
     implementation(libs.play.services.mlkit.document.scanner)
 
-    implementation("com.itextpdf.android:kernel-android:8.0.2")
-    implementation("com.itextpdf.android:io-android:8.0.2")
-    implementation("com.itextpdf.android:layout-android:8.0.2")
+    implementation("com.itextpdf.android:kernel-android:9.5.0")
+    implementation("com.itextpdf.android:io-android:9.5.0")
+    implementation("com.itextpdf.android:layout-android:9.5.0")
 
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
     // CameraX Dependencies
-    implementation("androidx.camera:camera-core:1.3.4")
-    implementation("androidx.camera:camera-camera2:1.3.4")
-    implementation("androidx.camera:camera-lifecycle:1.3.4")
-    implementation("androidx.camera:camera-view:1.3.4")
+    implementation("androidx.camera:camera-core:1.5.3")
+    implementation("androidx.camera:camera-camera2:1.5.3")
+    implementation("androidx.camera:camera-lifecycle:1.5.3")
+    implementation("androidx.camera:camera-view:1.5.3")
 
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
