@@ -33,7 +33,7 @@ import java.util.Locale
 
 private fun formatDate(timestamp: Long): String {
     val date = Date(timestamp)
-    val format = SimpleDateFormat("dd 'de' MMMM HH:mm", Locale("pt", "BR"))
+    val format = SimpleDateFormat("dd 'de' MMMM HH:mm")
     return format.format(date)
 }
 

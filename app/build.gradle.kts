@@ -37,6 +37,14 @@ android {
         }
     }
 
+    packagingOptions {
+        jniLibs {
+            // Setting to false ensures native libraries are stored uncompressed and aligned.
+            // This is the default for AGP 3.6+ but explicitly set for clarity.
+            useLegacyPackaging = true
+        }
+    }
+
     signingConfigs {
         create("release") {
             keyAlias = keystoreProperties["keyAlias"] as String
