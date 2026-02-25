@@ -17,6 +17,7 @@ android {
     compileSdk {
         version = release(36)
     }
+    ndkVersion = "27.0.12077973"
 
     defaultConfig {
         applicationId = "com.davi.dev.scannermlkit"
@@ -26,6 +27,14 @@ android {
         versionName = "1.6.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            // For ndk-build, instead use the ndkBuild block.
+            cmake {
+                // Passes optional arguments to CMake.
+                arguments += listOf("-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON")
+            }
+        }
     }
 
     signingConfigs {

@@ -1,5 +1,6 @@
 package com.davi.dev.scannermlkit.presentation.components
 
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
@@ -22,6 +23,7 @@ fun BottomBar(backStack: NavBackStack<NavKey>) {
         backgroundColor = MaterialTheme.colorScheme.onTertiary,
         modifier = Modifier
             .padding(30.dp)
+            .navigationBarsPadding()
             .clip(RoundedCornerShape(30.dp))
     ) {
         Destination.entries.forEachIndexed { index, destination ->

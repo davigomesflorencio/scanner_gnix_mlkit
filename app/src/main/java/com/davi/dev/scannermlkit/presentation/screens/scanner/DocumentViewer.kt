@@ -30,15 +30,17 @@ fun DocumentViewer() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CenterAlignedTopAppBar(
-            title = { Text("Document Viewer") }
-        )
-        FilledTonalButton(
-            onClick = {
-                launcher.launch(arrayOf("application/pdf"))
+        if(documentUri == null) {
+            CenterAlignedTopAppBar(
+                title = { Text("Document Viewer") }
+            )
+            FilledTonalButton(
+                onClick = {
+                    launcher.launch(arrayOf("application/pdf"))
+                }
+            ) {
+                Text(text = "Select Document")
             }
-        ) {
-            Text(text = "Select Document")
         }
         documentUri?.let { uri ->
             // Passamos a URI aqui
