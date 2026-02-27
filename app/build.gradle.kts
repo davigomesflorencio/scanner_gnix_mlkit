@@ -46,10 +46,23 @@ android {
 
     signingConfigs {
         create("release") {
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
-            storeFile = file(keystoreProperties["storeFile"] as String)
-            storePassword = keystoreProperties["storePassword"] as String
+            keyAlias = System.getenv("RELEASE_KEY_ALIAS")
+                ?: keystoreProperties["keyAlias"] as? String
+
+            keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+                ?: keystoreProperties["keyPassword"] as? String
+
+            storePassword = System.getenv("RELEASE_STORE_PASSWORD")
+                ?: keystoreProperties["storePassword"] as? String
+
+            // O arquivo JKS no GitHub Actions será decodificado na raiz do app/
+            val storeFilePath = System.getenv("RELEASE_STORE_FILE")
+                ?: keystoreProperties["storeFile"] as? String
+
+            if (storeFilePath != null) {
+                storeFile = file(storeFilePath)
+            }
+
         }
     }
 
