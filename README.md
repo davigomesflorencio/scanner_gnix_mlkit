@@ -1,5 +1,5 @@
 <div>
-<img src="screenshots/4.jpg" alt="drawing" style="width:auto;"/>
+<img src="screenshots/panel.jpeg" alt="drawing" style="width:auto;"/>
 
 </div>
 
@@ -24,7 +24,7 @@ As principais funcionalidades incluem:
 
 <div>
 <img src="screenshots/1.jpg" alt="drawing" style="width:300px;"/>
-<img src="screenshots/2.jpg" alt="drawing" style="width:300px;"/>
+<img src="screenshots/5.jpg" alt="drawing" style="width:300px;"/>
 </div>
 
 ## Tecnologias e Dependências
