@@ -21,7 +21,7 @@ jobs:
       # 1. Decodificar a Keystore a partir do Secret Base64
       - name: Decode Keystore
         run: |
-          printf "%s" "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > app/release.jks
+          printf "%s" "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/release.jks
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
@@ -31,9 +31,9 @@ jobs:
         env:
           # Essas variáveis serão lidas pelo seu build.gradle
           RELEASE_STORE_FILE: "release.jks"
-          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
-          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
-          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+          RELEASE_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
