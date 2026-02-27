@@ -1,4 +1,4 @@
-package com.davi.dev.scannermlkit.presentation.components
+package com.davi.dev.scannermlkit.presentation.screens.documentPdf
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -13,9 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,16 +32,8 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import com.davi.dev.scannermlkit.domain.model.SignatureData
 
-// Data class to hold signature information with transformations
-data class SignatureData(
-    val path: Path,
-    val width: Float, // Original width of the path
-    val height: Float, // Original height of the path
-    val scale: Float = 1f, // User-applied scale
-    val offsetX: Float = 0f, // User-applied offset X
-    val offsetY: Float = 0f  // User-applied offset Y
-)
 
 @Composable
 fun SignaturePad(
@@ -103,29 +96,53 @@ fun SignaturePad(
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Button(onClick = onCancel) {
-                Icon(Icons.Default.Close, contentDescription = "Cancel")
-            }
-            Button(onClick = {
-                path = Path()
-                currentScale = 1f
-                currentOffset = Offset.Zero
-                originalPathBounds = Rect.Zero
-            }) {
-                Text("Clear")
-            }
-            Button(onClick = {
-                val signatureData = SignatureData(
-                    path = path,
-                    width = originalPathBounds.width,
-                    height = originalPathBounds.height,
-                    scale = currentScale,
-                    offsetX = currentOffset.x,
-                    offsetY = currentOffset.y
+            IconButton(
+                onClick = onCancel,
+                colors = IconButtonColors(
+                    containerColor = Color(0XFFb6407f),
+                    contentColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    disabledContentColor = Color.White
                 )
-                onDone(signatureData)
-            }) {
-                Icon(Icons.Default.Check, contentDescription = "Done")
+            ) {
+                Icon(Icons.Default.Close, contentDescription = "Cancel Assignature")
+            }
+            IconButton(
+                onClick = {
+                    path = Path()
+                    currentScale = 1f
+                    currentOffset = Offset.Zero
+                    originalPathBounds = Rect.Zero
+                },
+                colors = IconButtonColors(
+                    containerColor = Color(0XFFb6407f),
+                    contentColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    disabledContentColor = Color.White
+                )
+            ) {
+                Icon(Icons.Default.Delete, contentDescription = "Delete Assignature")
+            }
+            IconButton(
+                onClick = {
+                    val signatureData = SignatureData(
+                        path = path,
+                        width = originalPathBounds.width,
+                        height = originalPathBounds.height,
+                        scale = currentScale,
+                        offsetX = currentOffset.x,
+                        offsetY = currentOffset.y
+                    )
+                    onDone(signatureData)
+                },
+                colors = IconButtonColors(
+                    containerColor = Color(0XFFb6407f),
+                    contentColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    disabledContentColor = Color.White
+                )
+            ) {
+                Icon(Icons.Default.Check, contentDescription = "Done Assignature")
             }
         }
     }

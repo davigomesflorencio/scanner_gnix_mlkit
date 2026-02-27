@@ -68,13 +68,13 @@ fun PdfListItem(file: File) {
                 modifier = Modifier
                     .width(64.dp)
                     .padding(8.dp)
-                    .weight(1.5f)
+                    .weight(1.3f)
             )
 
             Column(
                 modifier = Modifier
                     .padding(horizontal = 3.dp)
-                    .weight(3f)
+                    .weight(2.5f)
             ) {
                 Text(
                     text = file.name,

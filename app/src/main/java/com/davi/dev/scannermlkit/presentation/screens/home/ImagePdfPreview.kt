@@ -14,8 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import java.io.File
+import androidx.core.graphics.createBitmap
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,7 +28,7 @@ fun ImagePdfPreview(file: File, modifier: Modifier = Modifier) {
                 ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
             val pdfRenderer = PdfRenderer(fileDescriptor)
             val page = pdfRenderer.openPage(0)
-            val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
+            val bitmap = createBitmap(page.width, page.height)
             page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
             page.close()
             pdfRenderer.close()
@@ -42,6 +44,7 @@ fun ImagePdfPreview(file: File, modifier: Modifier = Modifier) {
         if (bitmap != null) {
             Image(
                 bitmap = bitmap.asImageBitmap(),
+                contentScale = ContentScale.Fit,
                 contentDescription = "PDF preview of ${file.name}",
                 modifier = Modifier.aspectRatio(1f)
             )

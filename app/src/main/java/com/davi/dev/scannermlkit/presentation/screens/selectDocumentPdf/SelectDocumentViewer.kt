@@ -1,6 +1,5 @@
-package com.davi.dev.scannermlkit.presentation.screens.scanner
+package com.davi.dev.scannermlkit.presentation.screens.documentPdf
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
@@ -11,26 +10,26 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerDocumentViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable()
-fun DocumentViewer() {
-    var documentUri by remember { mutableStateOf<Uri?>(null) }
+fun SelectDocumentViewer(scannerDocumentViewModel: ScannerDocumentViewModel) {
+    val documentUri by scannerDocumentViewModel.documentUri.collectAsState()
+
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
-        documentUri = it
+        it?.let { uri -> scannerDocumentViewModel.setUri(uri) }
     }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if(documentUri == null) {
+        if (documentUri == null) {
             CenterAlignedTopAppBar(
                 title = { Text("Document Viewer") }
             )
