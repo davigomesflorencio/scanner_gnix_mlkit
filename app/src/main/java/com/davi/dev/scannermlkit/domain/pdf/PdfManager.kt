@@ -5,18 +5,21 @@ import com.itextpdf.kernel.pdf.PdfReader
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
 import java.io.FileInputStream
+import java.io.InputStream
+import java.io.OutputStream
 
 object PdfManager {
-    fun mergePdfs(inputPaths: List<String>, outputPath: String) {
-        val writer = PdfWriter(outputPath)
+    fun mergePdfs(inputStreams: List<InputStream>, outputStream: OutputStream) {
+        val writer = PdfWriter(outputStream)
         val pdfDoc = PdfDocument(writer)
         val document = Document(pdfDoc)
 
-        for (path in inputPaths) {
-            val reader = PdfReader(FileInputStream(path))
+        for (inputStream in inputStreams) {
+            val reader = PdfReader(inputStream)
             val sourcePdf = PdfDocument(reader)
             sourcePdf.copyPagesTo(1, sourcePdf.numberOfPages, pdfDoc)
             sourcePdf.close()
+            inputStream.close()
         }
 
         document.close()

@@ -1,4 +1,4 @@
-package com.davi.dev.scannermlkit.presentation.components
+package com.davi.dev.scannermlkit.presentation.screens.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,21 +10,27 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.graphics.shapes.RoundedPolygon
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.davi.dev.scannermlkit.domain.enums.UseCaseOptions
-import com.davi.dev.scannermlkit.presentation.navigation.ScanQrCode
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun FunctionsHomeApp(backStack: NavBackStack<NavKey>) {
+
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 120.dp),
         modifier = Modifier.padding(vertical = 10.dp)
@@ -37,9 +43,9 @@ fun FunctionsHomeApp(backStack: NavBackStack<NavKey>) {
             ) {
                 Button(
                     onClick = {
-                        backStack.add(ScanQrCode)
+                        backStack.add(it.route)
                     },
-                    shape = CircleShape,
+                    shape = RoundedPolygon(MaterialShapes.Cookie6Sided).toShape(0),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = it.backgroundColor
                     ),

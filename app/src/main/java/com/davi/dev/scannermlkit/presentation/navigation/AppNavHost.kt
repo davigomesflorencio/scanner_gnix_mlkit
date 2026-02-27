@@ -1,29 +1,68 @@
 package com.davi.dev.scannermlkit.presentation.navigation
 
+import androidx.activity.compose.LocalActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.graphics.shapes.RoundedPolygon
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.davi.dev.scannermlkit.presentation.components.AppBar
-import com.davi.dev.scannermlkit.presentation.components.BottomBar
-import com.davi.dev.scannermlkit.presentation.screens.home.DocumentPdf
-import com.davi.dev.scannermlkit.presentation.screens.scanner.DocumentViewer
-import com.davi.dev.scannermlkit.presentation.screens.scanner.ScannerMlkit
-import com.davi.dev.scannermlkit.presentation.screens.scannerqrcode.ScannerQrCode
+import com.davi.dev.scannermlkit.R
+import com.davi.dev.scannermlkit.presentation.components.AppBar.AppBar
+import com.davi.dev.scannermlkit.presentation.components.bottomBar.BottomBar
+import com.davi.dev.scannermlkit.presentation.screens.home.Home
+import com.davi.dev.scannermlkit.presentation.screens.mergePdf.MergePdfScreen
+import com.davi.dev.scannermlkit.presentation.screens.scannerDocument.ScannerDocument
+import com.davi.dev.scannermlkit.presentation.screens.scannerQrCode.ScannerQrCode
+import com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf.SelectDocumentViewer
+import com.davi.dev.scannermlkit.presentation.screens.viewDocumentPdf.ViewDocumentPdf
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.MergeDocumentViewModel
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerDocumentViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerQrCodeViewModel
+import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
+import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun AppNavHost() {
-    val backStack = rememberNavBackStack(ListDocument)
+fun AppNavHost(
+    scannerQrCodeViewModel: ScannerQrCodeViewModel = viewModel(),
+    scannerDocumentViewModel: ScannerDocumentViewModel = viewModel(),
+    mergeDocumentViewModel: MergeDocumentViewModel = viewModel()
+) {
+    val backStack = rememberNavBackStack(Routes.Home)
+    val activity = LocalActivity.current
 
-    val scannerViewModel = ScannerQrCodeViewModel()
+    val options = GmsDocumentScannerOptions.Builder()
+        .setScannerMode(GmsDocumentScannerOptions.SCANNER_MODE_FULL)
+        .setResultFormats(GmsDocumentScannerOptions.RESULT_FORMAT_PDF)
+        .build()
+    val documentScanner = GmsDocumentScanning.getClient(options)
+
+    val scannerActivityResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult(),
+        onResult = {
+            scannerDocumentViewModel.handleScanResult(it.resultCode, it.data)
+        }
+    )
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -34,21 +73,39 @@ fun AppNavHost() {
             BottomBar(backStack)
         },
         floatingActionButton = {
-//            if (backStack.lastOrNull() is ViewPDF) {
-//                Column(
-//                    horizontalAlignment = androidx.compose.ui.Alignment.End,
-//                ) {
-//                    FloatingActionButton(
-//                        onClick = { /* Abrir canvas para assinar */ },
-//                        modifier = Modifier.padding(bottom = 8.dp)
-//                    ) {
-//                        Icon(
-//                            imageVector = androidx.compose.material.icons.Icons.Default.Edit,
-//                            contentDescription = "Assinar Canvas"
-//                        )
-//                    }
-//                }
-//            }
+            if (backStack.lastOrNull() is Routes.ScanDocument) {
+                FloatingActionButton(
+                    onClick = {
+                        scannerDocumentViewModel.cleanScan()
+                        scannerDocumentViewModel.startScan(
+                            scanner = documentScanner,
+                            activity = activity!!,
+                            scannerLauncher = scannerActivityResultLauncher
+                        )
+                    },
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .clip(RoundedPolygon(MaterialShapes.Arch).toShape(0))
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_scan_pdf),
+                        contentDescription = "Scanner PDF"
+                    )
+                }
+            } else if (backStack.lastOrNull() is Routes.Home) {
+                FloatingActionButton(
+                    onClick = {
+                        backStack.add(Routes.SelectViewDocument)
+                    },
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_file_search),
+                        contentDescription = "File Scan PDF"
+                    )
+                }
+            }
         }
     ) { contentPadding ->
         Column(
@@ -61,20 +118,38 @@ fun AppNavHost() {
                 onBack = { backStack.removeLastOrNull() },
                 entryProvider = { key ->
                     when (key) {
-                        is ListDocument -> NavEntry(key) {
-                            DocumentPdf(backStack)
+                        is Routes.Home -> NavEntry(key) {
+                            Home(backStack)
                         }
 
-                        is ScanPdf -> NavEntry(key) {
-                            ScannerMlkit(scannerViewModel.scanner, backStack)
+                        is Routes.ScanDocument -> NavEntry(key) {
+                            ScannerDocument(viewModel = scannerDocumentViewModel)
                         }
 
-                        is ScanQrCode -> NavEntry(key) {
-                            ScannerQrCode(scannerViewModel)
+                        is Routes.ScanQrCode -> NavEntry(key) {
+                            ScannerQrCode(viewModel = scannerQrCodeViewModel)
                         }
 
-                        is ViewPDF -> NavEntry(key) {
-                            DocumentViewer()
+                        is Routes.SelectViewDocument -> NavEntry(key) {
+                            SelectDocumentViewer(scannerDocumentViewModel)
+                        }
+
+                        is Routes.ViewDocument -> NavEntry(key) {
+                            ViewDocumentPdf(key.filePath)
+                        }
+
+                        is Routes.MergePdf -> NavEntry(key) {
+                            MergePdfScreen(mergeDocumentViewModel)
+                        }
+
+                        is Routes.Account -> NavEntry(key) {
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Text("Account")
+                            }
                         }
 
                         else -> {

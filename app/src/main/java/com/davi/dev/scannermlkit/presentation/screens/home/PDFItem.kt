@@ -24,21 +24,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.davi.dev.scannermlkit.R
-import com.davi.dev.scannermlkit.presentation.components.ImagePdfPreview
+import com.davi.dev.scannermlkit.domain.date.DateUtil.formatDate
+import com.davi.dev.scannermlkit.presentation.navigation.Routes
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
-private fun formatDate(timestamp: Long): String {
-    val date = Date(timestamp)
-    val format = SimpleDateFormat("dd 'de' MMMM HH:mm")
-    return format.format(date)
-}
 
 @Composable
-fun PdfListItem(file: File) {
+fun PDFItem(navBackStack: NavBackStack<NavKey>, file: File) {
     val context = LocalContext.current
     val authority = "${context.packageName}.provider"
     val pdfUri = FileProvider.getUriForFile(context, authority, file)
@@ -48,13 +43,14 @@ fun PdfListItem(file: File) {
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp),
         modifier = Modifier
             .clickable {
-                val viewIntent = Intent().apply {
-                    action = Intent.ACTION_VIEW
-                    setDataAndType(pdfUri, "application/pdf")
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                }
-                context.startActivity(Intent.createChooser(viewIntent, "View PDF"))
+//                val viewIntent = Intent().apply {
+//                    action = Intent.ACTION_VIEW
+//                    setDataAndType(pdfUri, "application/pdf")
+//                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//                }
+//                context.startActivity(Intent.createChooser(viewIntent, "View PDF"))
 
+                navBackStack.add(Routes.ViewDocument(file.path))
             }
             .fillMaxWidth()
             .padding(4.dp),
@@ -86,7 +82,6 @@ fun PdfListItem(file: File) {
                     style = MaterialTheme.typography.labelMedium,
                 )
             }
-
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(1.dp),

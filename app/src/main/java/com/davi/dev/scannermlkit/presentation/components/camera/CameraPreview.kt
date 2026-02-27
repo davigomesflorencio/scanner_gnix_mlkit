@@ -1,4 +1,4 @@
-package com.davi.dev.scannermlkit.presentation.screens.scannerqrcode
+package com.davi.dev.scannermlkit.presentation.components.camera
 
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis

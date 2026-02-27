@@ -1,19 +1,15 @@
 package com.davi.dev.scannermlkit.presentation.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Scanner
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation3.runtime.NavKey
+import com.davi.dev.scannermlkit.R
 
 enum class Destination(
     val route: NavKey,
     val label: String,
-    val icon: ImageVector,
+    val icon: Int,
     val contentDescription: String
 ) {
-    DOCUMENTS(ListDocument, "Documentos", Icons.AutoMirrored.Default.List, "Documentos"),
-    SCANNER(ScanPdf, "Scanner", Icons.Default.Scanner, "Scanner"),
-    ACCOUNT(ViewPDF, "Account", Icons.Default.Person, "Account"),
+    DOCUMENTS(Routes.Home, "Home", R.drawable.ic_house, "Home"),
+    SCANNER(Routes.ScanDocument, "Scanner", R.drawable.ic_scan_pdf, "Scanner"),
+    ACCOUNT(Routes.Account, "Account", R.drawable.ic_user_round_cog, "Account"),
 }

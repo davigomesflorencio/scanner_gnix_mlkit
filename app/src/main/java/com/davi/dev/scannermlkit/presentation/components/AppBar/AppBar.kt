@@ -1,4 +1,4 @@
-package com.davi.dev.scannermlkit.presentation.components
+package com.davi.dev.scannermlkit.presentation.components.AppBar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

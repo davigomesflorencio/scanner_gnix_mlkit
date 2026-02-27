@@ -1,4 +1,4 @@
-package com.davi.dev.scannermlkit.presentation.screens.documentPdf
+package com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background

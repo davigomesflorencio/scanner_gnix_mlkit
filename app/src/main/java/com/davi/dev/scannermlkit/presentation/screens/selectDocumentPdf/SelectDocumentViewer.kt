@@ -1,4 +1,4 @@
-package com.davi.dev.scannermlkit.presentation.screens.documentPdf
+package com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
