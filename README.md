@@ -5,16 +5,20 @@
 
 # Scanner ML Kit
 
-Este é um projeto de exemplo para Android que demonstra o uso do [Document Scanner do Google ML Kit](https://developers.google.com/ml-kit/vision/document-scanner) para digitalizar e gerenciar documentos.
+Este é um projeto para Android desenvolvido com Jetpack Compose que demonstra o uso de diversas ferramentas do Google (ML Kit) e bibliotecas avançadas (como iTextPDF e CameraX) para oferecer uma suíte de digitalização completa.
 
 ## Descrição
 
-O aplicativo permite ao usuário digitalizar documentos usando a câmera do dispositivo ou importando imagens da galeria. Cada digitalização é salva como um novo arquivo PDF com um nome exclusivo.
+O aplicativo evoluiu para ser muito mais do que um simples scanner de documentos, oferecendo agora funcionalidades para o gerenciamento de PDFs e leitura de códigos de barras/QR Codes, tudo construído sobre uma interface moderna baseada no Material Design 3.
 
-A tela principal exibe uma lista de todos os documentos PDF que foram gerados, mostrando uma prévia da primeira página de cada um. Para cada documento na lista, o usuário tem as opções de:
+As principais funcionalidades incluem:
 
-*   **Visualizar**: Abrir o PDF em um visualizador de PDF externo.
-*   **Exportar**: Compartilhar ou salvar o arquivo PDF em outro local.
+*   **Digitalização de Documentos:** Escaneie documentos físicos, faça recortes e aplique filtros automaticamente usando o [Document Scanner do Google ML Kit](https://developers.google.com/ml-kit/vision/document-scanner). O documento escaneado é salvo diretamente como um arquivo PDF.
+*   **Leitura de QR Code / Código de Barras:** Digitalize e interprete rapidamente dados de um QR Code ou código de barras através da câmera do dispositivo em tempo real, utilizando CameraX e a API de [Barcode Scanning do ML Kit](https://developers.google.com/ml-kit/vision/barcode-scanning).
+*   **Mesclagem de PDFs (Merge):** Junte múltiplos documentos PDF em um único arquivo de forma simples utilizando a robusta biblioteca [iTextPDF](https://itextpdf.com/).
+*   **Listagem e Gerenciamento:** A tela principal exibe uma lista de todos os documentos PDF gerados ou mesclados, apresentando uma prévia da primeira página. O usuário tem as opções de:
+    *   **Visualizar**: Abrir o PDF em um visualizador externo no dispositivo.
+    *   **Exportar/Compartilhar**: Compartilhar e enviar o arquivo PDF via e-mail e outros aplicativos.
 
 ## Preview
 
@@ -25,32 +29,32 @@ A tela principal exibe uma lista de todos os documentos PDF que foram gerados, m
 
 ## Tecnologias e Dependências
 
-Este projeto utiliza as seguintes tecnologias e bibliotecas:
+Este projeto utiliza diversas tecnologias, frameworks e bibliotecas modernas do ecossistema Android:
 
-*   **[Kotlin](https://kotlinlang.org/)**: Linguagem de programação principal.
-*   **[Jetpack Compose](https://developer.android.com/jetpack/compose)**: Toolkit de UI moderno para construir interfaces de usuário nativas.
-*   **[Google ML Kit Document Scanner](https://developers.google.com/ml-kit/vision/document-scanner)**: Para fornecer a funcionalidade de digitalização de documentos.
-    *   `com.google.android.gms:play-services-mlkit-document-scanner:16.0.0`
-*   **[Coil 3](https://coil-kt.github.io/coil/)**: Uma biblioteca de carregamento de imagem para Kotlin.
-    *   `io.coil-kt.coil3:coil-compose:3.3.0`
-*   **Fonte Inter**: A tipografia do aplicativo utiliza a família de fontes Inter para um visual limpo e moderno.
-*   **[AndroidX Libraries](https://developer.android.com/jetpack/androidx)**:
-    *   `androidx.core:core-ktx`
-    *   `androidx.lifecycle:lifecycle-runtime-ktx`
-    *   `androidx.activity:activity-compose`
+*   **[Kotlin](https://kotlinlang.org/)**: Linguagem de programação oficial e recomendada.
+*   **[Jetpack Compose](https://developer.android.com/jetpack/compose)**: Toolkit para a construção de interfaces de usuário (UI) de forma declarativa e nativa.
+*   **[Material Design 3](https://m3.material.io/)**: Componentes visuais modernos e adaptativos (utilizando `Adaptive Navigation Suite` para múltiplas telas).
+*   **[Google ML Kit Document Scanner](https://developers.google.com/ml-kit/vision/document-scanner)**: Responsável por toda a parte de detecção, perspectiva e melhoria visual das digitalizações.
+*   **[Google ML Kit Barcode Scanning](https://developers.google.com/ml-kit/vision/barcode-scanning)**: Motor ultrarrápido do Google para detecção e decodificação de códigos 1D e 2D.
+*   **[CameraX](https://developer.android.com/training/camerax)**: Biblioteca da API do Jetpack que abstrai a complexidade do hardware de câmera.
+*   **[iTextPDF 9](https://itextpdf.com/en/products/itext-7/itext-pdf-android)**: Ferramenta open-source poderosa que efetua a criação e mesclagem (`kernel-android`, `io-android`, `layout-android`) dos arquivos em formato PDF.
+*   **[Coil 3](https://coil-kt.github.io/coil/)**: Extensão leve e recomendada para o descarregamento e exibição de imagens assíncronas em telas do Compose.
+*   **Outros componentes do AndroidX**: `ViewModel`, `Navigation Compose`, `Accompanist Permissions`, e mais.
 
 ## Uso
 
 1.  Clone o repositório.
-2.  Abra o projeto no Android Studio.
-3.  Execute o aplicativo em um emulador ou dispositivo Android.
-4.  Clique no botão "Scan PDF" para iniciar o fluxo de digitalização.
-5.  Após a conclusão da digitalização, o novo documento aparecerá na lista na tela principal.
-6.  Para cada documento na lista, você pode clicar em "View" para abri-lo ou "Export" para compartilhá-lo.
+2.  Abra o projeto via Android Studio.
+3.  Aguarde a sincronização completa do Gradle com todas as dependências do projeto.
+4.  Execute o aplicativo em um emulador ou em um dispositivo Android físico.
+5.  Navegue de forma intuitiva pelas guias principais na parte inferior do App ("Scanner", "QR Code", e "Merge").
+6.  **Digitalizar Documentos**: Acione o Scanner ML Kit para fotografar apostilas, papéis ou importar da galeria.
+7.  **Leitor QR**: Aponte a câmera e as informações relativas ao link ou texto irão aparecer.
+8.  **Juntar PDFs**: Clique no ícone de "Merge" e selecione no armazenamento do seu aparelho 2+ documentos que gostaria de unir em um único arquivo.
 
 ## Licença
 
-```
+```text
 Copyright 2024 Davi Gomes Florencio
 
 Licensed under the Apache License, Version 2.0 (the "License");
