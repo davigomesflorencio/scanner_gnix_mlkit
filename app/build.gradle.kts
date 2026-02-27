@@ -7,10 +7,11 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
-val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties()
-
-keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
 
 android {
     namespace = "com.davi.dev.scannermlkit"
