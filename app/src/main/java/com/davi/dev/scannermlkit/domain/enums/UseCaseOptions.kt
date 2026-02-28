@@ -18,11 +18,11 @@ enum class UseCaseOptions(
     ),
     WATERMARK(
         "Watermark", R.drawable.ic_watermark, color = Color(0xFFa9715e),
-        backgroundColor = Color(0XFFfbf2f1), route = Routes.ScanQrCode
+        backgroundColor = Color(0XFFfbf2f1), route = Routes.WatermarkPdf
     ),
     SPLITPDF(
         "Split PDF", R.drawable.ic_split, color = Color(0xFF7b5eff),
-        backgroundColor = Color(0XFFf0f1fe), route = Routes.ScanQrCode
+        backgroundColor = Color(0XFFf0f1fe), route = Routes.SplitPdf
     ),
     MERGEPDF(
         "Merge PDF", R.drawable.ic_combine, color = Color(0xFFfb6062),
@@ -30,11 +30,11 @@ enum class UseCaseOptions(
     ),
     PROTECTPDF(
         "ProtectPDF", R.drawable.ic_protected, color = Color(0xFF30d79c),
-        backgroundColor = Color(0XFFebf7f6), route = Routes.ScanQrCode
+        backgroundColor = Color(0XFFebf7f6), route = Routes.ProtectPdf
     ),
     COMPRESSPDF(
         "Compress PDF", R.drawable.ic_wand, color = Color(0xFFfba322),
-        backgroundColor = Color(0XFFfff7eb), route = Routes.ScanQrCode
+        backgroundColor = Color(0XFFfff7eb), route = Routes.CompressPdf
     )
 
 }

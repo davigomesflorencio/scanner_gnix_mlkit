@@ -15,12 +15,23 @@ class BarcodeAnalizer(private val viewModel: ScannerQrCodeViewModel) : ImageAnal
     @OptIn(ExperimentalGetImage::class)
     override fun analyze(imageProxy: ImageProxy) {
         val mediaImage = imageProxy.image ?: return
-        val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+        val rotationDegrees = imageProxy.imageInfo.rotationDegrees
+        val image = InputImage.fromMediaImage(mediaImage, rotationDegrees)
+
+        // Dimensões da imagem após a rotação
+        val imageWidth = if (rotationDegrees == 90 || rotationDegrees == 270) imageProxy.height else imageProxy.width
+        val imageHeight = if (rotationDegrees == 90 || rotationDegrees == 270) imageProxy.width else imageProxy.height
 
         scanner.process(image)
             .addOnSuccessListener { barcodes ->
-                barcodes.forEach { barcode ->
-                    barcode.rawValue?.let { viewModel.onQrCodeScanned(it) }
+                if (barcodes.isEmpty()) {
+                    viewModel.clearDetection()
+                } else {
+                    barcodes.forEach { barcode ->
+                        barcode.rawValue?.let { 
+                            viewModel.onQrCodeScanned(it, barcode.boundingBox, imageWidth, imageHeight) 
+                        }
+                    }
                 }
             }
             .addOnFailureListener { Log.e("QRScanner", "Error scanning QR code: $it") }

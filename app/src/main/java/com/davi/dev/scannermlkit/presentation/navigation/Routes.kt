@@ -24,5 +24,17 @@ object Routes {
     data object MergePdf : NavKey
 
     @Serializable
+    data object SplitPdf : NavKey
+
+    @Serializable
+    data object ProtectPdf : NavKey
+
+    @Serializable
+    data object CompressPdf : NavKey
+
+    @Serializable
+    data object WatermarkPdf : NavKey
+
+    @Serializable
     data object Account : NavKey
 }

@@ -1,6 +1,7 @@
 package com.davi.dev.scannermlkit.presentation.screens.viewModel
 
 import android.app.Application
+import android.graphics.Rect
 import androidx.lifecycle.AndroidViewModel
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -13,7 +14,6 @@ class ScannerQrCodeViewModel(application: Application) : AndroidViewModel(applic
     val optionsScannerQrCode = BarcodeScannerOptions.Builder()
         .setBarcodeFormats(
             Barcode.FORMAT_QR_CODE,
-            Barcode.FORMAT_QR_CODE,
             Barcode.FORMAT_AZTEC
         )
         .build()
@@ -21,8 +21,19 @@ class ScannerQrCodeViewModel(application: Application) : AndroidViewModel(applic
     private val _qrCodeData = MutableStateFlow<String?>("")
     val qrCodeData: StateFlow<String?> = _qrCodeData.asStateFlow()
 
-    fun onQrCodeScanned(data: String) {
+    private val _barcodeBoundingBox = MutableStateFlow<Rect?>(null)
+    val barcodeBoundingBox: StateFlow<Rect?> = _barcodeBoundingBox.asStateFlow()
+
+    private val _imageDimensions = MutableStateFlow<Pair<Int, Int>?>(null)
+    val imageDimensions: StateFlow<Pair<Int, Int>?> = _imageDimensions.asStateFlow()
+
+    fun onQrCodeScanned(data: String, boundingBox: Rect?, imageWidth: Int, imageHeight: Int) {
         _qrCodeData.value = data
+        _barcodeBoundingBox.value = boundingBox
+        _imageDimensions.value = Pair(imageWidth, imageHeight)
     }
 
+    fun clearDetection() {
+        _barcodeBoundingBox.value = null
+    }
 }

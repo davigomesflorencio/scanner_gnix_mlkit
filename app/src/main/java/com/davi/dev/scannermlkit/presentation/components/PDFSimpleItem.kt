@@ -1,4 +1,4 @@
-package com.davi.dev.scannermlkit.presentation.screens.mergePdf
+package com.davi.dev.scannermlkit.presentation.components
 
 import android.net.Uri
 import android.provider.OpenableColumns
@@ -13,12 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,10 +31,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 @Composable
-fun PDFItemMerged(
-    uri: Uri,
-    onRemove: () -> Unit // Adicionado callback para remover
-) {
+fun PDFSimpleItem(uri: Uri) {
     val context = LocalContext.current
     val contentResolver = context.contentResolver
 
@@ -81,6 +74,7 @@ fun PDFItemMerged(
         file?.lastModified()?.let { formatDate(it) } ?: "Data desconhecida"
     }
 
+
     Card(
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp),
         modifier = Modifier
@@ -103,6 +97,7 @@ fun PDFItemMerged(
                     modifier = Modifier
                         .size(64.dp)
                         .clip(CircleShape)
+
                 ) {
 
                 }
@@ -111,7 +106,7 @@ fun PDFItemMerged(
             Column(
                 modifier = Modifier
                     .padding(horizontal = 3.dp)
-                    .fillMaxWidth(.8f)
+                    .fillMaxWidth()
                     .padding(8.dp)
             ) {
                 Text(
@@ -125,18 +120,6 @@ fun PDFItemMerged(
                 Text(
                     text = formattedDate,
                     style = MaterialTheme.typography.labelMedium,
-                )
-            }
-
-            // Botão para remover
-            IconButton(
-                onClick = onRemove,
-                modifier = Modifier.weight(1f)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Remover",
-                    tint = MaterialTheme.colorScheme.error
                 )
             }
         }

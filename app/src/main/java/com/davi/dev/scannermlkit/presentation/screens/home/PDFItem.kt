@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -57,20 +57,18 @@ fun PDFItem(navBackStack: NavBackStack<NavKey>, file: File) {
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 6.dp)
+            modifier = Modifier.padding(8.dp)
         ) {
             ImagePdfPreview(
                 file = file,
                 modifier = Modifier
-                    .width(64.dp)
-                    .padding(8.dp)
-                    .weight(1.3f)
+                    .size(75.dp)
             )
 
             Column(
                 modifier = Modifier
-                    .padding(horizontal = 3.dp)
-                    .weight(2.5f)
+                    .padding(horizontal = 6.dp)
+                    .fillMaxWidth(.7f)
             ) {
                 Text(
                     text = file.name,
@@ -85,8 +83,7 @@ fun PDFItem(navBackStack: NavBackStack<NavKey>, file: File) {
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(1.dp),
-
-                modifier = Modifier.weight(1.1f)
+                modifier = Modifier.fillMaxWidth()
             ) {
                 // Botão para visualizar o PDF
                 IconButton(onClick = {

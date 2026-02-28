@@ -9,22 +9,27 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.davi.dev.scannermlkit.presentation.components.CustomDivider
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.HomeViewModel
 
 @Composable
-fun Home(backStack: NavBackStack<NavKey>) {
-    val context = LocalContext.current
-    val filesDir = context.filesDir
-    val pdfFiles = remember {
-        filesDir.listFiles { file ->
-            file.name.endsWith(".pdf")
-        }?.sortedByDescending { it.lastModified() } ?: emptyList()
+fun Home(
+    backStack: NavBackStack<NavKey>,
+    homeViewModel: HomeViewModel = viewModel()
+) {
+    val pdfFiles by homeViewModel.filteredFiles.collectAsState()
+    val isSearchActive by homeViewModel.isSearchActive.collectAsState()
+
+    LaunchedEffect(Unit) {
+        homeViewModel.loadFiles()
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -36,7 +41,7 @@ fun Home(backStack: NavBackStack<NavKey>) {
         ) {
             item {
                 Text(
-                    "Recents",
+                    if (isSearchActive) "Search results" else "Recents",
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.inversePrimary
                 )
@@ -44,7 +49,7 @@ fun Home(backStack: NavBackStack<NavKey>) {
             item {
                 CustomDivider()
             }
-            items(pdfFiles) { file ->
+            items(pdfFiles.take(10)) { file ->
                 PDFItem(
                     navBackStack = backStack,
                     file = file

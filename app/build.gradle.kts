@@ -120,6 +120,8 @@ dependencies {
     implementation("com.itextpdf.android:kernel-android:9.5.0")
     implementation("com.itextpdf.android:io-android:9.5.0")
     implementation("com.itextpdf.android:layout-android:9.5.0")
+    implementation("com.itextpdf.android:bouncy-castle-adapter-android:9.5.0")
+    implementation("com.itextpdf.android:bouncy-castle-connector-android:9.5.0")
 
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
     // CameraX Dependencies

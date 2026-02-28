@@ -36,7 +36,9 @@ fun PDFPage(
     signatures: List<SignatureData>,
     onPageScrolled: (Int) -> Unit, // Callback to notify when page changes due to scroll
     parentMaxWidthPx: Dp, // Max width constraint from parent
-    parentMaxHeightPx: Dp // Max height constraint from parent
+    parentMaxHeightPx: Dp, // Max height constraint from parent
+    onDeleteSignature: (SignatureData) -> Unit,
+    onUpdateSignature: (SignatureData) -> Unit = {}
 ) {
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
     val pageBitmapWidthPx = remember { mutableStateOf(0f) } // Store actual width in pixels
@@ -104,7 +106,9 @@ fun PDFPage(
                     DraggableAssignature(
                         signatureData = sd,
                         parentWidth = displayedImageWidthDp,
-                        parentHeight = displayedImageHeightDp
+                        parentHeight = displayedImageHeightDp,
+                        onDelete = { onDeleteSignature(sd) },
+                        onUpdate = { updatedSd -> onUpdateSignature(updatedSd) }
                     )
                 }
             }

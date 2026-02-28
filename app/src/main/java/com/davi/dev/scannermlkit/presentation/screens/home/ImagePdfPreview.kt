@@ -49,16 +49,15 @@ fun ImagePdfPreview(file: File, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .size(70.dp)
-            .clip(RoundedPolygon(MaterialShapes.Cookie6Sided).toShape(0))
+            .clip(RoundedPolygon(MaterialShapes.Square).toShape(0))
     ) {
         if (bitmap != null) {
             Image(
                 bitmap = bitmap.asImageBitmap(),
-                contentScale = ContentScale.FillWidth,
+                contentScale = ContentScale.FillBounds,
                 contentDescription = "PDF preview of ${file.name}",
                 modifier = Modifier
                     .aspectRatio(1f)
-
                     .background(Color.White)
             )
         } else {

@@ -3,6 +3,11 @@ package com.davi.dev.scannermlkit.presentation.navigation
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,15 +34,24 @@ import androidx.navigation3.ui.NavDisplay
 import com.davi.dev.scannermlkit.R
 import com.davi.dev.scannermlkit.presentation.components.AppBar.AppBar
 import com.davi.dev.scannermlkit.presentation.components.bottomBar.BottomBar
+import com.davi.dev.scannermlkit.presentation.screens.compressPdf.CompressPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.home.Home
 import com.davi.dev.scannermlkit.presentation.screens.mergePdf.MergePdfScreen
+import com.davi.dev.scannermlkit.presentation.screens.protectPdf.ProtectPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.scannerDocument.ScannerDocument
 import com.davi.dev.scannermlkit.presentation.screens.scannerQrCode.ScannerQrCode
 import com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf.SelectDocumentViewer
+import com.davi.dev.scannermlkit.presentation.screens.splitPdf.SplitPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.viewDocumentPdf.ViewDocumentPdf
+import com.davi.dev.scannermlkit.presentation.screens.watermarkPdf.WatermarkPdfScreen
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.CompressPdfViewModel
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.HomeViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.MergeDocumentViewModel
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.ProtectPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerDocumentViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerQrCodeViewModel
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.SplitPdfViewModel
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.WatermarkPdfViewModel
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
 
@@ -46,7 +60,12 @@ import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
 fun AppNavHost(
     scannerQrCodeViewModel: ScannerQrCodeViewModel = viewModel(),
     scannerDocumentViewModel: ScannerDocumentViewModel = viewModel(),
-    mergeDocumentViewModel: MergeDocumentViewModel = viewModel()
+    mergeDocumentViewModel: MergeDocumentViewModel = viewModel(),
+    splitPdfViewModel: SplitPdfViewModel = viewModel(),
+    protectPdfViewModel: ProtectPdfViewModel = viewModel(),
+    compressPdfViewModel: CompressPdfViewModel = viewModel(),
+    watermarkPdfViewModel: WatermarkPdfViewModel = viewModel(),
+    homeViewModel: HomeViewModel = viewModel()
 ) {
     val backStack = rememberNavBackStack(Routes.Home)
     val activity = LocalActivity.current
@@ -67,10 +86,12 @@ fun AppNavHost(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            AppBar()
+            AppBar(homeViewModel = homeViewModel)
         },
         bottomBar = {
-            BottomBar(backStack)
+            if (backStack.last() in listOf(Routes.Home, Routes.ScanDocument, Routes.Account)) {
+                BottomBar(backStack)
+            }
         },
         floatingActionButton = {
             if (backStack.lastOrNull() is Routes.ScanDocument) {
@@ -116,10 +137,32 @@ fun AppNavHost(
             NavDisplay(
                 backStack = backStack,
                 onBack = { backStack.removeLastOrNull() },
+                transitionSpec = {
+                    val isForward = targetState.entries.size > initialState.entries.size
+
+                    if (isForward) {
+                        slideInHorizontally { it } + fadeIn() togetherWith
+                                slideOutHorizontally { -it } + fadeOut()
+                    } else {
+                        slideInHorizontally { -it } + fadeIn() togetherWith
+                                slideOutHorizontally { it } + fadeOut()
+                    }
+                },
+                popTransitionSpec = {
+                    val isPop = targetState.entries.size > initialState.entries.size
+
+                    if (isPop) {
+                        slideInHorizontally { -it } + fadeIn() togetherWith
+                                slideOutHorizontally { it } + fadeOut()
+                    } else {
+                        slideInHorizontally { it } + fadeIn() togetherWith
+                                slideOutHorizontally { -it } + fadeOut()
+                    }
+                },
                 entryProvider = { key ->
                     when (key) {
                         is Routes.Home -> NavEntry(key) {
-                            Home(backStack)
+                            Home(backStack, homeViewModel)
                         }
 
                         is Routes.ScanDocument -> NavEntry(key) {
@@ -140,6 +183,22 @@ fun AppNavHost(
 
                         is Routes.MergePdf -> NavEntry(key) {
                             MergePdfScreen(mergeDocumentViewModel)
+                        }
+
+                        is Routes.SplitPdf -> NavEntry(key) {
+                            SplitPdfScreen(splitPdfViewModel)
+                        }
+
+                        is Routes.ProtectPdf -> NavEntry(key) {
+                            ProtectPdfScreen(protectPdfViewModel)
+                        }
+
+                        is Routes.CompressPdf -> NavEntry(key) {
+                            CompressPdfScreen(compressPdfViewModel = compressPdfViewModel)
+                        }
+
+                        is Routes.WatermarkPdf -> NavEntry(key) {
+                            WatermarkPdfScreen(watermarkPdfViewModel = watermarkPdfViewModel)
                         }
 
                         is Routes.Account -> NavEntry(key) {
