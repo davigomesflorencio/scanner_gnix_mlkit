@@ -5,6 +5,10 @@ import kotlinx.serialization.Serializable
 
 
 object Routes {
+
+    @Serializable
+    data object Splash : NavKey
+
     @Serializable
     data object Home : NavKey
 

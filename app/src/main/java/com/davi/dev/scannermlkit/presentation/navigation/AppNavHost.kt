@@ -41,6 +41,7 @@ import com.davi.dev.scannermlkit.presentation.screens.protectPdf.ProtectPdfScree
 import com.davi.dev.scannermlkit.presentation.screens.scannerDocument.ScannerDocument
 import com.davi.dev.scannermlkit.presentation.screens.scannerQrCode.ScannerQrCode
 import com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf.SelectDocumentViewer
+import com.davi.dev.scannermlkit.presentation.screens.splash.SplashScreen
 import com.davi.dev.scannermlkit.presentation.screens.splitPdf.SplitPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.viewDocumentPdf.ViewDocumentPdf
 import com.davi.dev.scannermlkit.presentation.screens.watermarkPdf.WatermarkPdfScreen
@@ -67,7 +68,7 @@ fun AppNavHost(
     watermarkPdfViewModel: WatermarkPdfViewModel = viewModel(),
     homeViewModel: HomeViewModel = viewModel()
 ) {
-    val backStack = rememberNavBackStack(Routes.Home)
+    val backStack = rememberNavBackStack(Routes.Splash)
     val activity = LocalActivity.current
 
     val options = GmsDocumentScannerOptions.Builder()
@@ -116,6 +117,7 @@ fun AppNavHost(
             } else if (backStack.lastOrNull() is Routes.Home) {
                 FloatingActionButton(
                     onClick = {
+                        scannerDocumentViewModel.setUri(null)
                         backStack.add(Routes.SelectViewDocument)
                     },
                     modifier = Modifier
@@ -161,6 +163,10 @@ fun AppNavHost(
                 },
                 entryProvider = { key ->
                     when (key) {
+                        is Routes.Splash -> NavEntry(key) {
+                            SplashScreen(backStack)
+                        }
+
                         is Routes.Home -> NavEntry(key) {
                             Home(backStack, homeViewModel)
                         }
