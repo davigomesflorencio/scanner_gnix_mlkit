@@ -87,7 +87,8 @@ fun AppNavHost(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            AppBar(homeViewModel = homeViewModel)
+            if (backStack.last() !is Routes.Splash)
+                AppBar(homeViewModel = homeViewModel)
         },
         bottomBar = {
             if (backStack.last() in listOf(Routes.Home, Routes.ScanDocument, Routes.Account)) {

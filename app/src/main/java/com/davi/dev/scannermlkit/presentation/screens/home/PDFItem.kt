@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -41,6 +42,7 @@ fun PDFItem(navBackStack: NavBackStack<NavKey>, file: File) {
 
     Card(
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp),
+        shape = RoundedCornerShape(30.dp),
         modifier = Modifier
             .clickable {
 //                val viewIntent = Intent().apply {
