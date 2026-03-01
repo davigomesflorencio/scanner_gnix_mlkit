@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -47,6 +48,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.davi.dev.scannermlkit.domain.model.SignatureData
 import com.davi.dev.scannermlkit.domain.pdf.PdfManager
+import com.davi.dev.scannermlkit.presentation.components.CustomCircularProgress
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -179,7 +181,7 @@ fun NativePdfViewer(uri: Uri) {
 
             if (isCheckingEncryption) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
+                    CustomCircularProgress()
                 }
             } else if (rendererResource != null) {
                 LazyColumn(
@@ -208,6 +210,9 @@ fun NativePdfViewer(uri: Uri) {
                             }
                         )
                     }
+                    item {
+                        Spacer(Modifier.height(100.dp))
+                    }
                 }
                 Box(
                     modifier = Modifier.align(Alignment.BottomStart),
@@ -227,7 +232,7 @@ fun NativePdfViewer(uri: Uri) {
                     if (isEncrypted) {
                         Text("PDF protegido por senha.")
                     } else {
-                        CircularProgressIndicator()
+                        CustomCircularProgress()
                     }
                 }
             }

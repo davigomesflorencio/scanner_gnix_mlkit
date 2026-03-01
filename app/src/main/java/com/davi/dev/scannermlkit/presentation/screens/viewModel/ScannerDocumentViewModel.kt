@@ -34,7 +34,7 @@ class ScannerDocumentViewModel(application: Application) : AndroidViewModel(appl
     private val _documentUri = MutableStateFlow<Uri?>(null)
     var documentUri: StateFlow<Uri?> = _documentUri
 
-    fun setUri(uri: Uri) {
+    fun setUri(uri: Uri?) {
         _documentUri.value = uri
     }
 

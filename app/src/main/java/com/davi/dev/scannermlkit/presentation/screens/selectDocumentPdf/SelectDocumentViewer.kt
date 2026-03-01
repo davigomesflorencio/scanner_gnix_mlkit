@@ -3,8 +3,9 @@ package com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
@@ -15,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerDocumentViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -26,17 +28,17 @@ fun SelectDocumentViewer(scannerDocumentViewModel: ScannerDocumentViewModel) {
         it?.let { uri -> scannerDocumentViewModel.setUri(uri) }
     }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
         if (documentUri == null) {
-            CenterAlignedTopAppBar(
-                title = { Text("Document Viewer") }
-            )
             FilledTonalButton(
                 onClick = {
                     launcher.launch(arrayOf("application/pdf"))
-                }
+                },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(bottom = 20.dp,start=8.dp,end=8.dp)
+                    .align(Alignment.BottomCenter)
             ) {
                 Text(text = "Select Document")
             }

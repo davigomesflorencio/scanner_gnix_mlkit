@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
@@ -38,6 +40,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.davi.dev.scannermlkit.domain.pdf.PdfManager
+import com.davi.dev.scannermlkit.presentation.components.CustomCircularProgress
 import com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf.PDFPage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -157,7 +160,7 @@ fun ViewPage(uri: Uri) {
 
         if (isCheckingEncryption) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                CustomCircularProgress()
             }
         } else if (rendererResource != null) {
             LazyColumn(
@@ -175,6 +178,9 @@ fun ViewPage(uri: Uri) {
                         parentMaxHeightPx = maxHeightPx, // Pass max height constraint
                         onDeleteSignature = { }
                     )
+                }
+                item {
+                    Spacer(Modifier.height(100.dp))
                 }
             }
             Box(
@@ -195,7 +201,7 @@ fun ViewPage(uri: Uri) {
                 if (isEncrypted) {
                     Text("PDF protegido por senha.")
                 } else {
-                    CircularProgressIndicator()
+                    CustomCircularProgress()
                 }
             }
         }

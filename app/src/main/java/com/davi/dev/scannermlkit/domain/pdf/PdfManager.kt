@@ -157,7 +157,7 @@ object PdfManager {
         val pdfDoc = PdfDocument(reader, writer)
 
         val font = PdfFontFactory.createFont()
-        val gs1 = PdfExtGState().setFillOpacity(0.3f)
+        val gs1 = PdfExtGState().setFillOpacity(0.5f)
 
         for (i in 1..pdfDoc.numberOfPages) {
             val page = pdfDoc.getPage(i)
@@ -191,7 +191,7 @@ object PdfManager {
                         y, 
                         i, 
                         TextAlignment.CENTER, 
-                        VerticalAlignment.MIDDLE, 
+                        VerticalAlignment.MIDDLE,
                         Math.toRadians(315.0).toFloat()
                     )
                     y += stepY
