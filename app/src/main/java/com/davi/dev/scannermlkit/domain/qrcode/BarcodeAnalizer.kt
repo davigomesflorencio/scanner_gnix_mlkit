@@ -28,8 +28,8 @@ class BarcodeAnalizer(private val viewModel: ScannerQrCodeViewModel) : ImageAnal
                     viewModel.clearDetection()
                 } else {
                     barcodes.forEach { barcode ->
-                        barcode.rawValue?.let { 
-                            viewModel.onQrCodeScanned(it, barcode.boundingBox, imageWidth, imageHeight) 
+                        barcode.rawValue?.let {
+                            viewModel.onQrCodeScanned(it, barcode.boundingBox, imageWidth, imageHeight)
                         }
                     }
                 }

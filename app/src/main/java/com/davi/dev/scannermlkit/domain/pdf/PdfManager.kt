@@ -4,7 +4,6 @@ import android.util.Log
 import com.itextpdf.kernel.colors.ColorConstants
 import com.itextpdf.kernel.exceptions.BadPasswordException
 import com.itextpdf.kernel.font.PdfFontFactory
-import com.itextpdf.kernel.geom.Rectangle
 import com.itextpdf.kernel.pdf.EncryptionConstants
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfReader
@@ -171,26 +170,26 @@ object PdfManager {
             canvas.setProperty(com.itextpdf.layout.properties.Property.FONT, font)
             canvas.setFontColor(ColorConstants.GRAY)
             canvas.setFontSize(60f)
-            
+
             pdfCanvas.setExtGState(gs1)
-            
+
             val p = Paragraph(text)
-            
+
             // Repetição em malha cobrindo toda a área da página
             val stepX = 300f
             val stepY = 300f
-            
+
             // Começa fora da página para garantir cobertura mesmo com a rotação de 45 graus
             var x = -pageSize.width
             while (x < pageSize.width * 3) {
                 var y = -pageSize.height
                 while (y < pageSize.height * 3) {
                     canvas.showTextAligned(
-                        p, 
-                        x, 
-                        y, 
-                        i, 
-                        TextAlignment.CENTER, 
+                        p,
+                        x,
+                        y,
+                        i,
+                        TextAlignment.CENTER,
                         VerticalAlignment.MIDDLE,
                         Math.toRadians(315.0).toFloat()
                     )

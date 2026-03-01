@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
@@ -42,7 +41,8 @@ fun SplashScreen(
     }
 
     val composition by rememberLottieComposition(
-        LottieCompositionSpec.Asset("sandy_loading.json") )
+        LottieCompositionSpec.Asset("sandy_loading.json")
+    )
 
     val progress by animateLottieCompositionAsState(
         composition = composition,

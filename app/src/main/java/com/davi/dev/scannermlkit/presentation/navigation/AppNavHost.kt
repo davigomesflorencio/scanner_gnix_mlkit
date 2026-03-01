@@ -44,7 +44,6 @@ import com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf.SelectDo
 import com.davi.dev.scannermlkit.presentation.screens.splash.SplashScreen
 import com.davi.dev.scannermlkit.presentation.screens.splitPdf.SplitPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.viewDocumentPdf.ViewDocumentPdf
-import com.davi.dev.scannermlkit.presentation.screens.watermarkPdf.WatermarkPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.CompressPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.HomeViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.MergeDocumentViewModel
@@ -53,6 +52,7 @@ import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerDocumentV
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerQrCodeViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.SplitPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.WatermarkPdfViewModel
+import com.davi.dev.scannermlkit.presentation.screens.watermarkPdf.WatermarkPdfScreen
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
 

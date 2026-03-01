@@ -1,7 +1,6 @@
 package com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf
 
 import android.graphics.RectF
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -156,10 +155,10 @@ fun DraggableAssignature(
                             // Cálculo da nova escala baseado na posição do arraste em relação ao tamanho original
                             val currentW = signatureWidthPx * scaleFactor
                             val currentH = signatureHeightPx * scaleFactor
-                            
+
                             val newScaleX = (currentW + dragAmount.x) / signatureWidthPx
                             val newScaleY = (currentH + dragAmount.y) / signatureHeightPx
-                            
+
                             // Média dos eixos para um ajuste diagonal que segue o dedo
                             val newScale = ((newScaleX + newScaleY) / 2f).coerceIn(0.2f, 5f)
 

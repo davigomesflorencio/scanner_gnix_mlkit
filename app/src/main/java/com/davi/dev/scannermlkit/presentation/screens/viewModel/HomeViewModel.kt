@@ -39,7 +39,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         _files.value = pdfFiles
     }
 
-    fun clearFilters(){
+    fun clearFilters() {
         _searchQuery.value = ""
         _isSearchActive.value = false
     }

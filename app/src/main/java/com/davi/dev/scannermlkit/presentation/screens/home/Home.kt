@@ -27,6 +27,7 @@ fun Home(
 ) {
     val pdfFiles by homeViewModel.filteredFiles.collectAsState()
     val isSearchActive by homeViewModel.isSearchActive.collectAsState()
+    val searchQuery by homeViewModel.searchQuery.collectAsState()
 
     LaunchedEffect(Unit) {
         homeViewModel.loadFiles()
@@ -41,7 +42,7 @@ fun Home(
         ) {
             item {
                 Text(
-                    if (isSearchActive) "Search results" else "Recents",
+                    if (isSearchActive || searchQuery.isNotEmpty()) "Search results" else "Recents",
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.inversePrimary
                 )

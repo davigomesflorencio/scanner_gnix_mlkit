@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
@@ -36,8 +35,9 @@ fun SelectDocumentViewer(scannerDocumentViewModel: ScannerDocumentViewModel) {
                 onClick = {
                     launcher.launch(arrayOf("application/pdf"))
                 },
-                modifier = Modifier.fillMaxWidth()
-                    .padding(bottom = 20.dp,start=8.dp,end=8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp, start = 8.dp, end = 8.dp)
                     .align(Alignment.BottomCenter)
             ) {
                 Text(text = "Select Document")

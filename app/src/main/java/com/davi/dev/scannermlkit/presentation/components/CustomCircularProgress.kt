@@ -8,13 +8,13 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.davi.dev.scannermlkit.presentation.screens.splash.SplashScreen
 import com.davi.dev.scannermlkit.presentation.theme.ScannermlkitTheme
 
 @Composable
 fun CustomCircularProgress() {
     val composition by rememberLottieComposition(
-        LottieCompositionSpec.Asset("loading.json") )
+        LottieCompositionSpec.Asset("loading.json")
+    )
 
     val progress by animateLottieCompositionAsState(
         composition = composition,
