@@ -53,6 +53,17 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+    fun signOut() {
+        viewModelScope.launch {
+            try {
+                supabase.auth.signOut()
+                _authState.value = AuthState.Idle
+            } catch (e: Exception) {
+                Log.e("AuthViewModel", "Error signing out", e)
+            }
+        }
+    }
+
     fun signInWithGoogle(context: Context) {
         viewModelScope.launch {
             _authState.value = AuthState.Loading

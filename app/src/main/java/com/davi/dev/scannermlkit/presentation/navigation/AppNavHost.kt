@@ -8,7 +8,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,10 +17,11 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -34,6 +34,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.davi.dev.scannermlkit.R
 import com.davi.dev.scannermlkit.presentation.components.AppBar.AppBar
 import com.davi.dev.scannermlkit.presentation.components.bottomBar.BottomBar
+import com.davi.dev.scannermlkit.presentation.screens.account.AccountScreen
 import com.davi.dev.scannermlkit.presentation.screens.compressPdf.CompressPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.home.Home
 import com.davi.dev.scannermlkit.presentation.screens.mergePdf.MergePdfScreen
@@ -44,6 +45,8 @@ import com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf.SelectDo
 import com.davi.dev.scannermlkit.presentation.screens.splash.SplashScreen
 import com.davi.dev.scannermlkit.presentation.screens.splitPdf.SplitPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.viewDocumentPdf.ViewDocumentPdf
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.AccountViewModel
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthState
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.CompressPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.HomeViewModel
@@ -69,10 +72,22 @@ fun AppNavHost(
     compressPdfViewModel: CompressPdfViewModel = viewModel(),
     watermarkPdfViewModel: WatermarkPdfViewModel = viewModel(),
     homeViewModel: HomeViewModel = viewModel(),
-    authViewModel: AuthViewModel = viewModel()
+    authViewModel: AuthViewModel = viewModel(),
+    accountViewModel: AccountViewModel = viewModel()
 ) {
     val backStack = rememberNavBackStack(Routes.Splash)
     val activity = LocalActivity.current
+    val authState by authViewModel.authState.collectAsState()
+
+    // Observe global auth state to redirect to welcome if logged out
+    LaunchedEffect(authState) {
+        if (authState is AuthState.Idle && backStack.last() !in listOf(Routes.Splash, Routes.Welcome)) {
+            while (backStack.isNotEmpty()) {
+                backStack.removeLastOrNull()
+            }
+            backStack.add(Routes.Welcome)
+        }
+    }
 
     val options = GmsDocumentScannerOptions.Builder()
         .setScannerMode(GmsDocumentScannerOptions.SCANNER_MODE_FULL)
@@ -169,7 +184,7 @@ fun AppNavHost(
                     when (key) {
                         is Routes.Splash -> NavEntry(key) {
                             SplashScreen(
-                                backStack= backStack,
+                                backStack = backStack,
                                 authViewModel = authViewModel
                             )
                         }
@@ -225,13 +240,12 @@ fun AppNavHost(
                         }
 
                         is Routes.Account -> NavEntry(key) {
-                            Column(
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Text("Account")
-                            }
+                            AccountScreen(
+                                viewModel = accountViewModel,
+                                onSignOut = {
+                                    authViewModel.signOut()
+                                }
+                            )
                         }
 
                         else -> {

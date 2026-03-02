@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.davi.dev.scannermlkit.presentation.navigation.AppNavHost
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.AccountViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.CompressPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.HomeViewModel
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
     val watermarkPdfViewModel: WatermarkPdfViewModel by viewModels()
     val homeViewModel: HomeViewModel by viewModels()
     val authViewModel: AuthViewModel by viewModels()
+    val accountViewModel: AccountViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +51,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            ScannermlkitTheme {
+            ScannermlkitTheme(
+                themeMode = accountViewModel.themeMode,
+                selectedColor = accountViewModel.selectedColor.color
+            ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.surface
@@ -63,7 +68,8 @@ class MainActivity : ComponentActivity() {
                         compressPdfViewModel = compressPdfViewModel,
                         watermarkPdfViewModel = watermarkPdfViewModel,
                         homeViewModel = homeViewModel,
-                        authViewModel = authViewModel
+                        authViewModel = authViewModel,
+                        accountViewModel = accountViewModel
                     )
                 }
             }
