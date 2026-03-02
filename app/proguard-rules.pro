@@ -32,6 +32,11 @@
 -keep class androidx.camera.lifecycle.** { *; }
 -keep class androidx.camera.view.** { *; }
 
+-if class androidx.credentials.CredentialManager
+-keep class androidx.credentials.playservices.** {
+  *;
+}
+
 -dontwarn com.fasterxml.jackson.annotation.JsonInclude$Include
 -dontwarn com.fasterxml.jackson.core.JsonGenerator$Feature
 -dontwarn com.fasterxml.jackson.core.JsonGenerator
@@ -63,3 +68,4 @@
 -dontwarn sharpen.config.ModuleOption
 -dontwarn sharpen.config.ModulesConfigurator
 -dontwarn sharpen.config.OptionsConfigurator
+

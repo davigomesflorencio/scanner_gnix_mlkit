@@ -1,5 +1,8 @@
 [versions]
+accompanistPermissions = "0.37.3"
 agp = "9.0.0"
+barcodeScanning = "17.3.0"
+cameraCore = "1.5.3"
 coilNetworkOkhttp = "3.3.0"
 coreKtx = "1.17.0"
 junit = "4.13.2"
@@ -10,6 +13,7 @@ activityCompose = "1.12.2"
 kotlin = "2.0.21"
 composeBom = "2026.02.00"
 kotlinSerialization = "2.2.21"
+materialIconsExtended = "1.7.8"
 nav3Core = "1.0.0"
 playServicesMlkitDocumentScanner = "16.0.0"
 fragmentCompose = "1.8.9"
@@ -21,7 +25,14 @@ navigationFragmentKtx = "2.9.7"
 navigationUiKtx = "2.9.7"
 
 [libraries]
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCore" }
+androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraCore" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "cameraCore" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraCore" }
+androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+barcode-scanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "barcodeScanning" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilNetworkOkhttp" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

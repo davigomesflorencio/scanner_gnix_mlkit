@@ -15,9 +15,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.davi.dev.scannermlkit"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
     ndkVersion = "28.0.12433566"
 
     defaultConfig {
@@ -65,15 +63,40 @@ android {
             }
 
         }
+
+        getByName("debug") {
+            keyAlias = System.getenv("RELEASE_KEY_ALIAS")
+                ?: keystoreProperties["keyAlias"] as? String
+
+            keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+                ?: keystoreProperties["keyPassword"] as? String
+
+            storePassword = System.getenv("RELEASE_STORE_PASSWORD")
+                ?: keystoreProperties["storePassword"] as? String
+
+            // O arquivo JKS no GitHub Actions será decodificado na raiz do app/
+            val storeFilePath = System.getenv("RELEASE_STORE_FILE")
+                ?: keystoreProperties["storeFile"] as? String
+
+            if (storeFilePath != null) {
+                storeFile = file(storeFilePath)
+            }
+
+        }
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = true
             isShrinkResources = false
-        }
-        release {
             signingConfig = signingConfigs.getByName("release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        debug {
+            signingConfig = signingConfigs.getByName("debug")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -107,13 +130,13 @@ dependencies {
 
     implementation(libs.androidx.compose.material)
 
-    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    implementation(libs.androidx.compose.material.icons.extended)
 
     implementation("androidx.compose.material3:material3:1.4.0")
     implementation("androidx.compose.material3:material3-window-size-class:1.4.0")
     implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.5.0-alpha14")
 
-    implementation("com.google.accompanist:accompanist-permissions:0.37.3")
+    implementation(libs.accompanist.permissions)
 
     implementation(libs.play.services.mlkit.document.scanner)
 
@@ -123,14 +146,23 @@ dependencies {
     implementation("com.itextpdf.android:bouncy-castle-adapter-android:9.5.0")
     implementation("com.itextpdf.android:bouncy-castle-connector-android:9.5.0")
 
-    implementation("com.google.mlkit:barcode-scanning:17.3.0")
+    implementation(libs.barcode.scanning)
     // CameraX Dependencies
-    implementation("androidx.camera:camera-core:1.5.3")
-    implementation("androidx.camera:camera-camera2:1.5.3")
-    implementation("androidx.camera:camera-lifecycle:1.5.3")
-    implementation("androidx.camera:camera-view:1.5.3")
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
 
     implementation("com.airbnb.android:lottie-compose:6.7.1")
+
+    implementation(platform("io.github.jan-tennert.supabase:bom:3.4.1"))
+    implementation("io.github.jan-tennert.supabase:auth-kt")
+
+    implementation("io.ktor:ktor-client-android:3.4.0")
+
+    implementation("androidx.credentials:credentials:1.6.0-rc02")
+    implementation("androidx.credentials:credentials-play-services-auth:1.6.0-rc02")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.2.0")
 
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
