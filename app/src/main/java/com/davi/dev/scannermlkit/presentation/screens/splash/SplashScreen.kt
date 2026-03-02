@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -28,16 +30,33 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.davi.dev.scannermlkit.R
 import com.davi.dev.scannermlkit.presentation.navigation.Routes
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthState
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthViewModel
 import com.davi.dev.scannermlkit.presentation.theme.ScannermlkitTheme
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    backStack: NavBackStack<NavKey>
+    backStack: NavBackStack<NavKey>,
+    authViewModel: AuthViewModel = viewModel()
 ) {
+    val authState by authViewModel.authState.collectAsState()
+
     LaunchedEffect(Unit) {
+        authViewModel.checkSession()
         delay(4000)
-        backStack.add(Routes.Home)
+    }
+
+    LaunchedEffect(authState) {
+        if (authState is AuthState.Success) {
+            delay(2000)
+            backStack.removeLastOrNull()
+            backStack.add(Routes.Home)
+        } else {
+            delay(2000)
+            backStack.removeLastOrNull()
+            backStack.add(Routes.Welcome)
+        }
     }
 
     val composition by rememberLottieComposition(

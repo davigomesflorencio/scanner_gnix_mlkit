@@ -44,6 +44,7 @@ import com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf.SelectDo
 import com.davi.dev.scannermlkit.presentation.screens.splash.SplashScreen
 import com.davi.dev.scannermlkit.presentation.screens.splitPdf.SplitPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.viewDocumentPdf.ViewDocumentPdf
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.CompressPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.HomeViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.MergeDocumentViewModel
@@ -53,6 +54,7 @@ import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerQrCodeVie
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.SplitPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.WatermarkPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.watermarkPdf.WatermarkPdfScreen
+import com.davi.dev.scannermlkit.presentation.screens.welcome.WelcomeScreen
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
 
@@ -66,7 +68,8 @@ fun AppNavHost(
     protectPdfViewModel: ProtectPdfViewModel = viewModel(),
     compressPdfViewModel: CompressPdfViewModel = viewModel(),
     watermarkPdfViewModel: WatermarkPdfViewModel = viewModel(),
-    homeViewModel: HomeViewModel = viewModel()
+    homeViewModel: HomeViewModel = viewModel(),
+    authViewModel: AuthViewModel = viewModel()
 ) {
     val backStack = rememberNavBackStack(Routes.Splash)
     val activity = LocalActivity.current
@@ -87,7 +90,7 @@ fun AppNavHost(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            if (backStack.last() !is Routes.Splash)
+            if (backStack.last() !in listOf(Routes.Splash, Routes.Welcome))
                 AppBar(homeViewModel = homeViewModel)
         },
         bottomBar = {
@@ -165,7 +168,20 @@ fun AppNavHost(
                 entryProvider = { key ->
                     when (key) {
                         is Routes.Splash -> NavEntry(key) {
-                            SplashScreen(backStack)
+                            SplashScreen(
+                                backStack= backStack,
+                                authViewModel = authViewModel
+                            )
+                        }
+
+                        is Routes.Welcome -> NavEntry(key) {
+                            WelcomeScreen(
+                                onNavigateToHome = {
+                                    backStack.removeLastOrNull()
+                                    backStack.add(Routes.Home)
+                                },
+                                authViewModel = authViewModel
+                            )
                         }
 
                         is Routes.Home -> NavEntry(key) {

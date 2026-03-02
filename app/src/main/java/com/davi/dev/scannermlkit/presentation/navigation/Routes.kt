@@ -10,6 +10,9 @@ object Routes {
     data object Splash : NavKey
 
     @Serializable
+    data object Welcome : NavKey
+
+    @Serializable
     data object Home : NavKey
 
     @Serializable
