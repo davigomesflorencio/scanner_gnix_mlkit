@@ -33,8 +33,15 @@ enum class UseCaseOptions(
         backgroundColor = Color(0XFFebf7f6), route = Routes.ProtectPdf
     ),
     COMPRESSPDF(
-        "Compress PDF", R.drawable.ic_wand, color = Color(0xFFfba322),
+        "CompressPDF", R.drawable.ic_wand, color = Color(0xFFfba322),
         backgroundColor = Color(0XFFfff7eb), route = Routes.CompressPdf
+    ),
+    SIGNPDF(
+        "Sign PDF", R.drawable.ic_file_pen, color = Color(0xFFfc7e7f),
+        backgroundColor = Color(0XFFfff1f1), route = Routes.CompressPdf
+    ),
+    ALLTOOLS(
+        "All Tools", R.drawable.ic_grid_2x2, color = Color(0xFF4d6aff),
+        backgroundColor = Color(0XFFf1f2fe), route = Routes.CompressPdf
     )
-
 }

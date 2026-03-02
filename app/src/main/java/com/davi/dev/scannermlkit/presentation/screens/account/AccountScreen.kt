@@ -66,24 +66,29 @@ fun AccountScreen(
         // Theme Mode Section
         item {
             SectionTitle(title = "Theme")
-            ThemeOption(
-                title = "Light",
-                icon = Icons.Default.Brightness7,
-                selected = viewModel.themeMode == ThemeMode.LIGHT,
-                onClick = { viewModel.setTheme(ThemeMode.LIGHT) }
-            )
-            ThemeOption(
-                title = "Dark",
-                icon = Icons.Default.Brightness4,
-                selected = viewModel.themeMode == ThemeMode.DARK,
-                onClick = { viewModel.setTheme(ThemeMode.DARK) }
-            )
-            ThemeOption(
-                title = "System Default",
-                icon = Icons.Default.BrightnessAuto,
-                selected = viewModel.themeMode == ThemeMode.SYSTEM,
-                onClick = { viewModel.setTheme(ThemeMode.SYSTEM) }
-            )
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                ThemeOption(
+                    title = "Light",
+                    icon = Icons.Default.Brightness7,
+                    selected = viewModel.themeMode == ThemeMode.LIGHT,
+                    onClick = { viewModel.setTheme(ThemeMode.LIGHT) }
+                )
+                ThemeOption(
+                    title = "Dark",
+                    icon = Icons.Default.Brightness4,
+                    selected = viewModel.themeMode == ThemeMode.DARK,
+                    onClick = { viewModel.setTheme(ThemeMode.DARK) }
+                )
+                ThemeOption(
+                    title = "System Default",
+                    icon = Icons.Default.BrightnessAuto,
+                    selected = viewModel.themeMode == ThemeMode.SYSTEM,
+                    onClick = { viewModel.setTheme(ThemeMode.SYSTEM) }
+                )
+            }
         }
 
         item { HorizontalDivider() }
@@ -113,7 +118,8 @@ fun AccountScreen(
                                 )
                                 Text(
                                     colorOption.name,
-                                    textAlign = TextAlign.Center
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.bodyMedium
                                 )
                             }
                         }
@@ -127,17 +133,22 @@ fun AccountScreen(
         // Info Section
         item {
             SectionTitle(title = "App Info")
-            ListItem(
-                headlineContent = { Text("Version") },
-                supportingContent = { Text(viewModel.appVersion) },
-                leadingContent = { Icon(Icons.Default.Info, contentDescription = null) }
-            )
-            ListItem(
-                headlineContent = { Text("Support") },
-                supportingContent = { Text(viewModel.supportEmail) },
-                leadingContent = { Icon(Icons.Default.ContactSupport, contentDescription = null) },
-                modifier = Modifier.clickable { /* Handle support click */ }
-            )
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                ListItem(
+                    headlineContent = { Text("Version") },
+                    supportingContent = { Text(viewModel.appVersion) },
+                    leadingContent = { Icon(Icons.Default.Info, contentDescription = null) }
+                )
+                ListItem(
+                    headlineContent = { Text("Support") },
+                    supportingContent = { Text(viewModel.supportEmail) },
+                    leadingContent = { Icon(Icons.Default.ContactSupport, contentDescription = null) },
+                    modifier = Modifier.clickable { /* Handle support click */ }
+                )
+            }
         }
 
         item { HorizontalDivider() }
@@ -184,7 +195,12 @@ fun ThemeOption(
     onClick: () -> Unit
 ) {
     ListItem(
-        headlineContent = { Text(title) },
+        headlineContent = {
+            Text(
+                title,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        },
         leadingContent = { Icon(icon, contentDescription = null) },
         trailingContent = {
             RadioButton(selected = selected, onClick = null)

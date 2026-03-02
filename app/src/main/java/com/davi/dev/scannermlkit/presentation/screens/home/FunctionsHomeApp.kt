@@ -30,7 +30,7 @@ import com.davi.dev.scannermlkit.domain.enums.UseCaseOptions
 fun FunctionsHomeApp(backStack: NavBackStack<NavKey>) {
 
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 120.dp),
+        columns = GridCells.Adaptive(minSize = 90.dp),
         modifier = Modifier.padding(vertical = 10.dp)
     ) {
         items(UseCaseOptions.entries.toTypedArray()) {
@@ -58,7 +58,7 @@ fun FunctionsHomeApp(backStack: NavBackStack<NavKey>) {
                 }
 
                 Text(
-                    it.title, style = MaterialTheme.typography.titleMedium,
+                    it.title, style = MaterialTheme.typography.titleSmall,
                     modifier = Modifier.padding(top = 6.dp)
                 )
 

@@ -109,6 +109,7 @@ fun WelcomeScreen(
             Text(
                 "or",
                 textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.weight(.1f)
             )
             Spacer(
@@ -143,6 +144,7 @@ fun WelcomeScreen(
             Text(
                 "Don't have an account? ",
                 textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier
             )
 

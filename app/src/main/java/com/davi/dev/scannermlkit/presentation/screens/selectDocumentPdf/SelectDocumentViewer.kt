@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -40,7 +41,10 @@ fun SelectDocumentViewer(scannerDocumentViewModel: ScannerDocumentViewModel) {
                     .padding(bottom = 20.dp, start = 8.dp, end = 8.dp)
                     .align(Alignment.BottomCenter)
             ) {
-                Text(text = "Select Document")
+                Text(
+                    text = "Select Document",
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
         documentUri?.let { uri ->
@@ -50,7 +54,11 @@ fun SelectDocumentViewer(scannerDocumentViewModel: ScannerDocumentViewModel) {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text("Nenhum documento selecionado", color = Color.Gray)
+            Text(
+                "Nenhum documento selecionado",
+                color = Color.Gray,
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
