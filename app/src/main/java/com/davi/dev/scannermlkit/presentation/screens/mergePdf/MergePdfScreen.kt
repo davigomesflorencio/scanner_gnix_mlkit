@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.davi.dev.scannermlkit.presentation.components.CustomDivider
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.MergeDocumentViewModel
@@ -72,8 +73,13 @@ fun MergePdfScreen(mergeDocumentViewModel: MergeDocumentViewModel) {
             item {
                 Text(
                     "Merge PDF",
-                    style = MaterialTheme.typography.titleLarge
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.fillMaxWidth()
                 )
+            }
+            item {
+                CustomDivider()
             }
             item {
                 Text(

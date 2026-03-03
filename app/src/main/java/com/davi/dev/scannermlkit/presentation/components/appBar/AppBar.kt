@@ -1,4 +1,4 @@
-package com.davi.dev.scannermlkit.presentation.components.AppBar
+package com.davi.dev.scannermlkit.presentation.components.appBar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -31,16 +31,24 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.davi.dev.scannermlkit.R
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthState
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar(homeViewModel: HomeViewModel = viewModel()) {
+fun AppBar(
+    homeViewModel: HomeViewModel = viewModel(),
+    authViewModel: AuthViewModel = viewModel()
+) {
     val searchQuery by homeViewModel.searchQuery.collectAsState()
     val isSearchActive by homeViewModel.isSearchActive.collectAsState()
     val pdfFiles by homeViewModel.filteredFiles.collectAsState()
+    val authState by authViewModel.authState.collectAsState()
 
-    if (isSearchActive) {
+    val isLoggedIn = authState is AuthState.Success
+
+    if (isSearchActive && isLoggedIn) {
         SearchBar(
             query = searchQuery,
             onQueryChange = { homeViewModel.onSearchQueryChange(it) },
@@ -135,7 +143,7 @@ fun AppBar(homeViewModel: HomeViewModel = viewModel()) {
                 }
             },
             actions = {
-                if (searchQuery.isEmpty())
+                if (isLoggedIn && searchQuery.isEmpty())
                     IconButton(
                         onClick = {
                             homeViewModel.onSearchActiveChange(true)

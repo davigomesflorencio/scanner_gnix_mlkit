@@ -39,6 +39,8 @@ import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthViewModel
 @Composable
 fun WelcomeScreen(
     onNavigateToHome: () -> Unit,
+    onNavigateToSignIn: () -> Unit = {},
+    onNavigateToSignUp: () -> Unit = {},
     authViewModel: AuthViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -122,9 +124,7 @@ fun WelcomeScreen(
 
         Spacer(Modifier.height(26.dp))
         Button(
-            onClick = {
-
-            },
+            onClick = onNavigateToSignIn,
             shape = RoundedCornerShape(30.dp),
             modifier = Modifier.fillMaxWidth(.8f)
         ) {
@@ -155,11 +155,8 @@ fun WelcomeScreen(
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .clickable {
-
-                    }
+                    .clickable { onNavigateToSignUp() }
             )
-
         }
     }
 }

@@ -32,7 +32,7 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.davi.dev.scannermlkit.R
-import com.davi.dev.scannermlkit.presentation.components.AppBar.AppBar
+import com.davi.dev.scannermlkit.presentation.components.appBar.AppBar
 import com.davi.dev.scannermlkit.presentation.components.bottomBar.BottomBar
 import com.davi.dev.scannermlkit.presentation.screens.account.AccountScreen
 import com.davi.dev.scannermlkit.presentation.screens.compressPdf.CompressPdfScreen
@@ -42,6 +42,8 @@ import com.davi.dev.scannermlkit.presentation.screens.protectPdf.ProtectPdfScree
 import com.davi.dev.scannermlkit.presentation.screens.scannerDocument.ScannerDocument
 import com.davi.dev.scannermlkit.presentation.screens.scannerQrCode.ScannerQrCode
 import com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf.SelectDocumentViewer
+import com.davi.dev.scannermlkit.presentation.screens.signIn.SignInScreen
+import com.davi.dev.scannermlkit.presentation.screens.signUp.SignUpScreen
 import com.davi.dev.scannermlkit.presentation.screens.splash.SplashScreen
 import com.davi.dev.scannermlkit.presentation.screens.splitPdf.SplitPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.viewDocumentPdf.ViewDocumentPdf
@@ -106,7 +108,10 @@ fun AppNavHost(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             if (backStack.last() !in listOf(Routes.Splash, Routes.Welcome))
-                AppBar(homeViewModel = homeViewModel)
+                AppBar(
+                    homeViewModel = homeViewModel,
+                    authViewModel = authViewModel
+                )
         },
         bottomBar = {
             if (backStack.last() in listOf(Routes.Home, Routes.ScanDocument, Routes.Account)) {
@@ -193,6 +198,38 @@ fun AppNavHost(
                             WelcomeScreen(
                                 onNavigateToHome = {
                                     backStack.removeLastOrNull()
+                                    backStack.add(Routes.Home)
+                                },
+                                onNavigateToSignIn = {
+                                    backStack.add(Routes.SignIn)
+                                },
+                                onNavigateToSignUp = {
+                                    backStack.removeLastOrNull()
+                                    backStack.add(Routes.SignUp)
+                                },
+                                authViewModel = authViewModel
+                            )
+                        }
+
+                        is Routes.SignIn -> NavEntry(key) {
+                            SignInScreen(
+                                onNavigateToHome = {
+                                    backStack.clear()
+                                    backStack.add(Routes.Home)
+
+                                },
+                                authViewModel = authViewModel
+                            )
+                        }
+
+                        is Routes.SignUp -> NavEntry(key) {
+                            SignUpScreen(
+                                onNavigateToSignIn = {
+                                    backStack.removeLastOrNull()
+                                    backStack.add(Routes.SignIn)
+                                },
+                                onNavigateToHome = {
+                                    backStack.clear()
                                     backStack.add(Routes.Home)
                                 },
                                 authViewModel = authViewModel

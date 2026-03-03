@@ -13,6 +13,12 @@ object Routes {
     data object Welcome : NavKey
 
     @Serializable
+    data object SignIn : NavKey
+
+    @Serializable
+    data object SignUp : NavKey
+
+    @Serializable
     data object Home : NavKey
 
     @Serializable

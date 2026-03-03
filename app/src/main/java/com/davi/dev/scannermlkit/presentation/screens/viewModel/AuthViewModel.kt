@@ -14,13 +14,17 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.exception.AuthRestException
 import io.github.jan.supabase.auth.providers.Google
+import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.providers.builtin.IDToken
 import io.github.jan.supabase.exceptions.RestException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import java.security.MessageDigest
 import java.util.UUID
 
@@ -28,6 +32,7 @@ sealed class AuthState {
     object Idle : AuthState()
     object Loading : AuthState()
     object Success : AuthState()
+    object AccountCreateSuccess : AuthState()
     data class Error(val message: String) : AuthState()
 }
 
@@ -64,6 +69,62 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+    fun signInWithEmail(email: String, password: String) {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            try {
+                supabase.auth.signInWith(Email) {
+                    this.email = email.trim()
+                    this.password = password
+                }
+                _authState.value = AuthState.Success
+            } catch (e: AuthRestException) {
+                Log.e("AuthViewModel", "AuthRestException during sign in: ${e.error} - ${e.description}", e)
+                val message = when (e.error) {
+                    "invalid_credentials" -> "E-mail ou senha incorretos."
+                    "email_not_confirmed" -> "E-mail não confirmado. Verifique sua caixa de entrada."
+                    else -> e.description ?: "Falha ao entrar: Verifique suas credenciais."
+                }
+                _authState.value = AuthState.Error(message)
+            } catch (e: RestException) {
+                Log.e("AuthViewModel", "RestException during sign in", e)
+                _authState.value = AuthState.Error("Falha ao entrar: Verifique sua conexão.")
+            } catch (e: Exception) {
+                Log.e("AuthViewModel", "Exception during sign in", e)
+                _authState.value = AuthState.Error(e.message ?: "Ocorreu um erro ao entrar.")
+            }
+        }
+    }
+
+    fun signUp(name: String, email: String, password: String) {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            try {
+                supabase.auth.signUpWith(Email) {
+                    this.email = email.trim()
+                    this.password = password
+                    data = buildJsonObject {
+                        put("full_name", name)
+                    }
+                }
+                _authState.value = AuthState.AccountCreateSuccess
+            } catch (e: AuthRestException) {
+                Log.e("AuthViewModel", "AuthRestException during sign up: ${e.error} - ${e.description}", e)
+                val message = when (e.error) {
+                    "user_already_exists" -> "Este e-mail já está em uso."
+                    else -> e.description ?: "Falha ao criar conta: ${e.message}"
+                }
+                _authState.value = AuthState.Error(message)
+            } catch (e: RestException) {
+                Log.e("AuthViewModel", "RestException during sign up", e)
+                _authState.value = AuthState.Error("Falha ao criar conta: Verifique sua conexão.")
+            } catch (e: Exception) {
+                Log.e("AuthViewModel", "Exception during sign up", e)
+                _authState.value = AuthState.Error(e.message ?: "Ocorreu um erro ao criar conta.")
+            }
+        }
+    }
+
     fun signInWithGoogle(context: Context) {
         viewModelScope.launch {
             _authState.value = AuthState.Loading
@@ -77,19 +138,12 @@ class AuthViewModel : ViewModel() {
 
             val serverClientId = "174909366998-f8b915l6vl2djslndqsas5athj7hprab.apps.googleusercontent.com"
 
-//             GetGoogleIdOption for modern One Tap experience
             val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
                 .setFilterByAuthorizedAccounts(false)
                 .setServerClientId(serverClientId)
                 .setNonce(hashedNonce)
                 .setAutoSelectEnabled(false)
                 .build()
-
-//            val googleIdOption = GetSignInWithGoogleOption.Builder(
-//                serverClientId = serverClientId
-//            )
-//                .setNonce(hashedNonce)
-//                .build()
 
             val request: GetCredentialRequest = GetCredentialRequest.Builder()
                 .addCredentialOption(googleIdOption)
@@ -112,13 +166,13 @@ class AuthViewModel : ViewModel() {
                 _authState.value = AuthState.Success
             } catch (e: NoCredentialException) {
                 val errorMsg = "Nenhuma conta Google encontrada no dispositivo."
-                Log.w("AuthViewModel", "NoCredentialException: No credentials available. This usually means the user has no Google accounts signed in on this device.")
+                Log.w("AuthViewModel", "NoCredentialException: No credentials available.")
                 _authState.value = AuthState.Error(errorMsg)
             } catch (e: GetCredentialCancellationException) {
                 val message = e.message ?: ""
                 if (message.contains("[16]") || message.contains("reauth failed")) {
                     val errorMsg = "Erro de configuração: Verifique se o SHA-1 e o nome do pacote estão corretos no Google Cloud Console."
-                    Log.e("AuthViewModel", "Error 16: Account reauth failed. Configuration issue likely.")
+                    Log.e("AuthViewModel", "Error 16: Account reauth failed.")
                     _authState.value = AuthState.Error(errorMsg)
                 } else {
                     Log.i("AuthViewModel", "User cancelled the sign-in flow")
@@ -130,6 +184,9 @@ class AuthViewModel : ViewModel() {
             } catch (e: GoogleIdTokenParsingException) {
                 Log.e("AuthViewModel", "GoogleIdTokenParsingException", e)
                 _authState.value = AuthState.Error("Falha ao processar o token do Google")
+            } catch (e: AuthRestException) {
+                Log.e("AuthViewModel", "AuthRestException during Google sign in", e)
+                _authState.value = AuthState.Error("Falha na autenticação com o servidor: ${e.description ?: e.error}")
             } catch (e: RestException) {
                 Log.e("AuthViewModel", "RestException", e)
                 _authState.value = AuthState.Error("Falha na autenticação com o servidor")

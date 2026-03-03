@@ -5,7 +5,6 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.lifecycle.AndroidViewModel
@@ -47,8 +46,6 @@ class ScannerDocumentViewModel(application: Application) : AndroidViewModel(appl
             val result = GmsDocumentScanningResult.fromActivityResultIntent(data)
             _imageUris.value = result?.pages?.map { xi -> xi.imageUri } ?: emptyList()
 
-            Log.d("xing", "size -> " + _imageUris.value.size)
-
             result?.pdf?.let { pdf ->
                 val file = File(filesDir, "scan_${System.currentTimeMillis()}.pdf")
                 val fos = FileOutputStream(file)
@@ -57,8 +54,6 @@ class ScannerDocumentViewModel(application: Application) : AndroidViewModel(appl
                 }
                 _pdfFile.value = file
             }
-        } else {
-            Log.d("xing", "Result not ok")
         }
     }
 

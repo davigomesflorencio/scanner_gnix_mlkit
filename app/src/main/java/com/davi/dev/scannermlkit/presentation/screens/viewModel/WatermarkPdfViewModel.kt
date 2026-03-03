@@ -38,11 +38,18 @@ class WatermarkPdfViewModel(application: Application) : AndroidViewModel(applica
                 val inputStream = context.contentResolver.openInputStream(uri)
 
                 if (inputStream != null) {
-                    FileOutputStream(outputFile).use { outputStream ->
-                        PdfManager.addWatermark(inputStream, outputStream, text)
+                    val success = inputStream.use { input ->
+                        FileOutputStream(outputFile).use { outputStream ->
+                            PdfManager.addWatermark(input, outputStream, text)
+                        }
                     }
-                    _watermarkStatus.emit("Watermark added: ${outputFile.absolutePath}")
-                    _pdfFileUri.value = null
+
+                    if (success) {
+                        _watermarkStatus.emit("Watermark added: ${outputFile.absolutePath}")
+                        _pdfFileUri.value = null
+                    } else {
+                        _watermarkStatus.emit("Error: Failed to add watermark.")
+                    }
                 } else {
                     _watermarkStatus.emit("Error: Could not open file.")
                 }

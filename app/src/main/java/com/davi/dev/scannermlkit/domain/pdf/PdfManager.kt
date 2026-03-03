@@ -150,55 +150,62 @@ object PdfManager {
         inputStream: InputStream,
         outputStream: OutputStream,
         text: String
-    ) {
-        val reader = PdfReader(inputStream)
-        val writer = PdfWriter(outputStream)
-        val pdfDoc = PdfDocument(reader, writer)
+    ): Boolean {
+        return try {
+            val reader = PdfReader(inputStream)
+            val writer = PdfWriter(outputStream)
+            val pdfDoc = PdfDocument(reader, writer)
 
-        val font = PdfFontFactory.createFont()
-        val gs1 = PdfExtGState().setFillOpacity(0.5f)
+            val font = PdfFontFactory.createFont()
+            val gs1 = PdfExtGState().setFillOpacity(0.5f)
 
-        for (i in 1..pdfDoc.numberOfPages) {
-            val page = pdfDoc.getPage(i)
-            val pageSize = page.pageSize
+            for (i in 1..pdfDoc.numberOfPages) {
+                val page = pdfDoc.getPage(i)
+                val pageSize = page.pageSize
 
-            // Usar PdfCanvas diretamente para manipular o estado gráfico e as camadas do PDF
-            val pdfCanvas = com.itextpdf.kernel.pdf.canvas.PdfCanvas(page.newContentStreamAfter(), page.resources, pdfDoc)
+                // Usar PdfCanvas diretamente para manipular o estado gráfico e as camadas do PDF
+                val pdfCanvas =
+                    com.itextpdf.kernel.pdf.canvas.PdfCanvas(page.newContentStreamAfter(), page.resources, pdfDoc)
 
-            // Canvas de layout do iText7 para facilitar o posicionamento do texto
-            val canvas = Canvas(pdfCanvas, pageSize)
-            canvas.setProperty(com.itextpdf.layout.properties.Property.FONT, font)
-            canvas.setFontColor(ColorConstants.GRAY)
-            canvas.setFontSize(60f)
+                // Canvas de layout do iText7 para facilitar o posicionamento do texto
+                val canvas = Canvas(pdfCanvas, pageSize)
+                canvas.setProperty(com.itextpdf.layout.properties.Property.FONT, font)
+                canvas.setFontColor(ColorConstants.GRAY)
+                canvas.setFontSize(60f)
 
-            pdfCanvas.setExtGState(gs1)
+                pdfCanvas.setExtGState(gs1)
 
-            val p = Paragraph(text)
+                val p = Paragraph(text)
 
-            // Repetição em malha cobrindo toda a área da página
-            val stepX = 300f
-            val stepY = 300f
+                // Repetição em malha cobrindo toda a área da página
+                val stepX = 300f
+                val stepY = 300f
 
-            // Começa fora da página para garantir cobertura mesmo com a rotação de 45 graus
-            var x = -pageSize.width
-            while (x < pageSize.width * 3) {
-                var y = -pageSize.height
-                while (y < pageSize.height * 3) {
-                    canvas.showTextAligned(
-                        p,
-                        x,
-                        y,
-                        i,
-                        TextAlignment.CENTER,
-                        VerticalAlignment.MIDDLE,
-                        Math.toRadians(315.0).toFloat()
-                    )
-                    y += stepY
+                // Começa fora da página para garantir cobertura mesmo com a rotação de 45 graus
+                var x = -pageSize.width
+                while (x < pageSize.width * 3) {
+                    var y = -pageSize.height
+                    while (y < pageSize.height * 3) {
+                        canvas.showTextAligned(
+                            p,
+                            x,
+                            y,
+                            i,
+                            TextAlignment.CENTER,
+                            VerticalAlignment.MIDDLE,
+                            Math.toRadians(315.0).toFloat()
+                        )
+                        y += stepY
+                    }
+                    x += stepX
                 }
-                x += stepX
+                canvas.close()
             }
-            canvas.close()
+            pdfDoc.close()
+            true
+        } catch (e: Exception) {
+            Log.e("PdfManager", "addWatermark error", e)
+            false
         }
-        pdfDoc.close()
     }
 }
