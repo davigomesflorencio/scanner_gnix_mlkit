@@ -134,7 +134,7 @@ fun ScannermlkitTheme(
     MaterialExpressiveTheme(
         colorScheme = colorScheme,
         shapes = shapes,
-        typography = Typography,
+        typography = AppTypography,
         content = content
     )
 }
