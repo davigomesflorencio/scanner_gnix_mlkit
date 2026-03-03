@@ -173,8 +173,8 @@ fun ViewPage(uri: Uri) {
                         pageIndex = pageIdx,
                         signatures = emptyList(),
                         onPageScrolled = { currentPageIndex = it }, // Update current page when scrolled
-                        parentMaxWidthPx = maxWidthPx, // Pass max width constraint
-                        parentMaxHeightPx = maxHeightPx, // Pass max height constraint
+                        parentMaxWidthDp = maxWidthPx, // Pass max width constraint
+                        parentMaxHeightDp = maxHeightPx, // Pass max height constraint
                         onDeleteSignature = { }
                     )
                 }

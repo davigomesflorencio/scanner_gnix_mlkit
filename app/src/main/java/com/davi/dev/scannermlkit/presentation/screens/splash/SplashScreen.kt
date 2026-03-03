@@ -82,7 +82,6 @@ fun SplashScreen(
             "Scanner MLKIT",
             style = MaterialTheme.typography.titleLarge,
             fontSize = 40.sp,
-            color = Color.White,
             modifier = Modifier.padding(vertical = 30.dp)
 
         )

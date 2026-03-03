@@ -2,6 +2,7 @@ package com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf
 
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,14 +14,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
@@ -40,14 +37,20 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Matrix
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.davi.dev.scannermlkit.domain.model.SignatureData
+import com.davi.dev.scannermlkit.domain.pdf.PdfBoxManager
 import com.davi.dev.scannermlkit.domain.pdf.PdfManager
+import com.davi.dev.scannermlkit.domain.pdf.PdfSaveResult
 import com.davi.dev.scannermlkit.presentation.components.CustomCircularProgress
+import com.davi.dev.scannermlkit.presentation.components.ExpandableFabGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -97,6 +100,9 @@ fun NativePdfViewer(uri: Uri) {
             }
         }
     }
+
+    var maxWidthDp by remember { mutableStateOf(0.dp) }
+    var maxheigthDp by remember { mutableStateOf(0.dp) }
 
     DisposableEffect(rendererResource) {
         onDispose {
@@ -162,11 +168,71 @@ fun NativePdfViewer(uri: Uri) {
     Scaffold(
         floatingActionButton = {
             if (rendererResource != null) {
-                FloatingActionButton(onClick = {
-                    showBottomSheet = true
-                }) {
-                    Icon(imageVector = Icons.Default.Draw, contentDescription = "Sign PDF")
-                }
+                ExpandableFabGroup(
+                    expand = signaturesOnPage.values.any { it.isNotEmpty() },
+                    action1 = {
+                        scope.launch(Dispatchers.IO) {
+                            val firstPageSignatures = signaturesOnPage[0] ?: emptyList()
+                            if (firstPageSignatures.isEmpty()) {
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(context, "Nenhuma assinatura na primeira página", Toast.LENGTH_SHORT).show()
+                                }
+                                return@launch
+                            }
+
+                            val uriToProcess = currentUri ?: return@launch
+                            val originalFile = File(context.cacheDir, "original_temp_${System.currentTimeMillis()}.pdf")
+
+                            try {
+                                context.contentResolver.openInputStream(uriToProcess)?.use { input ->
+                                    FileOutputStream(originalFile).use { output ->
+                                        input.copyTo(output)
+                                    }
+                                }
+                            } catch (e: Exception) {
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(context, "Erro ao preparar arquivo: ${e.message}", Toast.LENGTH_SHORT).show()
+                                }
+                                return@launch
+                            }
+
+                            val renderer = rendererResource ?: return@launch
+                            val page = renderer.openPage(0)
+                            val pdfW = page.width.toFloat()
+                            val pdfH = page.height.toFloat()
+                            page.close()
+
+                            val viewSize = with(density) {
+                                val maxWidthPxValue = maxWidthDp.toPx()
+                                val displayedHeightPx = maxWidthPxValue * (pdfH / pdfW)
+                                Log.d("xing page native", "page -> $maxWidthPxValue , $displayedHeightPx")
+
+                                Size(maxWidthPxValue, displayedHeightPx)
+                            }
+
+                            val result = PdfBoxManager.saveWithPdfBox(
+                                context = context,
+                                originalFile = originalFile,
+                                paths = firstPageSignatures,
+                                viewSize = viewSize
+//                                viewSize = Size(pdfW, pdfH) // Pass PDF's original dimensions if PdfBoxManager needs a reference for the pre-transformed paths
+                            )
+
+                            withContext(Dispatchers.Main) {
+                                when (result) {
+                                    is PdfSaveResult.Success -> {
+                                        Toast.makeText(context, "Salvo com sucesso!", Toast.LENGTH_LONG).show()
+                                    }
+
+                                    is PdfSaveResult.Error -> {
+                                        Toast.makeText(context, "Erro ao salvar: ${result.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    action2 = { showBottomSheet = true }
+                )
             }
         }
     ) { padding ->
@@ -175,8 +241,8 @@ fun NativePdfViewer(uri: Uri) {
                 .padding(padding)
                 .fillMaxSize()
         ) {
-            val maxWidthPx = with(density) { maxWidth }
-            val maxHeightPx = with(density) { maxHeight }
+            maxWidthDp = with(density) { maxWidth }
+            val maxHeightDp = with(density) { maxHeight }
 
             if (isCheckingEncryption) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -195,8 +261,8 @@ fun NativePdfViewer(uri: Uri) {
                             pageIndex = pageIdx,
                             signatures = pageSignatures,
                             onPageScrolled = { currentPageIndex = it },
-                            parentMaxWidthPx = maxWidthPx,
-                            parentMaxHeightPx = maxHeightPx,
+                            parentMaxWidthDp = maxWidthDp,
+                            parentMaxHeightDp = maxHeightDp,
                             onDeleteSignature = { signatureToDelete ->
                                 val currentList = signaturesOnPage[pageIdx] ?: emptyList()
                                 signaturesOnPage[pageIdx] = currentList.filter { it != signatureToDelete }

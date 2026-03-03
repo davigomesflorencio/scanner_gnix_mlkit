@@ -35,8 +35,8 @@ fun PDFPage(
     pageIndex: Int,
     signatures: List<SignatureData>,
     onPageScrolled: (Int) -> Unit, // Callback to notify when page changes due to scroll
-    parentMaxWidthPx: Dp, // Max width constraint from parent
-    parentMaxHeightPx: Dp, // Max height constraint from parent
+    parentMaxWidthDp: Dp, // Max width constraint from parent
+    parentMaxHeightDp: Dp, // Max height constraint from parent
     onDeleteSignature: (SignatureData) -> Unit,
     onUpdateSignature: (SignatureData) -> Unit = {}
 ) {
@@ -83,10 +83,10 @@ fun PDFPage(
             val pageH = pageBitmapHeightPx.value // Original PDF page height in pixels
 
             // Calculate the displayed width and height of the PDF image in Dp
-            val displayedImageWidthDp = parentMaxWidthPx
+            val displayedImageWidthDp = parentMaxWidthDp
             val displayedImageHeightDp = with(density) {
                 // Calculate displayed height based on aspect ratio and displayedImageWidthDp
-                (parentMaxWidthPx.toPx() * (pageH / pageW)).toDp()
+                (parentMaxWidthDp.toPx() * (pageH / pageW)).toDp()
             }
 
             Box(

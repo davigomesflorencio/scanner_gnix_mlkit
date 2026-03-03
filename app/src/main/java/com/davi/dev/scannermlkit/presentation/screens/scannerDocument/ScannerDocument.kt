@@ -90,8 +90,8 @@ fun ScannerDocument(
                         pageIndex = pageIdx,
                         signatures = emptyList(),
                         onPageScrolled = { }, // Update current page when scrolled
-                        parentMaxWidthPx = 300.dp, // Pass max width constraint
-                        parentMaxHeightPx = 600.dp, // Pass max height constraint
+                        parentMaxWidthDp = 300.dp, // Pass max width constraint
+                        parentMaxHeightDp = 600.dp, // Pass max height constraint
                         onDeleteSignature = { }
                     )
                 }

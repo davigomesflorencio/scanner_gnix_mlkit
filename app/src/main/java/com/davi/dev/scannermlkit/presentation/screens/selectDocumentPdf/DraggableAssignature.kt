@@ -122,8 +122,6 @@ fun DraggableAssignature(
                 style = Stroke(width = 1.dp.toPx(), pathEffect = pathEffect)
             )
         }
-
-        // Botão Deletar (Topo-Esquerda)
         IconButton(
             onClick = onDelete,
             modifier = Modifier

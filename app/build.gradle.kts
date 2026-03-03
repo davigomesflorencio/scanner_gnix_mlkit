@@ -164,6 +164,8 @@ dependencies {
     implementation("androidx.credentials:credentials-play-services-auth:1.6.0-rc02")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.2.0")
 
+    implementation("com.tom-roush:pdfbox-android:2.0.27.0")
+
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
