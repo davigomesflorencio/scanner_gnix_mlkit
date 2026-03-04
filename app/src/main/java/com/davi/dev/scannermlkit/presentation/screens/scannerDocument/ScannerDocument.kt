@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import com.davi.dev.scannermlkit.R
 import com.davi.dev.scannermlkit.presentation.components.CustomDivider
-import com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf.PDFPage
+import com.davi.dev.scannermlkit.presentation.screens.allPdf.PDFPage
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerDocumentViewModel
 
 @Composable

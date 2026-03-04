@@ -40,7 +40,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.davi.dev.scannermlkit.domain.pdf.PdfManager
 import com.davi.dev.scannermlkit.presentation.components.CustomCircularProgress
-import com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf.PDFPage
+import com.davi.dev.scannermlkit.presentation.screens.allPdf.PDFPage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

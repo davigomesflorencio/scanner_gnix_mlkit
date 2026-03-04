@@ -43,11 +43,13 @@ import com.davi.dev.scannermlkit.presentation.screens.scannerDocument.ScannerDoc
 import com.davi.dev.scannermlkit.presentation.screens.scannerQrCode.ScannerQrCode
 import com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf.SelectDocumentViewer
 import com.davi.dev.scannermlkit.presentation.screens.signIn.SignInScreen
+import com.davi.dev.scannermlkit.presentation.screens.allPdf.AllPDFScreen
 import com.davi.dev.scannermlkit.presentation.screens.signUp.SignUpScreen
 import com.davi.dev.scannermlkit.presentation.screens.splash.SplashScreen
 import com.davi.dev.scannermlkit.presentation.screens.splitPdf.SplitPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.viewDocumentPdf.ViewDocumentPdf
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AccountViewModel
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.AllPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthState
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.CompressPdfViewModel
@@ -75,6 +77,7 @@ fun AppNavHost(
     watermarkPdfViewModel: WatermarkPdfViewModel = viewModel(),
     homeViewModel: HomeViewModel = viewModel(),
     authViewModel: AuthViewModel = viewModel(),
+    allPdfViewModel: AllPdfViewModel = viewModel(),
     accountViewModel: AccountViewModel = viewModel()
 ) {
     val backStack = rememberNavBackStack(Routes.Splash)
@@ -238,6 +241,13 @@ fun AppNavHost(
 
                         is Routes.Home -> NavEntry(key) {
                             Home(backStack, homeViewModel)
+                        }
+
+                        is Routes.AllPDFFiles -> NavEntry(key) {
+                            AllPDFScreen(
+                                onPdfClick = { pdfFile ->},
+                                viewModel = allPdfViewModel
+                            )
                         }
 
                         is Routes.ScanDocument -> NavEntry(key) {

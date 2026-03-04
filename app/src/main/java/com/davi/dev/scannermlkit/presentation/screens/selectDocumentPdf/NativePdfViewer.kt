@@ -39,8 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Matrix
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -51,6 +49,10 @@ import com.davi.dev.scannermlkit.domain.pdf.PdfManager
 import com.davi.dev.scannermlkit.domain.pdf.PdfSaveResult
 import com.davi.dev.scannermlkit.presentation.components.CustomCircularProgress
 import com.davi.dev.scannermlkit.presentation.components.ExpandableFabGroup
+import com.davi.dev.scannermlkit.presentation.screens.allPdf.PDFPage
+import com.davi.dev.scannermlkit.presentation.screens.allPdf.SignaturePad
+// REMOVIDO: import com.davi.dev.scannermlkit.presentation.screens.allPdf.SignaturePad
+import com.davi.dev.scannermlkit.presentation.screens.signaturepad.SignaturePadScreen // ADICIONADO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -215,7 +217,6 @@ fun NativePdfViewer(uri: Uri) {
                                 originalFile = originalFile,
                                 paths = firstPageSignatures,
                                 viewSize = viewSize
-//                                viewSize = Size(pdfW, pdfH) // Pass PDF's original dimensions if PdfBoxManager needs a reference for the pre-transformed paths
                             )
 
                             withContext(Dispatchers.Main) {
@@ -304,10 +305,11 @@ fun NativePdfViewer(uri: Uri) {
 
             if (showBottomSheet) {
                 ModalBottomSheet(
-                    onDismissRequest = { showBottomSheet = false },
+                    onDismissRequest = { scope.launch { sheetState.hide(); showBottomSheet = false } }, // Ensure dismiss also hides it
                     sheetState = sheetState,
                 ) {
-                    Box(modifier = Modifier.height(300.dp)) {
+                    // Use a Box or Column to constrain the SignaturePadScreen height if needed
+                    Box(modifier = Modifier.height(450.dp)) { // Adjust height as needed for SignaturePadScreen content
                         SignaturePad(
                             currentPageIndex = currentPageIndex,
                             onDone = { signatureData ->
@@ -327,6 +329,22 @@ fun NativePdfViewer(uri: Uri) {
                                 }
                             }
                         )
+
+
+                    //                        SignaturePadScreen(
+//                            onSignatureConfirmed = { signatureData ->
+//                                val pageIndex = currentPageIndex
+//                                val currentList = signaturesOnPage[pageIndex] ?: emptyList()
+//                                signaturesOnPage[pageIndex] = currentList + signatureData
+//
+//                                scope.launch {
+//                                    sheetState.hide()
+//                                    showBottomSheet = false
+//                                }
+//                            }
+//                            // The SignaturePadScreen doesn't have an onCancel callback directly.
+//                            // Dismissing the bottom sheet will implicitly cancel the current drawing.
+//                        )
                     }
                 }
             }

@@ -1,7 +1,9 @@
-package com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf
+package com.davi.dev.scannermlkit.presentation.screens.allPdf
 
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.graphics.pdf.PdfRenderer
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -51,7 +53,7 @@ fun PDFPage(
             // Renderização em alta resolução (3x)
             val scale = 3f
             val bitmapT = createBitmap((page.width * scale).toInt(), (page.height * scale).toInt())
-            val matrix = android.graphics.Matrix().apply { postScale(scale, scale) }
+            val matrix = Matrix().apply { postScale(scale, scale) }
 
             page.render(bitmapT, null, matrix, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
 
@@ -94,7 +96,7 @@ fun PDFPage(
                     .fillMaxWidth()
                     .height(displayedImageHeightDp) // Explicitly set height
             ) { // Use fillMaxWidth to respect page aspect ratio
-                androidx.compose.foundation.Image(
+                Image(
                     bitmap = it.asImageBitmap(),
                     contentDescription = "Página ${pageIndex + 1}",
                     modifier = Modifier.fillMaxWidth(),

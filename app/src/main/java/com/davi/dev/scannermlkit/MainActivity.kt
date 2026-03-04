@@ -1,5 +1,6 @@
 package com.davi.dev.scannermlkit
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,8 +10,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.davi.dev.scannermlkit.data.repository.UserPreferencesRepositoryImpl
 import com.davi.dev.scannermlkit.presentation.navigation.AppNavHost
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AccountViewModel
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.AllPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.CompressPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.HomeViewModel
@@ -24,6 +32,7 @@ import com.davi.dev.scannermlkit.presentation.theme.ScannermlkitTheme
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.createSupabaseClient
 
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 val supabase = createSupabaseClient(
     supabaseUrl = "https://zqzmohxxefcfiqsiyjxx.supabase.co",
@@ -34,6 +43,10 @@ val supabase = createSupabaseClient(
 
 class MainActivity : ComponentActivity() {
 
+    private val userPreferencesRepository by lazy {
+        UserPreferencesRepositoryImpl(dataStore)
+    }
+
     val scannerQrCodeViewModel: ScannerQrCodeViewModel by viewModels()
     val scannerDocumentViewModel: ScannerDocumentViewModel by viewModels()
     val mergeDocumentViewModel: MergeDocumentViewModel by viewModels()
@@ -42,8 +55,20 @@ class MainActivity : ComponentActivity() {
     val compressPdfViewModel: CompressPdfViewModel by viewModels()
     val watermarkPdfViewModel: WatermarkPdfViewModel by viewModels()
     val homeViewModel: HomeViewModel by viewModels()
+    val allPdfViewModel: AllPdfViewModel by viewModels()
     val authViewModel: AuthViewModel by viewModels()
-    val accountViewModel: AccountViewModel by viewModels()
+    
+    val accountViewModel: AccountViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(AccountViewModel::class.java)) {
+                    @Suppress("UNCHECKED_CAST")
+                    return AccountViewModel(userPreferencesRepository) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +94,7 @@ class MainActivity : ComponentActivity() {
                         watermarkPdfViewModel = watermarkPdfViewModel,
                         homeViewModel = homeViewModel,
                         authViewModel = authViewModel,
+                        allPdfViewModel = allPdfViewModel,
                         accountViewModel = accountViewModel
                     )
                 }

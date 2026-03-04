@@ -5,6 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.davi.dev.scannermlkit.domain.repository.UserPreferencesRepository
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 enum class ThemeMode {
     LIGHT, DARK, SYSTEM
@@ -15,12 +20,14 @@ data class ThemeColor(
     val color: Color
 )
 
-class AccountViewModel : ViewModel() {
+class AccountViewModel(
+    private val repository: UserPreferencesRepository
+) : ViewModel() {
     var themeMode by mutableStateOf(ThemeMode.SYSTEM)
         private set
 
     val colorOptions = listOf(
-        ThemeColor("Pink",Color(0XFFb6407f)),
+        ThemeColor("Pink", Color(0XFFb6407f)),
         ThemeColor("Blue", Color(0xFF2196F3)),
         ThemeColor("Green", Color(0xFF4CAF50)),
         ThemeColor("Red", Color(0xFFF44336)),
@@ -31,12 +38,33 @@ class AccountViewModel : ViewModel() {
     var selectedColor by mutableStateOf(colorOptions[0])
         private set
 
+    init {
+        repository.theme
+            .onEach { mode ->
+                themeMode = mode
+            }
+            .launchIn(viewModelScope)
+
+        repository.userPreferences
+            .onEach { preferences ->
+                selectedColor = colorOptions.getOrElse(preferences.themeColorIndex) { colorOptions[0] }
+            }
+            .launchIn(viewModelScope)
+    }
+
     fun setTheme(mode: ThemeMode) {
-        themeMode = mode
+        viewModelScope.launch {
+            repository.updateThemeMode(mode)
+        }
     }
 
     fun setColor(color: ThemeColor) {
-        selectedColor = color
+        val index = colorOptions.indexOf(color)
+        if (index != -1) {
+            viewModelScope.launch {
+                repository.updateThemeColorIndex(index)
+            }
+        }
     }
 
     val appVersion = "1.6.0"

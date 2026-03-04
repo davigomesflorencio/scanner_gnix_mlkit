@@ -20,6 +20,8 @@ object Routes {
 
     @Serializable
     data object Home : NavKey
+    @Serializable
+    data object AllPDFFiles : NavKey
 
     @Serializable
     data object ScanDocument : NavKey
