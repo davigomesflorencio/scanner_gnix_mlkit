@@ -14,6 +14,8 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Expand
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -122,6 +124,13 @@ fun DraggableAssignature(
                 style = Stroke(width = 1.dp.toPx(), pathEffect = pathEffect)
             )
         }
+
+        Text(
+            "$currentWidthPx x $currentHeightPx",
+            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier.align(Alignment.Center)
+        )
+
         IconButton(
             onClick = onDelete,
             modifier = Modifier
@@ -168,7 +177,12 @@ fun DraggableAssignature(
                             scaleFactor = newScale.coerceAtMost(maxPossibleScale)
                         },
                         onDragEnd = {
-                            onUpdate(signatureData.copy(offsetX = offsetX, offsetY = offsetY, scale = scaleFactor))
+                            onUpdate(signatureData.copy(
+//                                width = currentWidthPx,
+//                                height = currentHeightPx,
+                                offsetX = offsetX,
+                                offsetY = offsetY,
+                                scale = scaleFactor))
                         }
                     )
                 },

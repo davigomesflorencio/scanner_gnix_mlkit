@@ -18,33 +18,34 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.scale
-import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.graphics.shapes.RoundedPolygon
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.davi.dev.scannermlkit.domain.model.SignatureData
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.SignatureViewModel
+import com.davi.dev.scannermlkit.presentation.theme.ScannermlkitTheme
 import kotlin.math.min
 
 @Composable
@@ -64,16 +65,16 @@ fun SignaturePadScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Signature drawing area
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f)
-            .padding(8.dp)
-            .border(2.dp, Color.Gray)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(8.dp)
         ) {
             Canvas(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(Color.White, RoundedCornerShape(30.dp))
                     .pointerInput(Unit) { // CHAVE ALTERADA PARA Unit
                         detectDragGestures(
                             onDragStart = { offset ->
@@ -115,7 +116,7 @@ fun SignaturePadScreen(
 
                                 val translateX = (size.width - scaledOriginalWidth) / 2 + data.offsetX * overallScale
                                 val translateY = (size.height - scaledOriginalHeight) / 2 + data.offsetY * overallScale
-                                
+
                                 translate(translateX, translateY)
                             }
                         }
@@ -147,7 +148,7 @@ fun SignaturePadScreen(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text("Limpar")
             }
-            Button(onClick = { 
+            Button(onClick = {
                 // Pass current scale/offset from ViewModel if available, otherwise defaults
                 val currentData = viewModel.currentSignatureData
                 viewModel.saveSignature(
@@ -161,20 +162,19 @@ fun SignaturePadScreen(
                 Text("Salvar")
             }
             Button(
-                onClick = { 
-                    val finalSignature = viewModel.currentSignatureData ?: 
-                                         SignatureData(
-                                             path = currentPath, 
-                                             width = viewModel.canvasWidth, 
-                                             height = viewModel.canvasHeight,
-                                             color = selectedColor
-                                         )
+                onClick = {
+                    val finalSignature = viewModel.currentSignatureData ?: SignatureData(
+                        path = currentPath,
+                        width = viewModel.canvasWidth,
+                        height = viewModel.canvasHeight,
+                        color = selectedColor
+                    )
                     onSignatureConfirmed(finalSignature)
                 },
                 enabled = !currentPath.isEmpty || viewModel.currentSignatureData != null
             ) {
-                Icon(Icons.Default.Check, contentDescription = "Confirmar")
-                Spacer(modifier = Modifier.width(4.dp))
+//                Icon(Icons.Default.Check, contentDescription = "Confirmar")
+//                Spacer(modifier = Modifier.width(4.dp))
                 Text("Confirmar")
             }
         }
@@ -206,6 +206,7 @@ fun SignaturePadScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ColorSelectionRow(selectedColor: Color, onColorSelected: (Color) -> Unit) {
     val colors = listOf(Color.Black, Color.Blue, Color.Red, Color.Green, Color.Magenta, Color.Yellow)
@@ -220,15 +221,10 @@ fun ColorSelectionRow(selectedColor: Color, onColorSelected: (Color) -> Unit) {
         colors.forEach { color ->
             Box(
                 modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
+                    .size(50.dp)
+                    .clip(RoundedPolygon(MaterialShapes.Arch).toShape(0))
                     .background(color)
                     .clickable { onColorSelected(color) }
-                    .border(
-                        width = if (color == selectedColor) 3.dp else 1.dp,
-                        color = if (color == selectedColor) MaterialTheme.colorScheme.primary else Color.Gray,
-                        shape = CircleShape
-                    )
             )
         }
     }
@@ -270,5 +266,13 @@ fun SignaturePreview(signature: SignatureData, onClick: (SignatureData) -> Unit)
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun previewSignaturePadScreen() {
+    ScannermlkitTheme {
+        SignaturePadScreen(onSignatureConfirmed = {})
     }
 }

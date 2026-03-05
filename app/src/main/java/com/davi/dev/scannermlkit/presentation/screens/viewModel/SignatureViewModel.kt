@@ -34,8 +34,8 @@ class SignatureViewModel : ViewModel() {
     }
 
     fun startNewPath(point: Offset) {
-        currentPath = Path().apply { moveTo(point.x, point.y) }
-        currentPath = Path().apply { addPath(currentPath) }
+        currentPath.moveTo(point.x, point.y)
+        currentPath = Path().apply { addPath(currentPath) } // Trigger recomposition
         currentSignatureData = null // Reset current signature data when starting a new path
     }
 

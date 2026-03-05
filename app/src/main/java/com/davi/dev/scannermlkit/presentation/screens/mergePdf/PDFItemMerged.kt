@@ -36,7 +36,7 @@ import java.io.FileOutputStream
 @Composable
 fun PDFItemMerged(
     uri: Uri,
-    onRemove: () -> Unit // Adicionado callback para remover
+    onRemove: () -> Unit // Added callback to remove
 ) {
     val context = LocalContext.current
     val contentResolver = context.contentResolver
@@ -63,7 +63,7 @@ fun PDFItemMerged(
                         tempFile
                     } else null
                 } catch (e: Exception) {
-                    Log.e("PDFItemMerged", "Erro ao processar content Uri para File: $uri", e)
+                    Log.e("PDFItemMerged", "Error processing content Uri to File: $uri", e)
                     null
                 }
             }
@@ -77,7 +77,7 @@ fun PDFItemMerged(
     }
 
     val formattedDate = remember(file) {
-        file?.lastModified()?.let { formatDate(it) } ?: "Data desconhecida"
+        file?.lastModified()?.let { formatDate(it) } ?: "Unknown date"
     }
 
     Card(
@@ -97,7 +97,6 @@ fun PDFItemMerged(
                         .size(64.dp)
                 )
             } ?: run {
-                // Placeholder ou mensagem de erro se o arquivo não puder ser derivado
                 Box(
                     modifier = Modifier
                         .size(64.dp)
@@ -127,14 +126,13 @@ fun PDFItemMerged(
                 )
             }
 
-            // Botão para remover
             IconButton(
                 onClick = onRemove,
                 modifier = Modifier.weight(1f)
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Remover",
+                    contentDescription = "Remove",
                     tint = MaterialTheme.colorScheme.error
                 )
             }

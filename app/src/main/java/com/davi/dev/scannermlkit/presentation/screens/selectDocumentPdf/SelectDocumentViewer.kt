@@ -2,7 +2,10 @@ package com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,7 +19,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.davi.dev.scannermlkit.R
+import com.davi.dev.scannermlkit.presentation.screens.allPdf.NativePdfViewer
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerDocumentViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,22 +52,45 @@ fun SelectDocumentViewer(scannerDocumentViewModel: ScannerDocumentViewModel) {
             ) {
                 Text(
                     text = "Select Document",
-                    style = MaterialTheme.typography.bodyMedium
                 )
             }
         }
         documentUri?.let { uri ->
-            // Passamos a URI aqui
             NativePdfViewer(uri)
         } ?: Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                "Nenhum documento selecionado",
-                color = Color.Gray,
-                style = MaterialTheme.typography.bodyMedium
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp)
+                    .align(Alignment.TopCenter)
+            ) {
+                Image(
+                    painterResource(R.drawable.screenshoot2),
+                    contentScale = ContentScale.FillWidth,
+                    contentDescription = "Preview app",
+                    modifier = Modifier.fillMaxSize(.5f)
+                )
+
+                Text(
+                    "You can also edit and customize scan results",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = 40.sp,
+                    lineHeight = 40.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                )
+                Text(
+                    "No documents selected.",
+                    color = Color.Gray,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
     }
 }

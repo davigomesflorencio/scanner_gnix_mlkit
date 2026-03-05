@@ -89,7 +89,7 @@ fun ProtectPdfScreen(
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.FileUpload, contentDescription = null)
-                Text(text = "Selecionar Arquivo PDF", modifier = Modifier.padding(start = 8.dp))
+                Text(text = "Select PDF File", modifier = Modifier.padding(start = 8.dp))
             }
         }
 
@@ -105,12 +105,12 @@ fun ProtectPdfScreen(
                 value = password,
                 onValueChange = {
                     password = it
-                    passwordMatchError = false // Reseta o erro quando o usuário digita
+                    passwordMatchError = false // Reset the error when the user types
                 },
                 label = { Text("Password") },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Ícone de Cadeado") },
+                leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Lock Icon") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -120,19 +120,19 @@ fun ProtectPdfScreen(
                 value = confirmPassword,
                 onValueChange = {
                     confirmPassword = it
-                    passwordMatchError = false // Reseta o erro quando o usuário digita
+                    passwordMatchError = false // Reset the error when the user types
                 },
                 label = { Text("Confirm Password") },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Ícone de Cadeado") },
+                leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Lock Icon") },
                 modifier = Modifier.fillMaxWidth(),
                 isError = passwordMatchError
             )
 
             if (passwordMatchError) {
                 Text(
-                    text = "As senhas não coincidem",
+                    text = "Passwords do not match",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier
@@ -147,13 +147,13 @@ fun ProtectPdfScreen(
                 enabled = password == confirmPassword && password.isNotBlank(),
                 onClick = {
                     if (password == confirmPassword && password.isNotBlank()) {
-                        // Aqui você chamaria a lógica para proteger o PDF
-                        // Por exemplo: onProtectClick(password)
+                        // Here you would call the logic to protect the PDF
+                        // Example: onProtectClick(password)
                         val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
 
                         protectPdfViewModel.protectPdf("protect_${timestamp}.pdf", password, confirmPassword)
                         passwordMatchError = false
-                        // Limpar os campos após o sucesso, se desejar
+                        // Clear the fields after success, if desired
                         // password = ""
                         // confirmPassword = ""
                     } else {
