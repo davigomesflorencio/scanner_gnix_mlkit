@@ -30,7 +30,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.davi.dev.scannermlkit.R
+import com.davi.dev.scannermlkit.presentation.navigation.Routes
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthState
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.HomeViewModel
@@ -38,6 +41,7 @@ import com.davi.dev.scannermlkit.presentation.screens.viewModel.HomeViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(
+    backStack: NavBackStack<NavKey>,
     homeViewModel: HomeViewModel = viewModel(),
     authViewModel: AuthViewModel = viewModel()
 ) {
@@ -143,7 +147,7 @@ fun AppBar(
                 }
             },
             actions = {
-                if (isLoggedIn && searchQuery.isEmpty())
+                if (isLoggedIn && searchQuery.isEmpty() && backStack.last() == Routes.Home)
                     IconButton(
                         onClick = {
                             homeViewModel.onSearchActiveChange(true)

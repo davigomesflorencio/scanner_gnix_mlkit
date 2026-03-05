@@ -122,10 +122,10 @@ object PdfBoxManager {
 
                 // 1. Aplica o Offset e Escala do usuário (SignatureData)
                 // 2. Aplica a Escala de conversão para o PDF (View -> PDF)
-                val pdfX = (rawX * sigData.scale + sigData.offsetX - (sigData.width/3 * sigData.scale)) * scaleX
+                val pdfX = ((rawX - sigData.width*0.3f) * sigData.scale + sigData.offsetX) * scaleX
 
                 // 3. Inversão do eixo Y (PDF começa de baixo)
-                val pdfY = pageSize.height - ((rawY * sigData.scale + sigData.offsetY ) * scaleY)
+                val pdfY = pageSize.height - ((rawY * sigData.scale + sigData.offsetY - (sigData.height * sigData.scale)) * scaleY)
 
                 if (isFirstPoint) {
                     contentStream.moveTo(pdfX, pdfY)
@@ -141,8 +141,8 @@ object PdfBoxManager {
 
             // Garante que o último ponto do contorno seja desenhado
             pathMeasure.getPosTan(length, pos, null)
-            val finalX = (pos[0] * sigData.scale + sigData.offsetX - (sigData.width/4 * sigData.scale)) * scaleX
-            val finalY = pageSize.height - ((pos[1] * sigData.scale + sigData.offsetY - (sigData.height * .5f * sigData.scale)) * scaleY)
+            val finalX = (pos[0] * sigData.scale + sigData.offsetX - (sigData.width * sigData.scale)) * scaleX
+            val finalY = pageSize.height - ((pos[1] * sigData.scale + sigData.offsetY - (sigData.height * sigData.scale)) * scaleY)
             contentStream.lineTo(finalX, finalY)
 
         } while (pathMeasure.nextContour()) // Vai para o próximo traço se houver

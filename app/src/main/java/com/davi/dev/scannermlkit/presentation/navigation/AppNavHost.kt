@@ -113,6 +113,7 @@ fun AppNavHost(
         topBar = {
             if (backStack.last() !in listOf(Routes.Splash, Routes.Welcome))
                 AppBar(
+                    backStack = backStack,
                     homeViewModel = homeViewModel,
                     authViewModel = authViewModel
                 )
