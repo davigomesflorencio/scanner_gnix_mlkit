@@ -84,7 +84,7 @@ fun CompressPdfScreen(
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.FileUpload, contentDescription = null)
-                Text(text = "Selecionar Arquivo PDF", modifier = Modifier.padding(start = 8.dp))
+                Text(text = "Select PDF File", modifier = Modifier.padding(start = 8.dp))
             }
         }
 
@@ -96,7 +96,7 @@ fun CompressPdfScreen(
             CustomDivider()
 
             Text(
-                text = "Nível de Compressão",
+                text = "Compression Level",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.Start)
             )
@@ -137,7 +137,7 @@ fun CompressPdfScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Comprimir PDF")
+                Text("Compress PDF")
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -150,14 +150,14 @@ fun CompressPdfScreen(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Informação:",
+                        text = "Information:",
                         style = MaterialTheme.typography.titleSmall
                     )
                     Text(
                         text = when (compressionLevel) {
-                            CompressionLevel.LOW -> "Baixa compressão: Mantém melhor qualidade, mas o arquivo fica maior."
-                            CompressionLevel.MEDIUM -> "Média compressão: Equilíbrio entre qualidade e tamanho de arquivo."
-                            CompressionLevel.HIGH -> "Alta compressão: Menor tamanho de arquivo possível, mas a qualidade pode ser reduzida."
+                            CompressionLevel.LOW -> "Low compression: Maintains better quality, but the file size is larger."
+                            CompressionLevel.MEDIUM -> "Medium compression: Balance between quality and file size."
+                            CompressionLevel.HIGH -> "High compression: Smallest possible file size, but quality may be reduced."
                         },
                         style = MaterialTheme.typography.bodySmall
                     )

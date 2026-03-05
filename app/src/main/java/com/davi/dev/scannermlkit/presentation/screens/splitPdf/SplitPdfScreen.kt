@@ -95,7 +95,7 @@ fun SplitPdfScreen(viewModel: SplitPdfViewModel) {
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.FileUpload, contentDescription = null)
-                    Text(text = "Selecionar Arquivo PDF", modifier = Modifier.padding(start = 8.dp))
+                    Text(text = "Select PDF file", modifier = Modifier.padding(start = 8.dp))
                 }
             }
 
@@ -105,26 +105,26 @@ fun SplitPdfScreen(viewModel: SplitPdfViewModel) {
                 CustomDivider()
 
                 Text(
-                    "Configurações",
+                    "Settings",
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
-                    "Nome do Arquivo",
+                    "File Name",
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold
                 )
 
                 TextField(
                     state = fileNameState,
-                    label = { Text("Nome do Arquivo") },
+                    label = { Text("File Name") },
                     lineLimits = TextFieldLineLimits.MultiLine(maxHeightInLines = 2),
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 Text(
-                    "Intervalo de Páginas (Total: $pageCount)",
+                    "Page Range (Total: $pageCount)",
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -136,14 +136,14 @@ fun SplitPdfScreen(viewModel: SplitPdfViewModel) {
                     OutlinedTextField(
                         value = startPage,
                         onValueChange = { if (it.all { char -> char.isDigit() }) startPage = it },
-                        label = { Text("Início") },
+                        label = { Text("Start") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier.weight(1f)
                     )
                     OutlinedTextField(
                         value = endPage,
                         onValueChange = { if (it.all { char -> char.isDigit() }) endPage = it },
-                        label = { Text("Fim") },
+                        label = { Text("End") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier.weight(1f)
                     )
@@ -159,9 +159,9 @@ fun SplitPdfScreen(viewModel: SplitPdfViewModel) {
                     val fileName = fileNameState.text.toString()
 
                     if (start < 1 || end > pageCount || start > end) {
-                        Toast.makeText(context, "Intervalo de páginas inválido (1-$pageCount)", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Invalid page range (1-$pageCount)", Toast.LENGTH_SHORT).show()
                     } else if (fileName.isBlank()) {
-                        Toast.makeText(context, "Insira um nome para o arquivo", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Enter a name for the file", Toast.LENGTH_SHORT).show()
                     } else {
                         viewModel.splitPdf(fileName, start, end)
                     }

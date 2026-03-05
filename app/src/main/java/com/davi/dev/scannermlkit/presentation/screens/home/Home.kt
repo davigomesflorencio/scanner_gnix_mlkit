@@ -19,11 +19,13 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.davi.dev.scannermlkit.presentation.components.CustomDivider
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.HomeViewModel
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerDocumentViewModel
 
 @Composable
 fun Home(
     backStack: NavBackStack<NavKey>,
-    homeViewModel: HomeViewModel = viewModel()
+    homeViewModel: HomeViewModel = viewModel(),
+    scannerDocumentViewModel: ScannerDocumentViewModel = viewModel()
 ) {
     val pdfFiles by homeViewModel.filteredFiles.collectAsState()
     val isSearchActive by homeViewModel.isSearchActive.collectAsState()
@@ -34,7 +36,7 @@ fun Home(
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        FunctionsHomeApp(backStack)
+        FunctionsHomeApp(backStack, scannerDocumentViewModel)
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp),

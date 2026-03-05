@@ -35,15 +35,16 @@ import com.davi.dev.scannermlkit.R
 import com.davi.dev.scannermlkit.presentation.components.appBar.AppBar
 import com.davi.dev.scannermlkit.presentation.components.bottomBar.BottomBar
 import com.davi.dev.scannermlkit.presentation.screens.account.AccountScreen
+import com.davi.dev.scannermlkit.presentation.screens.allTools.AllToolsScreen
 import com.davi.dev.scannermlkit.presentation.screens.compressPdf.CompressPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.home.Home
+import com.davi.dev.scannermlkit.presentation.screens.legal.PrivacyPolicyTermsScreen
 import com.davi.dev.scannermlkit.presentation.screens.mergePdf.MergePdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.protectPdf.ProtectPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.scannerDocument.ScannerDocument
 import com.davi.dev.scannermlkit.presentation.screens.scannerQrCode.ScannerQrCode
 import com.davi.dev.scannermlkit.presentation.screens.selectDocumentPdf.SelectDocumentViewer
 import com.davi.dev.scannermlkit.presentation.screens.signIn.SignInScreen
-import com.davi.dev.scannermlkit.presentation.screens.allPdf.AllPDFScreen
 import com.davi.dev.scannermlkit.presentation.screens.signUp.SignUpScreen
 import com.davi.dev.scannermlkit.presentation.screens.splash.SplashScreen
 import com.davi.dev.scannermlkit.presentation.screens.splitPdf.SplitPdfScreen
@@ -240,14 +241,7 @@ fun AppNavHost(
                         }
 
                         is Routes.Home -> NavEntry(key) {
-                            Home(backStack, homeViewModel)
-                        }
-
-                        is Routes.AllPDFFiles -> NavEntry(key) {
-                            AllPDFScreen(
-                                onPdfClick = { pdfFile ->},
-                                viewModel = allPdfViewModel
-                            )
+                            Home(backStack, homeViewModel, scannerDocumentViewModel)
                         }
 
                         is Routes.ScanDocument -> NavEntry(key) {
@@ -286,14 +280,24 @@ fun AppNavHost(
                             WatermarkPdfScreen(watermarkPdfViewModel = watermarkPdfViewModel)
                         }
 
+                        is Routes.AllTools -> NavEntry(key) {
+                            AllToolsScreen(backStack)
+                        }
+
                         is Routes.Account -> NavEntry(key) {
                             AccountScreen(
+                                backStack = backStack,
                                 viewModel = accountViewModel,
                                 onSignOut = {
                                     authViewModel.signOut()
                                 }
                             )
                         }
+
+                        is Routes.PrivacyPolicyTerms -> NavEntry(key) {
+                            PrivacyPolicyTermsScreen()
+                        }
+
 
                         else -> {
                             error("Unknown route: $key")
