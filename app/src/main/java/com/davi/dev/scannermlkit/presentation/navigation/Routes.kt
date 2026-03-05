@@ -20,8 +20,9 @@ object Routes {
 
     @Serializable
     data object Home : NavKey
+
     @Serializable
-    data object AllPDFFiles : NavKey
+    data object SignPDF : NavKey
 
     @Serializable
     data object ScanDocument : NavKey
@@ -51,5 +52,11 @@ object Routes {
     data object WatermarkPdf : NavKey
 
     @Serializable
+    data object AllTools : NavKey
+
+    @Serializable
     data object Account : NavKey
+
+    @Serializable
+    data object PrivacyPolicyTerms : NavKey
 }

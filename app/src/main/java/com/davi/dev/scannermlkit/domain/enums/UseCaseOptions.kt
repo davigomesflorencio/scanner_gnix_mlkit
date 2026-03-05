@@ -38,10 +38,10 @@ enum class UseCaseOptions(
     ),
     SIGNPDF(
         "Sign PDF", R.drawable.ic_file_pen, color = Color(0xFFfc7e7f),
-        backgroundColor = Color(0XFFfff1f1), route = Routes.AllPDFFiles
+        backgroundColor = Color(0XFFfff1f1), route = Routes.SignPDF
     ),
     ALLTOOLS(
         "All Tools", R.drawable.ic_grid_2x2, color = Color(0xFF4d6aff),
-        backgroundColor = Color(0XFFf1f2fe), route = Routes.CompressPdf
+        backgroundColor = Color(0XFFf1f2fe), route = Routes.AllTools
     )
 }
