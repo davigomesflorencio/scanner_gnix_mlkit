@@ -82,7 +82,7 @@ fun WatermarkPdfScreen(
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.FileUpload, contentDescription = null)
-                Text(text = "Select file PDF", modifier = Modifier.padding(start = 8.dp))
+                Text(text = "Select PDF file", modifier = Modifier.padding(start = 8.dp))
             }
         }
 

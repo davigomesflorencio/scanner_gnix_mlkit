@@ -117,15 +117,15 @@ fun NativePdfViewer(uri: Uri) {
 
     if (showPasswordDialog) {
         AlertDialog(
-            onDismissRequest = { /* Bloquear dismiss se quiser */ },
-            title = { Text(text = "PDF Protegido") },
+            onDismissRequest = { /* Block dismiss if desired */ },
+            title = { Text(text = "Protected PDF") },
             text = {
                 Column {
-                    Text(text = "Este arquivo requer uma senha para ser aberto.")
+                    Text(text = "This file requires a password to be opened.")
                     OutlinedTextField(
                         value = password,
                         onValueChange = { password = it },
-                        label = { Text("Senha") },
+                        label = { Text("Password") },
                         visualTransformation = PasswordVisualTransformation(),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -148,17 +148,17 @@ fun NativePdfViewer(uri: Uri) {
                             }
                         } else {
                             withContext(Dispatchers.Main) {
-                                Toast.makeText(context, "Senha incorreta", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Incorrect password", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
                 }) {
-                    Text("Abrir")
+                    Text("Open")
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showPasswordDialog = false }) {
-                    Text("Cancelar")
+                    Text("Cancel")
                 }
             }
         )
@@ -174,7 +174,7 @@ fun NativePdfViewer(uri: Uri) {
                             val firstPageSignatures = signaturesOnPage[0] ?: emptyList()
                             if (firstPageSignatures.isEmpty()) {
                                 withContext(Dispatchers.Main) {
-                                    Toast.makeText(context, "Nenhuma assinatura na primeira página", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, "No signature on the first page", Toast.LENGTH_SHORT).show()
                                 }
                                 return@launch
                             }
@@ -190,7 +190,7 @@ fun NativePdfViewer(uri: Uri) {
                                 }
                             } catch (e: Exception) {
                                 withContext(Dispatchers.Main) {
-                                    Toast.makeText(context, "Erro ao preparar arquivo: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, "Error preparing file: ${e.message}", Toast.LENGTH_SHORT).show()
                                 }
                                 return@launch
                             }
@@ -219,11 +219,11 @@ fun NativePdfViewer(uri: Uri) {
                             withContext(Dispatchers.Main) {
                                 when (result) {
                                     is PdfSaveResult.Success -> {
-                                        Toast.makeText(context, "Salvo com sucesso!", Toast.LENGTH_LONG).show()
+                                        Toast.makeText(context, "Saved successfully!", Toast.LENGTH_LONG).show()
                                     }
 
                                     is PdfSaveResult.Error -> {
-                                        Toast.makeText(context, "Erro ao salvar: ${result.message}", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, "Error saving: ${result.message}", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             }
@@ -293,7 +293,7 @@ fun NativePdfViewer(uri: Uri) {
             } else if (!isEncrypted || !showPasswordDialog) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     if (isEncrypted) {
-                        Text("PDF protegido por senha.")
+                        Text("PDF protected by password.")
                     } else {
                         CustomCircularProgress()
                     }
