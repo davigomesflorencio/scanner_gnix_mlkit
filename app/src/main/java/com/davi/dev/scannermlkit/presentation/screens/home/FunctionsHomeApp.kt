@@ -1,5 +1,7 @@
 package com.davi.dev.scannermlkit.presentation.screens.home
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -24,10 +26,21 @@ import androidx.graphics.shapes.RoundedPolygon
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.davi.dev.scannermlkit.domain.enums.UseCaseOptions
+import com.davi.dev.scannermlkit.presentation.navigation.Routes
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerDocumentViewModel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun FunctionsHomeApp(backStack: NavBackStack<NavKey>) {
+fun FunctionsHomeApp(
+    backStack: NavBackStack<NavKey>,
+    scannerDocumentViewModel: ScannerDocumentViewModel
+) {
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
+        it?.let { uri ->
+            scannerDocumentViewModel.setUri(uri)
+            backStack.add(Routes.SelectViewDocument)
+        }
+    }
 
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 90.dp),
@@ -41,7 +54,11 @@ fun FunctionsHomeApp(backStack: NavBackStack<NavKey>) {
             ) {
                 Button(
                     onClick = {
-                        backStack.add(it.route)
+                        if (it.route == Routes.SignPDF) {
+                            launcher.launch(arrayOf("application/pdf"))
+                        } else {
+                            backStack.add(it.route)
+                        }
                     },
                     shape = RoundedPolygon(MaterialShapes.Cookie6Sided).toShape(0),
                     colors = ButtonDefaults.buttonColors(

@@ -40,12 +40,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.RoundedPolygon
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import com.davi.dev.scannermlkit.presentation.navigation.Routes
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AccountViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.ThemeMode
 
 @Composable
 fun AccountScreen(
     viewModel: AccountViewModel,
+    backStack: NavBackStack<NavKey>,
     onSignOut: () -> Unit
 ) {
     LazyColumn(
@@ -148,6 +152,11 @@ fun AccountScreen(
                     leadingContent = { Icon(Icons.Default.ContactSupport, contentDescription = null) },
                     modifier = Modifier.clickable { /* Handle support click */ }
                 )
+                ListItem(
+                    headlineContent = { Text("Privacy Policy & Terms of Use") },
+                    leadingContent = { Icon(Icons.Default.Info, contentDescription = null) },
+                    modifier = Modifier.clickable { backStack.add(Routes.PrivacyPolicyTerms) }
+                )
             }
         }
 
@@ -158,7 +167,7 @@ fun AccountScreen(
             ListItem(
                 headlineContent = {
                     Text(
-                        "Sair da conta",
+                        "Sign Out",
                         color = MaterialTheme.colorScheme.error,
                         fontWeight = FontWeight.SemiBold
                     )
