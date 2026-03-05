@@ -65,7 +65,8 @@ object PdfBoxManager {
                     Log.d("xing", "item scaleX multliply -> ${scaleX * item.scale}")
                     Log.d("xing", "item scaleY multliply -> ${scaleY * item.scale}")
 
-                    contentStream.setStrokingColor(0, 0, 0)
+                    contentStream.setStrokingColor(item.color.red, item.color.green, item.color.blue)
+
                     // A espessura da linha também precisa ser escalada
                     contentStream.setLineWidth(5f * scaleY * item.scale)
 
@@ -100,10 +101,10 @@ object PdfBoxManager {
         val pos = FloatArray(2) // Armazena [x, y]
         val precision = 1f      // Define a "suavidade" (1 pixel de intervalo)
 
-        Log.d("xing","render wight /2-> ${(sigData.width * sigData.scale)/2}")
-        Log.d("xing","render wight /3-> ${(sigData.width * sigData.scale)/3}")
-        Log.d("xing","render heitgh /2-> ${(sigData.height * sigData.scale)/2}")
-        Log.d("xing","render heitgh /3-> ${(sigData.height * sigData.scale)/3}")
+        Log.d("xing", "render wight /2-> ${(sigData.width * sigData.scale) / 2}")
+        Log.d("xing", "render wight /3-> ${(sigData.width * sigData.scale) / 3}")
+        Log.d("xing", "render heitgh /2-> ${(sigData.height * sigData.scale) / 2}")
+        Log.d("xing", "render heitgh /3-> ${(sigData.height * sigData.scale) / 3}")
 
 
         // O PathMeasure pode conter múltiplos contornos (traços separados)
@@ -124,7 +125,7 @@ object PdfBoxManager {
                 val pdfX = (rawX * sigData.scale + sigData.offsetX - (sigData.width/3 * sigData.scale)) * scaleX
 
                 // 3. Inversão do eixo Y (PDF começa de baixo)
-                val pdfY = pageSize.height - ((rawY * sigData.scale + sigData.offsetY - (sigData.height/2 * sigData.scale)) * scaleY)
+                val pdfY = pageSize.height - ((rawY * sigData.scale + sigData.offsetY ) * scaleY)
 
                 if (isFirstPoint) {
                     contentStream.moveTo(pdfX, pdfY)
@@ -136,10 +137,12 @@ object PdfBoxManager {
                 distance += precision
             }
 
+            contentStream.setStrokingColor(220, 0, 0)
+
             // Garante que o último ponto do contorno seja desenhado
             pathMeasure.getPosTan(length, pos, null)
-            val finalX = (pos[0] * sigData.scale + sigData.offsetX - (sigData.width/3 * sigData.scale)) * scaleX
-            val finalY = pageSize.height - ((pos[1] * sigData.scale + sigData.offsetY -  (sigData.height/2 * sigData.scale)) * scaleY)
+            val finalX = (pos[0] * sigData.scale + sigData.offsetX - (sigData.width/4 * sigData.scale)) * scaleX
+            val finalY = pageSize.height - ((pos[1] * sigData.scale + sigData.offsetY - (sigData.height * .5f * sigData.scale)) * scaleY)
             contentStream.lineTo(finalX, finalY)
 
         } while (pathMeasure.nextContour()) // Vai para o próximo traço se houver

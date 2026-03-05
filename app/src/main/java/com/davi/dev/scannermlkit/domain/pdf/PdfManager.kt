@@ -157,15 +157,18 @@ object PdfManager {
             val pdfDoc = PdfDocument(reader, writer)
 
             val font = PdfFontFactory.createFont()
-            val gs1 = PdfExtGState().setFillOpacity(0.5f)
+            val gs1 = PdfExtGState().setFillOpacity(0.7f)
 
             for (i in 1..pdfDoc.numberOfPages) {
                 val page = pdfDoc.getPage(i)
                 val pageSize = page.pageSize
 
                 // Usar PdfCanvas diretamente para manipular o estado gráfico e as camadas do PDF
-                val pdfCanvas =
-                    com.itextpdf.kernel.pdf.canvas.PdfCanvas(page.newContentStreamAfter(), page.resources, pdfDoc)
+                val pdfCanvas = com.itextpdf.kernel.pdf.canvas.PdfCanvas(
+                    page.newContentStreamAfter(),
+                    page.resources,
+                    pdfDoc
+                )
 
                 // Canvas de layout do iText7 para facilitar o posicionamento do texto
                 val canvas = Canvas(pdfCanvas, pageSize)
@@ -183,9 +186,9 @@ object PdfManager {
 
                 // Começa fora da página para garantir cobertura mesmo com a rotação de 45 graus
                 var x = -pageSize.width
-                while (x < pageSize.width * 3) {
+                while (x < pageSize.width * 4) {
                     var y = -pageSize.height
-                    while (y < pageSize.height * 3) {
+                    while (y < pageSize.height * 4) {
                         canvas.showTextAligned(
                             p,
                             x,
@@ -193,7 +196,7 @@ object PdfManager {
                             i,
                             TextAlignment.CENTER,
                             VerticalAlignment.MIDDLE,
-                            Math.toRadians(315.0).toFloat()
+                            Math.toRadians(45.0).toFloat()
                         )
                         y += stepY
                     }
