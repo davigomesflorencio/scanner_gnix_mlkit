@@ -1,16 +1,22 @@
 package com.davi.dev.scannermlkit.presentation.screens.viewModel
 
 import android.app.Application
+import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
+import android.os.Environment
 import android.print.PrintManager
+import android.provider.MediaStore
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -35,6 +41,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
     )
+
+    private val _saveStatus = MutableSharedFlow<String>()
+    val saveStatus: SharedFlow<String> = _saveStatus.asSharedFlow()
 
     init {
         loadFiles()
@@ -98,6 +107,42 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
         // Load the PDF into the WebView
         webView.loadUrl(pdfUri.toString())
+    }
+
+    fun savePdfToDownloads(context: Context, sourceFile: File, newFileName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val resolver = context.contentResolver
+            val contentValues = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, newFileName)
+                put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+            }
+
+            var success = false
+            val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+
+            uri?.let { destinationUri ->
+                try {
+                    context.contentResolver.openOutputStream(destinationUri)?.use { outputStream ->
+                        sourceFile.inputStream().use { inputStream ->
+                            inputStream.copyTo(outputStream)
+                        }
+                    }
+                    success = true
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    success = false
+                }
+            }
+
+            withContext(Dispatchers.Main) {
+                if (success) {
+                    _saveStatus.emit("PDF saved to Downloads")
+                } else {
+                    _saveStatus.emit("Failed to save PDF")
+                }
+            }
+        }
     }
 
     fun clearFilters() {

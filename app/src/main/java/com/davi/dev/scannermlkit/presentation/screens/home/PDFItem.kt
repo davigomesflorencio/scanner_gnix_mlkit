@@ -1,6 +1,7 @@
 package com.davi.dev.scannermlkit.presentation.screens.home
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,6 +69,12 @@ fun PDFItem(
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showRenameDialog by remember { mutableStateOf(false) }
     var newFileName by remember { mutableStateOf(file.nameWithoutExtension) }
+
+    LaunchedEffect(Unit) {
+        homeViewModel.saveStatus.collect { message ->
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        }
+    }
 
     Card(
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp),
@@ -188,7 +196,10 @@ fun PDFItem(
                 ListItem(
                     headlineContent = { Text("Save to device") },
                     leadingContent = { Icon(Icons.Default.Save, contentDescription = null) },
-                    modifier = Modifier.clickable { showBottomSheet = false }
+                    modifier = Modifier.clickable {
+                        homeViewModel.savePdfToDownloads(context, file, file.name)
+                        showBottomSheet = false
+                    }
                 )
 
                 ListItem(
