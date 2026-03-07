@@ -13,6 +13,9 @@ import android.print.PrintDocumentAdapter
 import android.print.PrintDocumentInfo
 import android.print.PrintManager
 import android.provider.MediaStore
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -23,12 +26,15 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+
+val Context.dataStore by preferencesDataStore(name = "user_preferences")
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val _searchQuery = MutableStateFlow("")
@@ -51,8 +57,26 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val _saveStatus = MutableSharedFlow<String>()
     val saveStatus: SharedFlow<String> = _saveStatus.asSharedFlow()
 
+    private val TOOLTIP_SHOWN_KEY = booleanPreferencesKey("has_shown_home_tooltip")
+
+    val hasShownTooltip = application.dataStore.data.map { preferences ->
+        preferences[TOOLTIP_SHOWN_KEY] ?: false
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false
+    )
+
     init {
         loadFiles()
+    }
+
+    fun markTooltipAsShown() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getApplication<Application>().dataStore.edit { preferences ->
+                preferences[TOOLTIP_SHOWN_KEY] = true
+            }
+        }
     }
 
     fun loadFiles() {
