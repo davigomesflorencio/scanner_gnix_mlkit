@@ -73,9 +73,10 @@ fun SignaturePadScreen(
         ) {
             Canvas(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
+                    .height(400.dp)
                     .background(Color.White, RoundedCornerShape(30.dp))
-                    .pointerInput(Unit) { // CHAVE ALTERADA PARA Unit
+                    .pointerInput(Unit) { // KEY CHANGED TO Unit
                         detectDragGestures(
                             onDragStart = { offset ->
                                 viewModel.startNewPath(offset)
@@ -144,9 +145,9 @@ fun SignaturePadScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(onClick = { viewModel.clearSignature() }) {
-                Icon(Icons.Default.Clear, contentDescription = "Limpar")
+                Icon(Icons.Default.Clear, contentDescription = "Clear")
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("Limpar")
+                Text("Clear")
             }
             Button(onClick = {
                 // Pass current scale/offset from ViewModel if available, otherwise defaults
@@ -157,9 +158,9 @@ fun SignaturePadScreen(
                     offsetY = currentData?.offsetY ?: 0f
                 )
             }) {
-                Icon(Icons.Default.Save, contentDescription = "Salvar")
+                Icon(Icons.Default.Save, contentDescription = "Save")
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("Salvar")
+                Text("Save")
             }
             Button(
                 onClick = {
@@ -173,9 +174,9 @@ fun SignaturePadScreen(
                 },
                 enabled = !currentPath.isEmpty || viewModel.currentSignatureData != null
             ) {
-//                Icon(Icons.Default.Check, contentDescription = "Confirmar")
+//                Icon(Icons.Default.Check, contentDescription = "Confirm")
 //                Spacer(modifier = Modifier.width(4.dp))
-                Text("Confirmar")
+                Text("Confirm")
             }
         }
 
@@ -184,7 +185,7 @@ fun SignaturePadScreen(
         // Recent signatures
         if (recentSignatures.isNotEmpty()) {
             Text(
-                text = "Assinaturas Recentes",
+                text = "Recent Signatures",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
@@ -247,7 +248,7 @@ fun SignaturePreview(signature: SignatureData, onClick: (SignatureData) -> Unit)
                     val pathBounds = signature.path.getBounds()
                     if (pathBounds.width > 0 && pathBounds.height > 0) {
                         val scaleFactor = min(size.width / pathBounds.width, size.height / pathBounds.height)
-                        val finalScale = scaleFactor * 0.9f // Fit with some padding
+                        val finalScale = scaleFactor * 0.1f // Fit with some padding
 
                         scale(finalScale, finalScale)
 

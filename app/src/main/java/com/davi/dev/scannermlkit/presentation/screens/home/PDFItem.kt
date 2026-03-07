@@ -15,6 +15,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Print
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,7 +26,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,12 +46,17 @@ import androidx.navigation3.runtime.NavKey
 import com.davi.dev.scannermlkit.R
 import com.davi.dev.scannermlkit.domain.date.DateUtil.formatDate
 import com.davi.dev.scannermlkit.presentation.navigation.Routes
+import com.davi.dev.scannermlkit.presentation.screens.viewModel.HomeViewModel
 import java.io.File
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PDFItem(navBackStack: NavBackStack<NavKey>, file: File) {
+fun PDFItem(
+    homeViewModel: HomeViewModel,
+    navBackStack: NavBackStack<NavKey>,
+    file: File
+) {
     val context = LocalContext.current
     val authority = "${context.packageName}.provider"
     val pdfUri = FileProvider.getUriForFile(context, authority, file)
@@ -55,6 +64,9 @@ fun PDFItem(navBackStack: NavBackStack<NavKey>, file: File) {
 
     var showBottomSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    var showRenameDialog by remember { mutableStateOf(false) }
+    var newFileName by remember { mutableStateOf(file.nameWithoutExtension) }
 
     Card(
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp),
@@ -96,7 +108,7 @@ fun PDFItem(navBackStack: NavBackStack<NavKey>, file: File) {
                 horizontalArrangement = Arrangement.spacedBy(1.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                // Botão para visualizar o PDF
+                // Button to share PDF
                 IconButton(onClick = {
                     val shareIntent = Intent().apply {
                         action = Intent.ACTION_SEND
@@ -113,7 +125,7 @@ fun PDFItem(navBackStack: NavBackStack<NavKey>, file: File) {
                     )
                 }
 
-                // Botão para abrir opcoes do PDF
+                // Button to open PDF options
                 IconButton(onClick = {
                     showBottomSheet = true
                 }) {
@@ -174,13 +186,13 @@ fun PDFItem(navBackStack: NavBackStack<NavKey>, file: File) {
                 HorizontalDivider()
 
                 ListItem(
-                    headlineContent = { Text("Salvar no dispositivo") },
+                    headlineContent = { Text("Save to device") },
                     leadingContent = { Icon(Icons.Default.Save, contentDescription = null) },
                     modifier = Modifier.clickable { showBottomSheet = false }
                 )
 
                 ListItem(
-                    headlineContent = { Text("Exportar") },
+                    headlineContent = { Text("Export") },
                     leadingContent = { Icon(painterResource(R.drawable.ic_share), contentDescription = null) },
                     modifier = Modifier.clickable {
                         showBottomSheet = false
@@ -225,13 +237,20 @@ fun PDFItem(navBackStack: NavBackStack<NavKey>, file: File) {
                 ListItem(
                     headlineContent = { Text("Rename") },
                     leadingContent = { Icon(painterResource(R.drawable.ic_file_pen), contentDescription = null) },
-                    modifier = Modifier.clickable { showBottomSheet = false }
+                    modifier = Modifier.clickable {
+                        showBottomSheet = false
+                        newFileName = file.nameWithoutExtension // Initialize with current name
+                        showRenameDialog = true
+                    }
                 )
 
                 ListItem(
                     headlineContent = { Text("Print") },
                     leadingContent = { Icon(Icons.Default.Print, contentDescription = null) },
-                    modifier = Modifier.clickable { showBottomSheet = false }
+                    modifier = Modifier.clickable {
+                        showBottomSheet = false
+                        homeViewModel.printPdf(context, file, pdfUri)
+                    }
                 )
 
                 ListItem(
@@ -248,9 +267,68 @@ fun PDFItem(navBackStack: NavBackStack<NavKey>, file: File) {
                             tint = MaterialTheme.colorScheme.error
                         )
                     },
-                    modifier = Modifier.clickable { showBottomSheet = false }
+                    modifier = Modifier.clickable {
+                        showBottomSheet = false
+                        showDeleteDialog = true
+                    }
                 )
             }
         }
+    }
+
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = { Text("Confirm Deletion") },
+            text = { Text("Are you sure you want to delete this file? ${file.name}") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        homeViewModel.deleteFile(file)
+                        showDeleteDialog = false
+                    }
+                ) {
+                    Text("Delete")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
+    if (showRenameDialog) {
+        AlertDialog(
+            onDismissRequest = { showRenameDialog = false },
+            title = { Text("Rename File") },
+            text = {
+                OutlinedTextField(
+                    value = newFileName,
+                    onValueChange = { newFileName = it },
+                    label = { Text("New File Name") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (newFileName.isNotBlank()) {
+                            homeViewModel.renameFile(file, newFileName)
+                            showRenameDialog = false
+                        }
+                    }
+                ) {
+                    Text("Rename")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showRenameDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
     }
 }

@@ -37,7 +37,9 @@ fun Home(
         homeViewModel.loadFiles()
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         FunctionsHomeApp(backStack, scannerDocumentViewModel)
 
         LazyColumn(
@@ -56,8 +58,9 @@ fun Home(
             }
             itemsIndexed(pdfFiles.take(10)) { index, file ->
                 PDFItem(
+                    homeViewModel = homeViewModel,
                     navBackStack = backStack,
-                    file = file
+                    file = file,
                 )
             }
         }
