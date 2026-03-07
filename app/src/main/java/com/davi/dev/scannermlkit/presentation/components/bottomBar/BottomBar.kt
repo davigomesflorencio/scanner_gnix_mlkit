@@ -23,6 +23,7 @@ fun BottomBar(backStack: NavBackStack<NavKey>) {
 
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.primary,
+        tonalElevation = 2.dp,
         modifier = Modifier
             .navigationBarsPadding()
             .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
