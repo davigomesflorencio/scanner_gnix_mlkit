@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.BrightnessAuto
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ContactSupport
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Support
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
@@ -149,7 +150,7 @@ fun AccountScreen(
                 ListItem(
                     headlineContent = { Text("Support") },
                     supportingContent = { Text(viewModel.supportEmail) },
-                    leadingContent = { Icon(Icons.Default.ContactSupport, contentDescription = null) },
+                    leadingContent = { Icon(Icons.Default.Support, contentDescription = null) },
                     modifier = Modifier.clickable { /* Handle support click */ }
                 )
                 ListItem(

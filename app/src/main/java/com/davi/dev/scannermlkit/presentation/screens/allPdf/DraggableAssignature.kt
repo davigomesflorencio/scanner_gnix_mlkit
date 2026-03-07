@@ -14,8 +14,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Expand
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -105,6 +103,7 @@ fun DraggableAssignature(
     ) {
         Canvas(
             modifier = Modifier.fillMaxSize()
+                .background(Color.Blue.copy(alpha = 0.3f))
         ) {
             // Aplicamos o scale apenas no desenho do path para manter os botões com tamanho fixo
             scale(scaleFactor, pivot = Offset.Zero) {
@@ -118,18 +117,12 @@ fun DraggableAssignature(
             // Linha tracejada interna opcional para feedback
             val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
             drawRect(
-                color = Color.Blue.copy(alpha = 0.1f),
+                color = Color.Blue.copy(alpha = 0.4f),
                 topLeft = Offset.Zero,
                 size = size,
                 style = Stroke(width = 1.dp.toPx(), pathEffect = pathEffect)
             )
         }
-
-        Text(
-            "$currentWidthPx x $currentHeightPx",
-            style = MaterialTheme.typography.labelSmall,
-            modifier = Modifier.align(Alignment.Center)
-        )
 
         IconButton(
             onClick = onDelete,
