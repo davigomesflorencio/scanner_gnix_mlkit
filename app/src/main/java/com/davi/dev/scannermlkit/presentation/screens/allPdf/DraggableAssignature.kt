@@ -110,7 +110,7 @@ fun DraggableAssignature(
             scale(scaleFactor, pivot = Offset.Zero) {
                 drawPath(
                     path = normalized.asComposePath(),
-                    color = Color.Black,
+                    color = signatureData.color,
                     style = Stroke(width = 5f, cap = StrokeCap.Round)
                 )
             }
@@ -177,12 +177,13 @@ fun DraggableAssignature(
                             scaleFactor = newScale.coerceAtMost(maxPossibleScale)
                         },
                         onDragEnd = {
-                            onUpdate(signatureData.copy(
-//                                width = currentWidthPx,
-//                                height = currentHeightPx,
-                                offsetX = offsetX,
-                                offsetY = offsetY,
-                                scale = scaleFactor))
+                            onUpdate(
+                                signatureData.copy(
+                                    offsetX = offsetX,
+                                    offsetY = offsetY,
+                                    scale = scaleFactor
+                                )
+                            )
                         }
                     )
                 },

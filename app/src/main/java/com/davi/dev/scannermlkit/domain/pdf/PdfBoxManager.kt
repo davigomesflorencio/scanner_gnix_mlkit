@@ -60,13 +60,8 @@ object PdfBoxManager {
             ).use { contentStream ->
 
                 paths.forEach { item ->
-                    Log.d("xing", "item offset -> ${item.offsetX} - ${item.offsetY}")
-                    Log.d("xing", "item scale -> ${item.scale}")
-//                    Log.d("xing", "item scaleX multliply -> ${scaleX * item.scale}")
-//                    Log.d("xing", "item scaleY multliply -> ${scaleY * item.scale}")
-
-                    contentStream.setStrokingColor(0f, 0f, 0f)
-//                    contentStream.setNonStrokingColor(item.color.red, item.color.green, item.color.blue)
+//                    contentStream.setStrokingColor(0f, 0f, 0f)
+                    contentStream.setStrokingColor(item.color.red, item.color.green, item.color.blue)
 
                     // A espessura da linha também precisa ser escalada
                     contentStream.setLineWidth(5f * scaleY * item.scale)
@@ -102,14 +97,6 @@ object PdfBoxManager {
         val pos = FloatArray(2) // Armazena [x, y]
         val precision = 1f      // Define a "suavidade" (1 pixel de intervalo)
 
-        Log.d("xing", "page width ${pageSize.width} = render wight /2-> ${(sigData.width * sigData.scale) / 2}")
-        Log.d("xing", "page width ${pageSize.width} = render wight /3-> ${(sigData.width * sigData.scale) / 3}")
-        Log.d("xing", "page height ${pageSize.height} = render heitgh /2-> ${(sigData.height * sigData.scale) / 2}")
-        Log.d("xing", "page height ${pageSize.height} = render heitgh /3-> ${(sigData.height * sigData.scale) / 3}")
-
-        Log.d("xing", "========================================================")
-
-        // O PathMeasure pode conter múltiplos contornos (traços separados)
         do {
             val length = pathMeasure.length
             var distance = 0f
@@ -124,10 +111,10 @@ object PdfBoxManager {
 
                 // 1. Aplica o Offset e Escala do usuário (SignatureData)
                 // 2. Aplica a Escala de conversão para o PDF (View -> PDF)
-                val pdfX = (rawX * sigData.scale + sigData.offsetX - (sigData.width/7f * sigData.scale)) * scaleX
+                val pdfX = (rawX * sigData.scale + sigData.offsetX - (sigData.width / 7f * sigData.scale)) * scaleX
 
                 // 3. Inversão do eixo Y (PDF começa de baixo)
-                val pdfY = pageSize.height - ((rawY * sigData.scale + sigData.offsetY - (sigData.height/6.2f * sigData.scale)) * scaleY)
+                val pdfY = pageSize.height - ((rawY * sigData.scale + sigData.offsetY - (sigData.height / 6.2f * sigData.scale)) * scaleY)
 
                 if (isFirstPoint) {
                     contentStream.moveTo(pdfX, pdfY)
@@ -144,8 +131,8 @@ object PdfBoxManager {
 
             // Garante que o último ponto do contorno seja desenhado
             pathMeasure.getPosTan(length, pos, null)
-            val finalX = (pos[0] * sigData.scale + sigData.offsetX - (sigData.width/7f * sigData.scale)) * scaleX
-            val finalY = pageSize.height - ((pos[1] * sigData.scale + sigData.offsetY - (sigData.height/6.5f * sigData.scale)) * scaleY)
+            val finalX = (pos[0] * sigData.scale + sigData.offsetX - (sigData.width / 7f * sigData.scale)) * scaleX
+            val finalY = pageSize.height - ((pos[1] * sigData.scale + sigData.offsetY - (sigData.height / 6.5f * sigData.scale)) * scaleY)
 //            contentStream.lineTo(finalX, finalY)
 
         } while (pathMeasure.nextContour()) // Vai para o próximo traço se houver
