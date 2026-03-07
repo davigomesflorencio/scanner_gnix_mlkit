@@ -1,6 +1,7 @@
 package com.davi.dev.scannermlkit.presentation.screens.viewModel
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -23,9 +24,9 @@ class SignatureViewModel : ViewModel() {
 
     val recentSignatures = mutableStateListOf<SignatureData>()
 
-    var canvasWidth by mutableStateOf(0f)
+    var canvasWidth by mutableFloatStateOf(0f)
         private set
-    var canvasHeight by mutableStateOf(0f)
+    var canvasHeight by mutableFloatStateOf(0f)
         private set
 
     fun setCanvasSize(width: Float, height: Float) {
@@ -84,21 +85,5 @@ class SignatureViewModel : ViewModel() {
 
     fun setSelectedColor(color: Color) {
         selectedPathColor = color
-    }
-
-    fun updateSignatureTransformations(scale: Float, offsetX: Float, offsetY: Float) {
-        currentSignatureData = currentSignatureData?.copy(
-            scale = scale,
-            offsetX = offsetX,
-            offsetY = offsetY
-        ) ?: SignatureData(
-            path = currentPath, // Use currentPath if no existing SignatureData
-            width = currentPath.getBounds().width, // Recalculate if needed
-            height = currentPath.getBounds().height, // Recalculate if needed
-            scale = scale,
-            offsetX = offsetX,
-            offsetY = offsetY,
-            color = selectedPathColor
-        )
     }
 }

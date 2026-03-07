@@ -272,7 +272,7 @@ fun SignaturePreview(signature: SignatureData, onClick: (SignatureData) -> Unit)
 
 @Preview
 @Composable
-fun previewSignaturePadScreen() {
+fun PreviewSignaturePadScreen() {
     ScannermlkitTheme {
         SignaturePadScreen(onSignatureConfirmed = {})
     }

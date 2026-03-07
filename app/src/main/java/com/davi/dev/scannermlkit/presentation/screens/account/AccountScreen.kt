@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Brightness4
 import androidx.compose.material.icons.filled.Brightness7
 import androidx.compose.material.icons.filled.BrightnessAuto
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.ContactSupport
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Support
 import androidx.compose.material3.Card

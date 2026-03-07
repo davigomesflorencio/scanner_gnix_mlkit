@@ -3,7 +3,6 @@ package com.davi.dev.scannermlkit.presentation.screens.viewModel
 import android.app.Application
 import android.content.ContentValues
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.os.CancellationSignal
 import android.os.Environment

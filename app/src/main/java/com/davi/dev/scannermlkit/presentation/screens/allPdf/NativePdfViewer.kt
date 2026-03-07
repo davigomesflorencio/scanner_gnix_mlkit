@@ -2,7 +2,6 @@ package com.davi.dev.scannermlkit.presentation.screens.allPdf
 
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -101,7 +100,6 @@ fun NativePdfViewer(uri: Uri) {
     }
 
     var maxWidthDp by remember { mutableStateOf(0.dp) }
-    var maxheigthDp by remember { mutableStateOf(0.dp) }
 
     DisposableEffect(rendererResource) {
         onDispose {
@@ -204,8 +202,6 @@ fun NativePdfViewer(uri: Uri) {
                             val viewSize = with(density) {
                                 val maxWidthPxValue = maxWidthDp.toPx()
                                 val displayedHeightPx = maxWidthPxValue * (pdfH / pdfW)
-                                Log.d("xing page native", "page -> $maxWidthPxValue , $displayedHeightPx")
-
                                 Size(maxWidthPxValue, displayedHeightPx)
                             }
 
@@ -239,8 +235,8 @@ fun NativePdfViewer(uri: Uri) {
                 .padding(padding)
                 .fillMaxSize()
         ) {
-            maxWidthDp = with(density) { maxWidth }
-            val maxHeightDp = with(density) { maxHeight }
+            maxWidthDp = maxWidth
+            val maxHeightDp = maxHeight
 
             if (isCheckingEncryption) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

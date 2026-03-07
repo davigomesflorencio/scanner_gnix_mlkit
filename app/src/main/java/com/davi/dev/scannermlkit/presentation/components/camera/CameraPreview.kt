@@ -44,7 +44,7 @@ fun CameraPreview(viewModel: ScannerQrCodeViewModel) {
                     }
 
                 preview = Preview.Builder().build().also {
-                    it.setSurfaceProvider(previewView.surfaceProvider)
+                    it.surfaceProvider = previewView.surfaceProvider
                 }
 
                 cameraProvider.unbindAll()

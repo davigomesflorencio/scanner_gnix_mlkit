@@ -81,7 +81,7 @@ fun SignUpScreen(
             is AuthState.AccountCreateSuccess -> {
                 snackbarHostState.showSnackbar(
                     "Account created successfully!\n" +
-                            "Verifique a caixa de entrada de seu email."
+                            "Check your email inbox."
                 )
             }
 

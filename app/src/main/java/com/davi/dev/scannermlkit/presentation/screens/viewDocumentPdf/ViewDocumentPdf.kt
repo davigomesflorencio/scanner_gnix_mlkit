@@ -27,7 +27,7 @@ fun ViewDocumentPdf(filePath: String) {
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            Text("Arquivo não encontrado")
+            Text("File not found")
         }
     }
 }

@@ -13,6 +13,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -43,8 +44,8 @@ fun PDFPage(
     onUpdateSignature: (SignatureData) -> Unit = {}
 ) {
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
-    val pageBitmapWidthPx = remember { mutableStateOf(0f) } // Store actual width in pixels
-    val pageBitmapHeightPx = remember { mutableStateOf(0f) } // Store actual height in pixels
+    val pageBitmapWidthPx = remember { mutableFloatStateOf(0f) } // Store actual width in pixels
+    val pageBitmapHeightPx = remember { mutableFloatStateOf(0f) } // Store actual height in pixels
     val density = LocalDensity.current
 
     LaunchedEffect(pageIndex) {
@@ -98,7 +99,7 @@ fun PDFPage(
             ) { // Use fillMaxWidth to respect page aspect ratio
                 Image(
                     bitmap = it.asImageBitmap(),
-                    contentDescription = "Página ${pageIndex + 1}",
+                    contentDescription = "Page ${pageIndex + 1}",
                     modifier = Modifier.fillMaxWidth(),
                     contentScale = ContentScale.FillWidth
                 )

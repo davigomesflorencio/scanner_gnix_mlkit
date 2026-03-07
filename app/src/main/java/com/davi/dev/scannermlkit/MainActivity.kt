@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.davi.dev.scannermlkit.data.repository.UserPreferencesRepositoryImpl
 import com.davi.dev.scannermlkit.presentation.navigation.AppNavHost
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AccountViewModel
-import com.davi.dev.scannermlkit.presentation.screens.viewModel.AllPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.CompressPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.HomeViewModel
@@ -55,7 +54,6 @@ class MainActivity : ComponentActivity() {
     val compressPdfViewModel: CompressPdfViewModel by viewModels()
     val watermarkPdfViewModel: WatermarkPdfViewModel by viewModels()
     val homeViewModel: HomeViewModel by viewModels()
-    val allPdfViewModel: AllPdfViewModel by viewModels()
     val authViewModel: AuthViewModel by viewModels()
     
     val accountViewModel: AccountViewModel by viewModels {
@@ -94,7 +92,6 @@ class MainActivity : ComponentActivity() {
                         watermarkPdfViewModel = watermarkPdfViewModel,
                         homeViewModel = homeViewModel,
                         authViewModel = authViewModel,
-                        allPdfViewModel = allPdfViewModel,
                         accountViewModel = accountViewModel
                     )
                 }

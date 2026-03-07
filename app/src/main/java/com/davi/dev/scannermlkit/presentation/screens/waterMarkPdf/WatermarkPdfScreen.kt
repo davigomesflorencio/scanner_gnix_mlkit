@@ -1,4 +1,4 @@
-package com.davi.dev.scannermlkit.presentation.screens.watermarkPdf
+package com.davi.dev.scannermlkit.presentation.screens.waterMarkPdf
 
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TextSnippet
 import androidx.compose.material.icons.filled.FileUpload
-import androidx.compose.material.icons.filled.TextSnippet
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -93,7 +93,7 @@ fun WatermarkPdfScreen(
                 value = watermarkText,
                 onValueChange = { watermarkText = it },
                 label = { Text("Watermark Text") },
-                leadingIcon = { Icon(Icons.Filled.TextSnippet, contentDescription = null) },
+                leadingIcon = { Icon(Icons.AutoMirrored.Default.TextSnippet, contentDescription = null) },
                 modifier = Modifier.fillMaxWidth()
             )
 

@@ -50,7 +50,6 @@ import com.davi.dev.scannermlkit.presentation.screens.splash.SplashScreen
 import com.davi.dev.scannermlkit.presentation.screens.splitPdf.SplitPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.viewDocumentPdf.ViewDocumentPdf
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AccountViewModel
-import com.davi.dev.scannermlkit.presentation.screens.viewModel.AllPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthState
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.AuthViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.CompressPdfViewModel
@@ -61,7 +60,7 @@ import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerDocumentV
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerQrCodeViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.SplitPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.WatermarkPdfViewModel
-import com.davi.dev.scannermlkit.presentation.screens.watermarkPdf.WatermarkPdfScreen
+import com.davi.dev.scannermlkit.presentation.screens.waterMarkPdf.WatermarkPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.welcome.WelcomeScreen
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
@@ -78,7 +77,6 @@ fun AppNavHost(
     watermarkPdfViewModel: WatermarkPdfViewModel = viewModel(),
     homeViewModel: HomeViewModel = viewModel(),
     authViewModel: AuthViewModel = viewModel(),
-    allPdfViewModel: AllPdfViewModel = viewModel(),
     accountViewModel: AccountViewModel = viewModel()
 ) {
     val backStack = rememberNavBackStack(Routes.Splash)

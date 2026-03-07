@@ -92,7 +92,7 @@ fun UpdateCard(onUpdateClick: () -> Unit) {
 
 @Preview
 @Composable
-fun previewUpdateCard() {
+fun PreviewUpdateCard() {
     ScannermlkitTheme {
         UpdateCard { }
     }

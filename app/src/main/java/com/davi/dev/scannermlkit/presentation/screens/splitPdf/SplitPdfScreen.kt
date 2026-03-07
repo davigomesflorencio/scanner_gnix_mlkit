@@ -85,7 +85,7 @@ fun SplitPdfScreen(viewModel: SplitPdfViewModel) {
         ) {
             CardIntroduction(
                 title = "Split PDF",
-                description = "A funcionalidade de \"Dividir PDF\" permite que você selecione um arquivo PDF, especifique um intervalo de páginas (por exemplo, da página 5 à 10) e crie um novo documento PDF contendo apenas essas páginas selecionadas. É útil para extrair partes específicas de um PDF maior.",
+                description = "The \"Split PDF\" feature allows you to select a PDF file, specify a page range (e.g., from page 5 to 10), and create a new PDF document containing only those selected pages. It's useful for extracting specific parts of a larger PDF.",
             )
 
             Button(
@@ -160,7 +160,7 @@ fun SplitPdfScreen(viewModel: SplitPdfViewModel) {
                     if (start < 1 || end > pageCount || start > end) {
                         Toast.makeText(context, "Invalid page range (1-$pageCount)", Toast.LENGTH_SHORT).show()
                     } else if (fileName.isBlank()) {
-                        Toast.makeText(context, "Enter a name for the file", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Please enter a name for the file", Toast.LENGTH_SHORT).show()
                     } else {
                         viewModel.splitPdf(fileName, start, end)
                     }

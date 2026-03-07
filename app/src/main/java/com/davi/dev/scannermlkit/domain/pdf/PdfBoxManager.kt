@@ -2,7 +2,6 @@ package com.davi.dev.scannermlkit.domain.pdf
 
 import android.content.Context
 import android.graphics.PathMeasure
-import android.util.Log
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.asAndroidPath
 import com.davi.dev.scannermlkit.domain.model.SignatureData
@@ -26,11 +25,11 @@ object PdfBoxManager {
         viewSize: Size
     ): PdfSaveResult {
         if (viewSize.width <= 0f || viewSize.height <= 0f) {
-            return PdfSaveResult.Error("Tamanho de visualização inválido")
+            return PdfSaveResult.Error("Invalid view size")
         }
 
         if (!originalFile.exists()) {
-            return PdfSaveResult.Error("Arquivo original não encontrado")
+            return PdfSaveResult.Error("Original file not found")
         }
 
         PDFBoxResourceLoader.init(context)
@@ -42,14 +41,9 @@ object PdfBoxManager {
             val pdfWidth = page.mediaBox.width
             val pdfHeight = page.mediaBox.height
 
-            // Fatores de escala para converter as coordenadas da View para as coordenadas do PDF
+            // Scale factors to convert View coordinates to PDF coordinates
             val scaleX = pdfWidth / viewSize.width
             val scaleY = pdfHeight / viewSize.height
-
-            Log.d("xing", "pdf Width -> $pdfWidth , Heitgh -> $pdfHeight")
-            Log.d("xing", "viewsize width -> ${viewSize.width} , heighth -> ${viewSize.height}")
-            Log.d("xing", "scaleX -> $scaleX , scaleY -> $scaleY")
-
 
             PDPageContentStream(
                 document,
@@ -60,10 +54,8 @@ object PdfBoxManager {
             ).use { contentStream ->
 
                 paths.forEach { item ->
-//                    contentStream.setStrokingColor(0f, 0f, 0f)
                     contentStream.setStrokingColor(item.color.red, item.color.green, item.color.blue)
 
-                    // A espessura da linha também precisa ser escalada
                     contentStream.setLineWidth(5f * scaleY * item.scale)
 
                     renderPathOnContentStream(
@@ -79,8 +71,7 @@ object PdfBoxManager {
 
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.d("xing", e.stackTraceToString())
-            PdfSaveResult.Error("Erro ao processar PDF", e)
+            PdfSaveResult.Error("Error processing PDF", e)
         } finally {
             document?.close()
         }
@@ -94,8 +85,8 @@ object PdfBoxManager {
         scaleY: Float
     ) {
         val pathMeasure = PathMeasure(sigData.path.asAndroidPath(), false)
-        val pos = FloatArray(2) // Armazena [x, y]
-        val precision = 1f      // Define a "suavidade" (1 pixel de intervalo)
+        val pos = FloatArray(2) // Stores [x, y]
+        val precision = 1f      // Defines the "smoothness" (1 pixel interval)
 
         do {
             val length = pathMeasure.length
@@ -103,17 +94,17 @@ object PdfBoxManager {
             var isFirstPoint = true
 
             while (distance <= length) {
-                // Obtém a posição (x, y) no ponto 'distance' do path
+                // Gets the (x, y) position at point 'distance' of the path
                 pathMeasure.getPosTan(distance, pos, null)
 
                 val rawX = pos[0]
                 val rawY = pos[1]
 
-                // 1. Aplica o Offset e Escala do usuário (SignatureData)
-                // 2. Aplica a Escala de conversão para o PDF (View -> PDF)
+                // 1. Applies user Offset and Scale (SignatureData)
+                // 2. Applies conversion Scale for PDF (View -> PDF)
                 val pdfX = (rawX * sigData.scale + sigData.offsetX - (sigData.width / 7f * sigData.scale)) * scaleX
 
-                // 3. Inversão do eixo Y (PDF começa de baixo)
+                // 3. Inverts the Y-axis (PDF starts from bottom)
                 val pdfY = pageSize.height - ((rawY * sigData.scale + sigData.offsetY - (sigData.height / 6.2f * sigData.scale)) * scaleY)
 
                 if (isFirstPoint) {
@@ -126,16 +117,13 @@ object PdfBoxManager {
                 distance += precision
             }
 
-//            contentStream.setStrokingColor(sigData.color.red, sigData.color.green, sigData.color.blue)
-
-
-            // Garante que o último ponto do contorno seja desenhado
+            // Ensures the last point of the contour is drawn
             pathMeasure.getPosTan(length, pos, null)
             val finalX = (pos[0] * sigData.scale + sigData.offsetX - (sigData.width / 7f * sigData.scale)) * scaleX
             val finalY = pageSize.height - ((pos[1] * sigData.scale + sigData.offsetY - (sigData.height / 6.5f * sigData.scale)) * scaleY)
 //            contentStream.lineTo(finalX, finalY)
 
-        } while (pathMeasure.nextContour()) // Vai para o próximo traço se houver
+        } while (pathMeasure.nextContour()) // Goes to the next contour if any
 
         contentStream.stroke()
     }

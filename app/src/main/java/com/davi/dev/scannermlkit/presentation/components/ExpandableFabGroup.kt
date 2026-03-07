@@ -83,7 +83,7 @@ fun ExpandableFabGroup(
 
 @Preview
 @Composable
-fun previewGroupButton() {
+fun PreviewGroupButton() {
     ScannermlkitTheme {
         ExpandableFabGroup(
             expand = false

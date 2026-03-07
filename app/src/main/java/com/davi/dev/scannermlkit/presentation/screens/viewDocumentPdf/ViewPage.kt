@@ -35,7 +35,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.davi.dev.scannermlkit.domain.pdf.PdfManager
@@ -51,7 +50,6 @@ import java.io.FileOutputStream
 @Composable
 fun ViewPage(uri: Uri) {
     val context = LocalContext.current
-    val density = LocalDensity.current
 
     val scope = rememberCoroutineScope()
 
@@ -104,14 +102,14 @@ fun ViewPage(uri: Uri) {
     if (showPasswordDialog) {
         AlertDialog(
             onDismissRequest = { /* Bloquear dismiss se quiser */ },
-            title = { androidx.compose.material3.Text(text = "PDF Protegido") },
+            title = { Text(text = "Protected PDF") },
             text = {
                 Column {
-                    androidx.compose.material3.Text(text = "Este arquivo requer uma senha para ser aberto.")
+                    Text(text = "This file requires a password to open.")
                     OutlinedTextField(
                         value = password,
                         onValueChange = { password = it },
-                        label = { androidx.compose.material3.Text("Senha") },
+                        label = { Text("Password") },
                         visualTransformation = PasswordVisualTransformation(),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -134,17 +132,17 @@ fun ViewPage(uri: Uri) {
                             }
                         } else {
                             withContext(Dispatchers.Main) {
-                                Toast.makeText(context, "Senha incorreta", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Incorrect password", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
                 }) {
-                    Text("Abrir")
+                    Text("Open")
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showPasswordDialog = false }) {
-                    Text("Cancelar")
+                    Text("Cancel")
                 }
             }
         )
@@ -154,8 +152,8 @@ fun ViewPage(uri: Uri) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        val maxWidthPx = with(density) { maxWidth }
-        val maxHeightPx = with(density) { maxHeight }
+        val maxWidthPx = maxWidth
+        val maxHeightPx = maxHeight
 
         if (isCheckingEncryption) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -198,7 +196,7 @@ fun ViewPage(uri: Uri) {
         } else if (!isEncrypted || !showPasswordDialog) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 if (isEncrypted) {
-                    Text("PDF protegido por senha.")
+                    Text("PDF protected by password.")
                 } else {
                     CustomCircularProgress()
                 }

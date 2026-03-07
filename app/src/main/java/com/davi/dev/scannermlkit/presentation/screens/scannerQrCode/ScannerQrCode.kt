@@ -1,6 +1,9 @@
 package com.davi.dev.scannermlkit.presentation.screens.scannerQrCode
 
 import android.Manifest
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -28,10 +31,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -50,7 +52,8 @@ import kotlin.math.roundToInt
 fun ScannerQrCode(viewModel: ScannerQrCodeViewModel) {
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
     val uriHandler = LocalUriHandler.current
-    val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
+    val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val density = LocalDensity.current
 
     LaunchedEffect(Unit) {
@@ -121,7 +124,7 @@ fun ScannerQrCode(viewModel: ScannerQrCodeViewModel) {
                                     .clickable {
                                         try {
                                             uriHandler.openUri(data)
-                                        } catch (e: Exception) {
+                                        } catch (_: Exception) {
                                             // Ignora erro de URI
                                         }
                                     },
@@ -153,7 +156,8 @@ fun ScannerQrCode(viewModel: ScannerQrCodeViewModel) {
             if (data.isNotBlank()) {
                 FloatingActionButton(
                     onClick = {
-                        clipboardManager.setText(AnnotatedString(data))
+                        val clip = ClipData.newPlainText("QR Code Data", data)
+                        clipboardManager.setPrimaryClip(clip)
                     },
                     modifier = Modifier
                         .align(Alignment.BottomEnd)

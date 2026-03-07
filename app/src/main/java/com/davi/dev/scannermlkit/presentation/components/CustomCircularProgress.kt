@@ -29,7 +29,7 @@ fun CustomCircularProgress() {
 
 @Preview
 @Composable
-fun previewCustomCircularProgress() {
+fun PreviewCustomCircularProgress() {
     ScannermlkitTheme {
         CustomCircularProgress()
     }

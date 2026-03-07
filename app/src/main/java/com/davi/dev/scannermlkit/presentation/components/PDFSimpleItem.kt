@@ -56,7 +56,7 @@ fun PDFSimpleItem(uri: Uri) {
                         tempFile
                     } else null
                 } catch (e: Exception) {
-                    Log.e("PDFItemMerged", "Erro ao processar content Uri para File: $uri", e)
+                    Log.e("PDFItemMerged", "Error processing content Uri to File: $uri", e)
                     null
                 }
             }
@@ -70,7 +70,7 @@ fun PDFSimpleItem(uri: Uri) {
     }
 
     val formattedDate = remember(file) {
-        file?.lastModified()?.let { formatDate(it) } ?: "Data desconhecida"
+        file?.lastModified()?.let { formatDate(it) } ?: "Unknown Date"
     }
 
 
@@ -91,7 +91,7 @@ fun PDFSimpleItem(uri: Uri) {
                         .size(64.dp)
                 )
             } ?: run {
-                // Placeholder ou mensagem de erro se o arquivo não puder ser derivado
+                // Placeholder or error message if the file cannot be derived
                 Box(
                     modifier = Modifier
                         .size(64.dp)

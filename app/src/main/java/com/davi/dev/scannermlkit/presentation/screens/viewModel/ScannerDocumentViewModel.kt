@@ -2,7 +2,6 @@ package com.davi.dev.scannermlkit.presentation.screens.viewModel
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
@@ -17,12 +16,10 @@ import java.io.FileOutputStream
 
 class ScannerDocumentViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val context: Context = application.applicationContext
-    private val contentResolver = context.contentResolver
-    private val filesDir = context.filesDir
+    private val contentResolver = application.applicationContext.contentResolver
+    private val filesDir = application.applicationContext.filesDir
 
     private val _imageUris = MutableStateFlow<List<Uri>>(emptyList())
-    val imageUris: StateFlow<List<Uri>> = _imageUris
 
     private val _pdfFile = MutableStateFlow<File?>(null)
     val pdfFile: StateFlow<File?> = _pdfFile

@@ -73,7 +73,7 @@ fun MergePdfScreen(mergeDocumentViewModel: MergeDocumentViewModel) {
             item {
                 CardIntroduction(
                     title = "Merge PDF",
-                    description = "A funcionalidade \"Unir PDF\" permite combinar vários arquivos PDF em um único documento. Você pode selecionar dois ou mais PDFs e organizá-los na ordem desejada para criar um novo arquivo PDF consolidado."
+                    description = "The \"Merge PDF\" feature allows you to combine multiple PDF files into a single document. You can select two or more PDFs and arrange them in the desired order to create a new consolidated PDF file."
                 )
             }
             item {
@@ -132,14 +132,14 @@ fun MergePdfScreen(mergeDocumentViewModel: MergeDocumentViewModel) {
                 if (fileName.isNotBlank()) {
                     mergeDocumentViewModel.mergePdf(fileName)
                 } else {
-                    Toast.makeText(context, "Por favor, insira um nome para o arquivo", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Please enter a file name", Toast.LENGTH_SHORT).show()
                 }
             },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .padding(bottom = 20.dp),
-            enabled = pdfFilesUri.size >= 2 // Opcional: habilitar apenas se houver pelo menos 2 arquivos
+            enabled = pdfFilesUri.size >= 2 // Optional: enable only if there are at least 2 files
         ) {
             Text(
                 "Merge",

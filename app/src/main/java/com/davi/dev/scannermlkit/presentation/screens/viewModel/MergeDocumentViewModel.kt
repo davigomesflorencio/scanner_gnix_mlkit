@@ -2,7 +2,6 @@ package com.davi.dev.scannermlkit.presentation.screens.viewModel
 
 import android.app.Application
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.davi.dev.scannermlkit.domain.pdf.PdfManager
@@ -49,7 +48,6 @@ class MergeDocumentViewModel(application: Application) : AndroidViewModel(applic
                     FileOutputStream(outputFile).use { outputStream ->
                         PdfManager.mergePdfs(inputStreams, outputStream)
                     }
-                    Log.d("xing", "PDF created in: ${outputFile.absolutePath}")
                     _mergeStatus.emit("PDF created in: ${outputFile.absolutePath}")
                 } else {
                     _mergeStatus.emit("Error: No file could be opened.")
