@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -59,27 +56,34 @@ fun AppBar(
             onSearch = { homeViewModel.onSearchActiveChange(false) },
             active = isSearchActive,
             onActiveChange = { homeViewModel.onSearchActiveChange(it) },
-            placeholder = { Text("Pesquisar arquivos...") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+            placeholder = { Text("Search files...") },
+            leadingIcon = { Icon(painterResource(R.drawable.ic_search), contentDescription = null) },
             trailingIcon = {
                 IconButton(onClick = {
                     if (searchQuery.isNotEmpty()) homeViewModel.onSearchQueryChange("")
                     else homeViewModel.onSearchActiveChange(false)
                 }) {
-                    Icon(Icons.Default.Close, contentDescription = null)
+                    Icon(painterResource(R.drawable.icon_close), contentDescription = null)
                 }
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 0.dp)
         ) {
-            // Opcional: Lista de sugestões rápidas pode ser adicionada aqui
             pdfFiles.take(10).forEach {
-                Text(
-                    it.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(16.dp)
-                )
+                Card(
+                    elevation = CardDefaults.elevatedCardElevation(2.dp),
+                    shape = RoundedCornerShape(30.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                ) {
+                    Text(
+                        it.name,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
             }
         }
     } else {
