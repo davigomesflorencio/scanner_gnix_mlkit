@@ -4,11 +4,16 @@ import android.app.Application
 import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
+import android.os.Bundle
+import android.os.CancellationSignal
 import android.os.Environment
+import android.os.ParcelFileDescriptor
+import android.print.PageRange
+import android.print.PrintAttributes
+import android.print.PrintDocumentAdapter
+import android.print.PrintDocumentInfo
 import android.print.PrintManager
 import android.provider.MediaStore
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +28,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val _searchQuery = MutableStateFlow("")
@@ -92,21 +99,47 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun printPdf(context: Context, file: File, pdfUri: Uri) {
+    fun printPdf(context: Context, file: File) {
         val printManager = context.getSystemService(Context.PRINT_SERVICE) as PrintManager
         val jobName = "${file.name} Document"
 
-        // Create a WebView to generate the PrintDocumentAdapter
-        val webView = WebView(context)
-        webView.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView, url: String) {
-                super.onPageFinished(view, url)
-                val adapter = view.createPrintDocumentAdapter(jobName)
-                printManager.print(jobName, adapter, null)
+        val pda = object : PrintDocumentAdapter() {
+            override fun onWrite(
+                pages: Array<out PageRange>?,
+                destination: ParcelFileDescriptor?,
+                cancellationSignal: CancellationSignal?,
+                callback: WriteResultCallback?
+            ) {
+                try {
+                    val input = FileInputStream(file.absolutePath)
+                    val output = FileOutputStream(destination?.fileDescriptor)
+                    input.copyTo(output)
+                    callback?.onWriteFinished(arrayOf(PageRange.ALL_PAGES))
+                } catch (e: Exception) {
+                    callback?.onWriteFailed(e.message)
+                }
+            }
+
+            override fun onLayout(
+                oldAttributes: PrintAttributes?,
+                newAttributes: PrintAttributes?,
+                cancellationSignal: CancellationSignal?,
+                callback: LayoutResultCallback?,
+                extras: Bundle?
+            ) {
+                if (cancellationSignal?.isCanceled == true) {
+                    callback?.onLayoutCancelled()
+                    return
+                }
+
+                val info = PrintDocumentInfo.Builder(jobName)
+                    .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
+                    .build()
+                callback?.onLayoutFinished(info, true)
             }
         }
-        // Load the PDF into the WebView
-        webView.loadUrl(pdfUri.toString())
+
+        printManager.print(jobName, pda, null)
     }
 
     fun savePdfToDownloads(context: Context, sourceFile: File, newFileName: String) {

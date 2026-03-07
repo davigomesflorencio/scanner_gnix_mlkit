@@ -260,7 +260,7 @@ fun PDFItem(
                     leadingContent = { Icon(Icons.Default.Print, contentDescription = null) },
                     modifier = Modifier.clickable {
                         showBottomSheet = false
-                        homeViewModel.printPdf(context, file, pdfUri)
+                        homeViewModel.printPdf(context, file)
                     }
                 )
 
