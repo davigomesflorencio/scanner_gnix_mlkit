@@ -14,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.NavBackStack
@@ -29,6 +30,7 @@ fun Home(
     homeViewModel: HomeViewModel = viewModel(),
     scannerDocumentViewModel: ScannerDocumentViewModel = viewModel()
 ) {
+    val context = LocalContext.current
     val pdfFiles by homeViewModel.filteredFiles.collectAsState()
     val isSearchActive by homeViewModel.isSearchActive.collectAsState()
     val searchQuery by homeViewModel.searchQuery.collectAsState()
@@ -40,6 +42,7 @@ fun Home(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        UpdateChecker(context = context)
         FunctionsHomeApp(backStack, scannerDocumentViewModel)
 
         LazyColumn(

@@ -168,6 +168,8 @@ dependencies {
 
     implementation("androidx.datastore:datastore-preferences:1.2.0")
 
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
+
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
