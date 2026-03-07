@@ -29,7 +29,7 @@ class ProtectPdfViewModel(application: Application) : AndroidViewModel(applicati
                 context.contentResolver.openInputStream(uri)?.use { _ ->
                 }
             } catch (e: Exception) {
-                _splitStatus.emit("Erro ao ler PDF: ${e.message}")
+                _splitStatus.emit("Error reading PDF: ${e.message}")
             }
         }
     }
@@ -47,17 +47,17 @@ class ProtectPdfViewModel(application: Application) : AndroidViewModel(applicati
                     FileOutputStream(outputFile).use { outputStream ->
                         val success = PdfManager.protectPdf(inputStream, outputStream, password, confirmPassword)
                         if (success) {
-                            _splitStatus.emit("PDF protegido com sucesso: ${outputFile.name}")
+                            _splitStatus.emit("PDF protected successfully: ${outputFile.name}")
                             _selectedPdfUri.value = null
                         } else {
-                            _splitStatus.emit("Erro ao proteger o PDF.")
+                            _splitStatus.emit("Error protecting PDF.")
                         }
                     }
                 } ?: run {
-                    _splitStatus.emit("Erro: Não foi possível abrir o arquivo.")
+                    _splitStatus.emit("Error: Could not open the file.")
                 }
             } catch (e: Exception) {
-                _splitStatus.emit("Erro ao proteger o PDF: ${e.message}")
+                _splitStatus.emit("Error protecting PDF: ${e.message}")
             }
         }
     }

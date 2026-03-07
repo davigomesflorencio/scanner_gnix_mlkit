@@ -35,7 +35,7 @@ class SplitPdfViewModel(application: Application) : AndroidViewModel(application
                 }
             } catch (e: Exception) {
                 _pageCount.value = 0
-                _splitStatus.emit("Erro ao ler PDF: ${e.message}")
+                _splitStatus.emit("Error reading PDF: ${e.message}")
             }
         }
     }
@@ -53,12 +53,12 @@ class SplitPdfViewModel(application: Application) : AndroidViewModel(application
                     FileOutputStream(outputFile).use { outputStream ->
                         PdfManager.splitPdf(inputStream, outputStream, startPage, endPage)
                     }
-                    _splitStatus.emit("PDF dividido com sucesso: ${outputFile.name}")
+                    _splitStatus.emit("PDF split successfully: ${outputFile.name}")
                 } ?: run {
-                    _splitStatus.emit("Erro: Não foi possível abrir o arquivo.")
+                    _splitStatus.emit("Error: Could not open the file.")
                 }
             } catch (e: Exception) {
-                _splitStatus.emit("Erro ao dividir PDF: ${e.message}")
+                _splitStatus.emit("Error splitting PDF: ${e.message}")
             }
         }
     }

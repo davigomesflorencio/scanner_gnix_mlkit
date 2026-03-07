@@ -81,17 +81,17 @@ class AuthViewModel : ViewModel() {
             } catch (e: AuthRestException) {
                 Log.e("AuthViewModel", "AuthRestException during sign in: ${e.error} - ${e.description}", e)
                 val message = when (e.error) {
-                    "invalid_credentials" -> "E-mail ou senha incorretos."
-                    "email_not_confirmed" -> "E-mail não confirmado. Verifique sua caixa de entrada."
-                    else -> e.description ?: "Falha ao entrar: Verifique suas credenciais."
+                    "invalid_credentials" -> "Incorrect email or password."
+                    "email_not_confirmed" -> "Email not confirmed. Check your inbox."
+                    else -> e.description ?: "Sign in failed: Check your credentials."
                 }
                 _authState.value = AuthState.Error(message)
             } catch (e: RestException) {
                 Log.e("AuthViewModel", "RestException during sign in", e)
-                _authState.value = AuthState.Error("Falha ao entrar: Verifique sua conexão.")
+                _authState.value = AuthState.Error("Sign in failed: Check your connection.")
             } catch (e: Exception) {
                 Log.e("AuthViewModel", "Exception during sign in", e)
-                _authState.value = AuthState.Error(e.message ?: "Ocorreu um erro ao entrar.")
+                _authState.value = AuthState.Error(e.message ?: "An error occurred during sign in.")
             }
         }
     }
@@ -111,16 +111,16 @@ class AuthViewModel : ViewModel() {
             } catch (e: AuthRestException) {
                 Log.e("AuthViewModel", "AuthRestException during sign up: ${e.error} - ${e.description}", e)
                 val message = when (e.error) {
-                    "user_already_exists" -> "Este e-mail já está em uso."
-                    else -> e.description ?: "Falha ao criar conta: ${e.message}"
+                    "user_already_exists" -> "This email is already in use."
+                    else -> e.description ?: "Account creation failed: ${e.message}"
                 }
                 _authState.value = AuthState.Error(message)
             } catch (e: RestException) {
                 Log.e("AuthViewModel", "RestException during sign up", e)
-                _authState.value = AuthState.Error("Falha ao criar conta: Verifique sua conexão.")
+                _authState.value = AuthState.Error("Account creation failed: Check your connection.")
             } catch (e: Exception) {
                 Log.e("AuthViewModel", "Exception during sign up", e)
-                _authState.value = AuthState.Error(e.message ?: "Ocorreu um erro ao criar conta.")
+                _authState.value = AuthState.Error(e.message ?: "An error occurred during account creation.")
             }
         }
     }
@@ -165,13 +165,13 @@ class AuthViewModel : ViewModel() {
 
                 _authState.value = AuthState.Success
             } catch (e: NoCredentialException) {
-                val errorMsg = "Nenhuma conta Google encontrada no dispositivo."
+                val errorMsg = "No Google account found on the device."
                 Log.w("AuthViewModel", "NoCredentialException: No credentials available.")
                 _authState.value = AuthState.Error(errorMsg)
             } catch (e: GetCredentialCancellationException) {
                 val message = e.message ?: ""
                 if (message.contains("[16]") || message.contains("reauth failed")) {
-                    val errorMsg = "Erro de configuração: Verifique se o SHA-1 e o nome do pacote estão corretos no Google Cloud Console."
+                    val errorMsg = "Configuration error: Check if SHA-1 and package name are correct in Google Cloud Console."
                     Log.e("AuthViewModel", "Error 16: Account reauth failed.")
                     _authState.value = AuthState.Error(errorMsg)
                 } else {
@@ -180,19 +180,19 @@ class AuthViewModel : ViewModel() {
                 }
             } catch (e: GetCredentialException) {
                 Log.e("AuthViewModel", "GetCredentialException: ${e.message}", e)
-                _authState.value = AuthState.Error(e.message ?: "Falha na autenticação")
+                _authState.value = AuthState.Error(e.message ?: "Authentication failed")
             } catch (e: GoogleIdTokenParsingException) {
                 Log.e("AuthViewModel", "GoogleIdTokenParsingException", e)
-                _authState.value = AuthState.Error("Falha ao processar o token do Google")
+                _authState.value = AuthState.Error("Failed to process Google token")
             } catch (e: AuthRestException) {
                 Log.e("AuthViewModel", "AuthRestException during Google sign in", e)
-                _authState.value = AuthState.Error("Falha na autenticação com o servidor: ${e.description ?: e.error}")
+                _authState.value = AuthState.Error("Server authentication failed: ${e.description ?: e.error}")
             } catch (e: RestException) {
                 Log.e("AuthViewModel", "RestException", e)
-                _authState.value = AuthState.Error("Falha na autenticação com o servidor")
+                _authState.value = AuthState.Error("Server authentication failed")
             } catch (e: Exception) {
                 Log.e("AuthViewModel", "Exception", e)
-                _authState.value = AuthState.Error(e.message ?: "Ocorreu um erro desconhecido")
+                _authState.value = AuthState.Error(e.message ?: "An unknown error occurred")
             }
         }
     }

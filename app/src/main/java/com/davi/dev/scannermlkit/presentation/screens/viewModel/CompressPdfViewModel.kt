@@ -47,13 +47,13 @@ class CompressPdfViewModel(application: Application) : AndroidViewModel(applicat
                     FileOutputStream(outputFile).use { outputStream ->
                         PdfManager.compressPdf(inputStream, outputStream, _compressionLevel.value.level)
                     }
-                    _status.emit("PDF comprimido com sucesso: ${outputFile.name}")
+                    _status.emit("PDF compressed successfully: ${outputFile.name}")
                     _selectedPdfUri.value = null
                 } ?: run {
-                    _status.emit("Erro: Não foi possível abrir o arquivo.")
+                    _status.emit("Error: Could not open the file.")
                 }
             } catch (e: Exception) {
-                _status.emit("Erro ao comprimir o PDF: ${e.message}")
+                _status.emit("Error compressing PDF: ${e.message}")
             }
         }
     }

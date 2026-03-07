@@ -49,14 +49,14 @@ class MergeDocumentViewModel(application: Application) : AndroidViewModel(applic
                     FileOutputStream(outputFile).use { outputStream ->
                         PdfManager.mergePdfs(inputStreams, outputStream)
                     }
-                    Log.d("xing", "PDF criado em: ${outputFile.absolutePath}")
-                    _mergeStatus.emit("PDF criado em: ${outputFile.absolutePath}")
+                    Log.d("xing", "PDF created in: ${outputFile.absolutePath}")
+                    _mergeStatus.emit("PDF created in: ${outputFile.absolutePath}")
                 } else {
-                    _mergeStatus.emit("Erro: Nenhum arquivo pôde ser aberto.")
+                    _mergeStatus.emit("Error: No file could be opened.")
                 }
                 cleanPdfs()
             } catch (e: Exception) {
-                _mergeStatus.emit("Erro ao mesclar PDFs: ${e.message}")
+                _mergeStatus.emit("Error merging PDFs: ${e.message}")
             }
         }
     }
