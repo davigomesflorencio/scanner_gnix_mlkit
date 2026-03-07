@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.TextSnippet
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,7 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.davi.dev.scannermlkit.presentation.components.CustomDivider
+import com.davi.dev.scannermlkit.presentation.components.CardIntroduction
 import com.davi.dev.scannermlkit.presentation.components.PDFSimpleItem
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.WatermarkPdfViewModel
 import java.text.SimpleDateFormat
@@ -66,13 +65,10 @@ fun WatermarkPdfScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = "Watermark PDF",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(bottom = 24.dp)
+        CardIntroduction(
+            title = "WaterMark PDF",
+            description = "Add a watermark to your PDF document.",
         )
-
-        CustomDivider()
 
         Button(
             onClick = { launcher.launch("application/pdf") },

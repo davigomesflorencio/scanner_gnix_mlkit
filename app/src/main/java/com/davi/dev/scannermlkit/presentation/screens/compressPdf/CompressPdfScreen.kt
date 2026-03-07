@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.davi.dev.scannermlkit.domain.enums.CompressionLevel
+import com.davi.dev.scannermlkit.presentation.components.CardIntroduction
 import com.davi.dev.scannermlkit.presentation.components.CustomDivider
 import com.davi.dev.scannermlkit.presentation.components.PDFSimpleItem
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.CompressPdfViewModel
@@ -68,13 +69,10 @@ fun CompressPdfScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = "Compress PDF",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(bottom = 24.dp)
+        CardIntroduction(
+            title = "Compress PDF",
+            description = "Reduce the file size of your PDF document.",
         )
-
-        CustomDivider()
 
         Button(
             onClick = { launcher.launch("application/pdf") },

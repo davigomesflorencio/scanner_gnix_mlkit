@@ -29,8 +29,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.davi.dev.scannermlkit.presentation.components.CardIntroduction
 import com.davi.dev.scannermlkit.presentation.components.CustomDivider
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.MergeDocumentViewModel
 import java.text.SimpleDateFormat
@@ -71,15 +71,10 @@ fun MergePdfScreen(mergeDocumentViewModel: MergeDocumentViewModel) {
             modifier = Modifier.padding(bottom = 120.dp)
         ) {
             item {
-                Text(
-                    "Merge PDF",
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.fillMaxWidth()
+                CardIntroduction(
+                    title = "Merge PDF",
+                    description = "A funcionalidade \"Unir PDF\" permite combinar vários arquivos PDF em um único documento. Você pode selecionar dois ou mais PDFs e organizá-los na ordem desejada para criar um novo arquivo PDF consolidado."
                 )
-            }
-            item {
-                CustomDivider()
             }
             item {
                 Text(

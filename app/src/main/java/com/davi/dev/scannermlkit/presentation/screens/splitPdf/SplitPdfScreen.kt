@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.davi.dev.scannermlkit.presentation.components.CardIntroduction
 import com.davi.dev.scannermlkit.presentation.components.CustomDivider
 import com.davi.dev.scannermlkit.presentation.components.PDFSimpleItem
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.SplitPdfViewModel
@@ -82,12 +83,10 @@ fun SplitPdfScreen(viewModel: SplitPdfViewModel) {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                "Split PDF",
-                style = MaterialTheme.typography.titleLarge
+            CardIntroduction(
+                title = "Split PDF",
+                description = "A funcionalidade de \"Dividir PDF\" permite que você selecione um arquivo PDF, especifique um intervalo de páginas (por exemplo, da página 5 à 10) e crie um novo documento PDF contendo apenas essas páginas selecionadas. É útil para extrair partes específicas de um PDF maior.",
             )
-
-            CustomDivider()
 
             Button(
                 onClick = { launcher.launch("application/pdf") },

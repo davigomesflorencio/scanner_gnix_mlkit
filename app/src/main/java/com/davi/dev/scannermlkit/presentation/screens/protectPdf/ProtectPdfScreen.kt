@@ -32,10 +32,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.davi.dev.scannermlkit.presentation.components.CustomDivider
+import com.davi.dev.scannermlkit.presentation.components.CardIntroduction
 import com.davi.dev.scannermlkit.presentation.components.PDFSimpleItem
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.ProtectPdfViewModel
 import java.text.SimpleDateFormat
@@ -73,14 +72,14 @@ fun ProtectPdfScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = "Protect PDF",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(bottom = 24.dp)
+        CardIntroduction(
+            title = "Protect PDF",
+            description = "Set a password to protect your scan. This " +
+                    "password will be required if you or the person " +
+                    "you provide the scanned document wants to " +
+                    "access the file. If you forget the password, then " +
+                    "this file will not be accessible forever.",
         )
-
-        CustomDivider()
-
         Button(
             onClick = { launcher.launch("application/pdf") },
             modifier = Modifier
@@ -166,10 +165,4 @@ fun ProtectPdfScreen(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProtectPdfScreenPreview() {
-    ProtectPdfScreen()
 }
