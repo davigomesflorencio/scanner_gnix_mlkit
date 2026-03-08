@@ -1,20 +1,29 @@
 [versions]
 accompanistPermissions = "0.37.3"
 agp = "9.0.0"
+appUpdateKtx = "2.1.0"
 barcodeScanning = "17.3.0"
+bom = "3.4.1"
+itextPdf = "9.5.0"
 cameraCore = "1.5.3"
 coilNetworkOkhttp = "3.3.0"
 coreKtx = "1.17.0"
+credentials = "1.6.0-rc02"
+datastorePreferences = "1.2.0"
+googleid = "1.2.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
+ktorClientAndroid = "3.4.0"
 lifecycle = "2.10.0"
 activityCompose = "1.12.2"
 kotlin = "2.0.21"
 composeBom = "2026.02.00"
 kotlinSerialization = "2.2.21"
+lottieCompose = "6.7.1"
 materialIconsExtended = "1.7.8"
 nav3Core = "1.0.0"
+pdfboxAndroid = "2.0.27.0"
 playServicesMlkitDocumentScanner = "16.0.0"
 fragmentCompose = "1.8.9"
 appcompat = "1.6.1"
@@ -33,9 +42,21 @@ androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "
 androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraCore" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "appUpdateKtx" }
+auth-kt = { module = "io.github.jan-tennert.supabase:auth-kt" }
 barcode-scanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "barcodeScanning" }
+bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "bom" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilNetworkOkhttp" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
+googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
+itextpdf-kernel-android = { module = "com.itextpdf.android:kernel-android", version.ref = "itextPdf" }
+itextpdf-layout-android = { module = "com.itextpdf.android:layout-android", version.ref = "itextPdf" }
+itextpdf-io-android = { module = "com.itextpdf.android:io-android", version.ref = "itextPdf" }
+itextpdf-bouncy-castle-connector-android = { module = "com.itextpdf.android:bouncy-castle-connector-android", version.ref = "itextPdf" }
+itextpdf-bouncy-castle-adapter-android = { module = "com.itextpdf.android:bouncy-castle-adapter-android", version.ref = "itextPdf" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -53,6 +74,9 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 androidx-compose-material = { group = "androidx.compose.material", name = "material" }
 androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
 androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3Core" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktorClientAndroid" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
+pdfbox-android = { module = "com.tom-roush:pdfbox-android", version.ref = "pdfboxAndroid" }
 play-services-mlkit-document-scanner = { module = "com.google.android.gms:play-services-mlkit-document-scanner", version.ref = "playServicesMlkitDocumentScanner" }
 androidx-fragment-compose = { group = "androidx.fragment", name = "fragment-compose", version.ref = "fragmentCompose" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -62,7 +86,6 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 androidx-compose-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
-
 
 
 [plugins]

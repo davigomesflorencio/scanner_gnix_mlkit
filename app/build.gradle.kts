@@ -140,11 +140,11 @@ dependencies {
 
     implementation(libs.play.services.mlkit.document.scanner)
 
-    implementation("com.itextpdf.android:kernel-android:9.5.0")
-    implementation("com.itextpdf.android:io-android:9.5.0")
-    implementation("com.itextpdf.android:layout-android:9.5.0")
-    implementation("com.itextpdf.android:bouncy-castle-adapter-android:9.5.0")
-    implementation("com.itextpdf.android:bouncy-castle-connector-android:9.5.0")
+    implementation(libs.itextpdf.kernel.android)
+    implementation(libs.itextpdf.io.android)
+    implementation(libs.itextpdf.layout.android)
+    implementation(libs.itextpdf.bouncy.castle.adapter.android)
+    implementation(libs.itextpdf.bouncy.castle.connector.android)
 
     implementation(libs.barcode.scanning)
     // CameraX Dependencies
@@ -153,22 +153,22 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
 
-    implementation("com.airbnb.android:lottie-compose:6.7.1")
+    implementation(libs.lottie.compose)
 
-    implementation(platform("io.github.jan-tennert.supabase:bom:3.4.1"))
-    implementation("io.github.jan-tennert.supabase:auth-kt")
+    implementation(platform(libs.bom))
+    implementation(libs.auth.kt)
 
-    implementation("io.ktor:ktor-client-android:3.4.0")
+    implementation(libs.ktor.client.android)
 
-    implementation("androidx.credentials:credentials:1.6.0-rc02")
-    implementation("androidx.credentials:credentials-play-services-auth:1.6.0-rc02")
-    implementation("com.google.android.libraries.identity.googleid:googleid:1.2.0")
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 
-    implementation("com.tom-roush:pdfbox-android:2.0.27.0")
+    implementation(libs.pdfbox.android)
 
-    implementation("androidx.datastore:datastore-preferences:1.2.0")
+    implementation(libs.androidx.datastore.preferences)
 
-    implementation("com.google.android.play:app-update-ktx:2.1.0")
+    implementation(libs.app.update.ktx)
 
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
