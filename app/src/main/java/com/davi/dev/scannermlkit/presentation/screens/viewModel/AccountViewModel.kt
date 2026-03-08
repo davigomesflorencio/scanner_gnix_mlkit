@@ -67,6 +67,6 @@ class AccountViewModel(
         }
     }
 
-    val appVersion = "1.6.0"
+    val appVersion = "1.7.0"
     val supportEmail = "davigomesflorencio@gmail.com"
 }
