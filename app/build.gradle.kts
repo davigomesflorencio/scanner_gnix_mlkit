@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -22,8 +23,8 @@ android {
         applicationId = "com.davi.dev.scannermlkit"
         minSdk = 34
         targetSdk = 36
-        versionCode = 8
-        versionName = "1.7.0"
+        versionCode = 9
+        versionName = "1.7.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -61,7 +62,6 @@ android {
             if (storeFilePath != null) {
                 storeFile = file(storeFilePath)
             }
-
         }
 
         getByName("debug") {
@@ -81,7 +81,6 @@ android {
             if (storeFilePath != null) {
                 storeFile = file(storeFilePath)
             }
-
         }
     }
 
@@ -94,6 +93,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            val supabaseUrl: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_URL") ?: ""
+            buildConfigField("String", "supabaseUrl", supabaseUrl)
+            val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?: ""
+            buildConfigField("String", "supabaseKey", supabaseKey)
         }
         debug {
             signingConfig = signingConfigs.getByName("debug")
@@ -101,6 +105,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            val supabaseUrl: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_URL") ?: ""
+            buildConfigField("String", "supabaseUrl", supabaseUrl)
+            val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?: ""
+            buildConfigField("String", "supabaseKey", supabaseKey)
         }
     }
     compileOptions {
@@ -114,6 +123,7 @@ android {
     buildFeatures {
         compose = true
         viewBinding = true
+        buildConfig = true
     }
 }
 

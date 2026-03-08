@@ -34,8 +34,8 @@ import io.github.jan.supabase.createSupabaseClient
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 val supabase = createSupabaseClient(
-    supabaseUrl = "https://zqzmohxxefcfiqsiyjxx.supabase.co",
-    supabaseKey = "sb_publishable_UgpIvS0Act_NhUq2JJO_WQ_3tCjfEzq"
+    supabaseUrl = BuildConfig.supabaseUrl,
+    supabaseKey = BuildConfig.supabaseKey
 ) {
     install(Auth)
 }
@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
     val watermarkPdfViewModel: WatermarkPdfViewModel by viewModels()
     val homeViewModel: HomeViewModel by viewModels()
     val authViewModel: AuthViewModel by viewModels()
-    
+
     val accountViewModel: AccountViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
