@@ -1,4 +1,4 @@
-package com.davi.dev.scannermlkit.presentation.screens.waterMarkPdf
+package com.davi.dev.scannermlkit.presentation.screens.watermarkPdf
 
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult

@@ -60,7 +60,7 @@ import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerDocumentV
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerQrCodeViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.SplitPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.WatermarkPdfViewModel
-import com.davi.dev.scannermlkit.presentation.screens.waterMarkPdf.WatermarkPdfScreen
+import com.davi.dev.scannermlkit.presentation.screens.watermarkPdf.WatermarkPdfScreen
 import com.davi.dev.scannermlkit.presentation.screens.welcome.WelcomeScreen
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
@@ -252,7 +252,7 @@ fun AppNavHost(
                         }
 
                         is Routes.SelectViewDocument -> NavEntry(key) {
-                            SelectDocumentViewer(scannerDocumentViewModel)
+                            SelectDocumentViewer(backStack, scannerDocumentViewModel)
                         }
 
                         is Routes.ViewDocument -> NavEntry(key) {
