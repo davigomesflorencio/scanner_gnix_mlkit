@@ -24,13 +24,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.davi.dev.scannermlkit.R
 import com.davi.dev.scannermlkit.presentation.screens.allPdf.NativePdfViewer
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerDocumentViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable()
-fun SelectDocumentViewer(scannerDocumentViewModel: ScannerDocumentViewModel) {
+fun SelectDocumentViewer(
+    navBackStack: NavBackStack<NavKey>,
+    scannerDocumentViewModel: ScannerDocumentViewModel
+) {
     val documentUri by scannerDocumentViewModel.documentUri.collectAsState()
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
@@ -56,7 +61,7 @@ fun SelectDocumentViewer(scannerDocumentViewModel: ScannerDocumentViewModel) {
             }
         }
         documentUri?.let { uri ->
-            NativePdfViewer(uri)
+            NativePdfViewer(uri, navBackStack)
         } ?: Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center

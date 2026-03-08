@@ -42,12 +42,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.davi.dev.scannermlkit.domain.model.SignatureData
 import com.davi.dev.scannermlkit.domain.pdf.PdfBoxManager
 import com.davi.dev.scannermlkit.domain.pdf.PdfManager
 import com.davi.dev.scannermlkit.domain.pdf.PdfSaveResult
 import com.davi.dev.scannermlkit.presentation.components.CustomCircularProgress
 import com.davi.dev.scannermlkit.presentation.components.ExpandableFabGroup
+import com.davi.dev.scannermlkit.presentation.navigation.Routes
 import com.davi.dev.scannermlkit.presentation.screens.signaturepad.SignaturePadScreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,7 +60,7 @@ import java.io.FileOutputStream
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NativePdfViewer(uri: Uri) {
+fun NativePdfViewer(uri: Uri, navBackStack: NavBackStack<NavKey>) {
     val context = LocalContext.current
     val density = LocalDensity.current
     val scope = rememberCoroutineScope()
@@ -216,6 +219,8 @@ fun NativePdfViewer(uri: Uri) {
                                 when (result) {
                                     is PdfSaveResult.Success -> {
                                         Toast.makeText(context, "Saved successfully!", Toast.LENGTH_LONG).show()
+                                        navBackStack.removeLastOrNull()
+                                        navBackStack.add(Routes.ViewDocument(result.file.path))
                                     }
 
                                     is PdfSaveResult.Error -> {
