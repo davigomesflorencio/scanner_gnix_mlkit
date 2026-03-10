@@ -37,9 +37,11 @@ android {
         }
 
         val supabaseUrl: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_URL") ?:  System.getenv("SUPABASE_URL")
-        buildConfigField("String", "supabaseUrl", supabaseUrl)
+        buildConfigField("String", "supabaseUrl", "$supabaseUrl")
+        println(supabaseUrl)
         val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?:  System.getenv("SUPABASE_KEY")
-        buildConfigField("String", "supabaseKey", supabaseKey)
+        buildConfigField("String", "supabaseKey", "$supabaseKey")
+        println(supabaseKey)
     }
 
     // Opcional: Garante que as libs não sejam comprimidas no APK
@@ -98,11 +100,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
-//            val supabaseUrl: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_URL") ?:  System.getenv("SUPABASE_URL")
-//            buildConfigField("String", "supabaseUrl", supabaseUrl)
-//            val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?:  System.getenv("SUPABASE_KEY")
-//            buildConfigField("String", "supabaseKey", supabaseKey)
         }
         debug {
             signingConfig = signingConfigs.getByName("debug")
@@ -110,11 +107,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
-//            val supabaseUrl: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_URL") ?:  System.getenv("SUPABASE_URL")
-//            buildConfigField("String", "supabaseUrl", supabaseUrl)
-//            val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?:  System.getenv("SUPABASE_KEY")
-//            buildConfigField("String", "supabaseKey", supabaseKey)
         }
     }
     compileOptions {
