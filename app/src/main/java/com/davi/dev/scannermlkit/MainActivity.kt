@@ -28,17 +28,8 @@ import com.davi.dev.scannermlkit.presentation.screens.viewModel.ScannerQrCodeVie
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.SplitPdfViewModel
 import com.davi.dev.scannermlkit.presentation.screens.viewModel.WatermarkPdfViewModel
 import com.davi.dev.scannermlkit.presentation.theme.ScannermlkitTheme
-import io.github.jan.supabase.auth.Auth
-import io.github.jan.supabase.createSupabaseClient
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-
-val supabase = createSupabaseClient(
-    supabaseUrl = BuildConfig.supabaseUrl,
-    supabaseKey = BuildConfig.supabaseKey
-) {
-    install(Auth)
-}
 
 class MainActivity : ComponentActivity() {
 

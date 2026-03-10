@@ -9,7 +9,7 @@ import androidx.credentials.exceptions.GetCredentialException
 import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.davi.dev.scannermlkit.supabase
+import com.davi.dev.scannermlkit.core.supabase.SupabaseConfig
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -38,6 +38,8 @@ sealed class AuthState {
 
 class AuthViewModel : ViewModel() {
 
+    private val supabaseClient = SupabaseConfig.client
+
     private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
     val authState: StateFlow<AuthState> = _authState.asStateFlow()
 
@@ -48,7 +50,7 @@ class AuthViewModel : ViewModel() {
     fun checkSession() {
         viewModelScope.launch {
             try {
-                val session = supabase.auth.currentSessionOrNull()
+                val session = supabaseClient.auth.currentSessionOrNull()
                 if (session != null) {
                     _authState.value = AuthState.Success
                 }
@@ -61,7 +63,7 @@ class AuthViewModel : ViewModel() {
     fun signOut() {
         viewModelScope.launch {
             try {
-                supabase.auth.signOut()
+                supabaseClient.auth.signOut()
                 _authState.value = AuthState.Idle
             } catch (e: Exception) {
                 Log.e("AuthViewModel", "Error signing out", e)
@@ -73,7 +75,7 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch {
             _authState.value = AuthState.Loading
             try {
-                supabase.auth.signInWith(Email) {
+                supabaseClient.auth.signInWith(Email) {
                     this.email = email.trim()
                     this.password = password
                 }
@@ -100,7 +102,7 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch {
             _authState.value = AuthState.Loading
             try {
-                supabase.auth.signUpWith(Email) {
+                supabaseClient.auth.signUpWith(Email) {
                     this.email = email.trim()
                     this.password = password
                     data = buildJsonObject {
@@ -157,7 +159,7 @@ class AuthViewModel : ViewModel() {
                 val googleIdTokenCredential = GoogleIdTokenCredential
                     .createFrom(result.credential.data)
                 val googleIdToken = googleIdTokenCredential.idToken
-                supabase.auth.signInWith(IDToken) {
+                supabaseClient.auth.signInWith(IDToken) {
                     idToken = googleIdToken
                     provider = Google
                     nonce = rawNonce

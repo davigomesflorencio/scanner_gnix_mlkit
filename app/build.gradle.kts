@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -12,6 +11,12 @@ val keystoreProperties = Properties()
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(FileInputStream(localPropertiesFile))
 }
 
 android {
@@ -36,12 +41,12 @@ android {
             }
         }
 
-        val supabaseUrl: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_URL") ?:  System.getenv("SUPABASE_URL")
-        buildConfigField("String", "supabaseUrl", "$supabaseUrl")
-        println(supabaseUrl)
-        val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?:  System.getenv("SUPABASE_KEY")
-        buildConfigField("String", "supabaseKey", "$supabaseKey")
-        println(supabaseKey)
+        val supabaseUrl: String = localProperties["SUPABASE_URL"] as? String ?: System.getenv("SUPABASE_URL")
+        buildConfigField("String", "supabaseUrl", supabaseUrl)
+//        println(supabaseUrl)
+        val supabaseKey: String = localProperties["SUPABASE_KEY"] as? String ?: System.getenv("SUPABASE_KEY")
+        buildConfigField("String", "supabaseKey", supabaseKey)
+//        println(supabaseKey)
     }
 
     // Opcional: Garante que as libs não sejam comprimidas no APK
