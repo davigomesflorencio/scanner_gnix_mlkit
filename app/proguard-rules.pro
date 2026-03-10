@@ -32,6 +32,18 @@
 -keep class androidx.camera.lifecycle.** { *; }
 -keep class androidx.camera.view.** { *; }
 
+# Keep all public classes, interfaces, and methods in androidx.credentials
+-keep class androidx.credentials.** { *; }
+
+# Keep annotations (some APIs rely on them)
+-keepattributes *Annotation*
+
+# Keep enums (used for credential types)
+-keepclassmembers enum androidx.credentials.** { *; }
+
+# If you use custom credential providers via reflection
+-keep class * implements androidx.credentials.provider.CredentialProviderService { *; }
+
 -if class androidx.credentials.CredentialManager
 -keep class androidx.credentials.playservices.** {
   *;
