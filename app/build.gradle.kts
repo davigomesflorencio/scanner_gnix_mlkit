@@ -41,12 +41,8 @@ android {
             }
         }
 
-        val supabaseUrl: String = localProperties["SUPABASE_URL"] as? String ?: System.getenv("SUPABASE_URL")
-        buildConfigField("String", "supabaseUrl", supabaseUrl)
-//        println(supabaseUrl)
-        val supabaseKey: String = localProperties["SUPABASE_KEY"] as? String ?: System.getenv("SUPABASE_KEY")
-        buildConfigField("String", "supabaseKey", supabaseKey)
-//        println(supabaseKey)
+        buildConfigField("String", "supabaseUrl", "\"${localProperties.getProperty("SUPABASE_URL")}\"")
+        buildConfigField("String", "supabaseKey", "\"${localProperties.getProperty("SUPABASE_KEY")}\"")
     }
 
     // Opcional: Garante que as libs não sejam comprimidas no APK
