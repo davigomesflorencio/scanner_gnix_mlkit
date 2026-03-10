@@ -26,6 +26,12 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
+      # Create local properties with Supabase credentials
+      - name: Create local.properties
+        run: |
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> local.properties
+          echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> local.properties
+
       - name: Build with Gradle
         env:
           # Essas variáveis serão lidas pelo seu build.gradle
@@ -33,13 +39,13 @@ jobs:
           RELEASE_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           RELEASE_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: ./gradlew assembleRelease
 
-      - name: Clean up Keystore
+      - name: Clean up sensitive files
         if: always()
-        run: rm -f app/release.jks
+        run: |
+          rm -f app/release.jks
+          rm -f local.properties
 
 #      - name: Upload APK
 #        uses: actions/upload-artifact@v4
