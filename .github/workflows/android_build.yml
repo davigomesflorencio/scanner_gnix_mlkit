@@ -1,9 +1,9 @@
-name: Build Android APK
+name: Build and Release APK on GitHub
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "v*"  # Trigger on tags like v1.0.0, v2.3.5, etc.
 
 jobs:
   build:
@@ -34,13 +34,30 @@ jobs:
           RELEASE_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           RELEASE_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release
-          path: app/build/outputs/apk/release/app-release.apk
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
       - name: Clean up Keystore
         if: always()
         run: rm -f app/release.jks
+
+#      - name: Upload APK
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: app-release
+#          path: app/build/outputs/apk/release/app-release.apk
+
+      - name: Get release version from tag
+        id: get_version
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Upload APK to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          name: Release v${{ env.RELEASE_VERSION }}
+          body: "APK release for version ${{ env.RELEASE_VERSION }}"
+          files: |
+            app/build/outputs/apk/**/*.apk
+          draft: false
+          prerelease: false

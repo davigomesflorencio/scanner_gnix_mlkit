@@ -94,9 +94,9 @@ android {
                 "proguard-rules.pro"
             )
 
-            val supabaseUrl: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_URL") ?: ""
+            val supabaseUrl: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_URL") ?:  System.getenv("SUPABASE_URL")
             buildConfigField("String", "supabaseUrl", supabaseUrl)
-            val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?: ""
+            val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?:  System.getenv("SUPABASE_KEY")
             buildConfigField("String", "supabaseKey", supabaseKey)
         }
         debug {
@@ -106,9 +106,9 @@ android {
                 "proguard-rules.pro"
             )
 
-            val supabaseUrl: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_URL") ?: ""
+            val supabaseUrl: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_URL") ?:  System.getenv("SUPABASE_URL")
             buildConfigField("String", "supabaseUrl", supabaseUrl)
-            val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?: ""
+            val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?:  System.getenv("SUPABASE_KEY")
             buildConfigField("String", "supabaseKey", supabaseKey)
         }
     }
