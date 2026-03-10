@@ -27,7 +27,6 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./gradlew assembleRelease
         env:
           # Essas variáveis serão lidas pelo seu build.gradle
           RELEASE_STORE_FILE: "release.jks"
@@ -36,6 +35,7 @@ jobs:
           RELEASE_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: ./gradlew assembleRelease
 
       - name: Clean up Keystore
         if: always()
