@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Adicione esta linha para conceder permissão de escrita
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
