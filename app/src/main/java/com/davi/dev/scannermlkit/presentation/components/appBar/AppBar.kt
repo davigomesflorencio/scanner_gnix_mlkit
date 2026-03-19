@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -51,21 +52,27 @@ fun AppBar(
 
     if (isSearchActive && isLoggedIn) {
         SearchBar(
-            query = searchQuery,
-            onQueryChange = { homeViewModel.onSearchQueryChange(it) },
-            onSearch = { homeViewModel.onSearchActiveChange(false) },
-            active = isSearchActive,
-            onActiveChange = { homeViewModel.onSearchActiveChange(it) },
-            placeholder = { Text("Search files...") },
-            leadingIcon = { Icon(painterResource(R.drawable.ic_search), contentDescription = null) },
-            trailingIcon = {
-                IconButton(onClick = {
-                    if (searchQuery.isNotEmpty()) homeViewModel.onSearchQueryChange("")
-                    else homeViewModel.onSearchActiveChange(false)
-                }) {
-                    Icon(painterResource(R.drawable.icon_close), contentDescription = null)
-                }
+            inputField = {
+                SearchBarDefaults.InputField(
+                    query = searchQuery,
+                    onQueryChange = { homeViewModel.onSearchQueryChange(it) },
+                    onSearch = { homeViewModel.onSearchActiveChange(false) },
+                    expanded = isSearchActive,
+                    onExpandedChange = { homeViewModel.onSearchActiveChange(it) },
+                    placeholder = { Text("Search files...") },
+                    leadingIcon = { Icon(painterResource(R.drawable.ic_search), contentDescription = null) },
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            if (searchQuery.isNotEmpty()) homeViewModel.onSearchQueryChange("")
+                            else homeViewModel.onSearchActiveChange(false)
+                        }) {
+                            Icon(painterResource(R.drawable.icon_close), contentDescription = null)
+                        }
+                    }
+                )
             },
+            expanded = isSearchActive,
+            onExpandedChange = { homeViewModel.onSearchActiveChange(it) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 0.dp)
