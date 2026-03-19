@@ -94,12 +94,13 @@ android {
                 "proguard-rules.pro"
             )
 
-            val supabaseUrl: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_URL") ?: ""
-            buildConfigField("String", "supabaseUrl", supabaseUrl)
-            val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?: ""
-            buildConfigField("String", "supabaseKey", supabaseKey)
-            val googleClientId: String = gradleLocalProperties(rootDir, providers).getProperty("GOOGLE_CLIENT_ID") ?: ""
-            buildConfigField("String", "googleClientId", googleClientId)
+            val localProps = gradleLocalProperties(rootDir, providers)
+            val supabaseUrl: String = System.getenv("SUPABASE_URL") ?: localProps.getProperty("SUPABASE_URL") ?: ""
+            buildConfigField("String", "supabaseUrl", "\"$supabaseUrl\"")
+            val supabaseKey: String = System.getenv("SUPABASE_KEY") ?: localProps.getProperty("SUPABASE_KEY") ?: ""
+            buildConfigField("String", "supabaseKey", "\"$supabaseKey\"")
+            val googleClientId: String = System.getenv("GOOGLE_CLIENT_ID") ?: localProps.getProperty("GOOGLE_CLIENT_ID") ?: ""
+            buildConfigField("String", "googleClientId", "\"$googleClientId\"")
         }
         debug {
             signingConfig = signingConfigs.getByName("debug")
@@ -108,12 +109,13 @@ android {
                 "proguard-rules.pro"
             )
 
-            val supabaseUrl: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_URL") ?: ""
-            buildConfigField("String", "supabaseUrl", supabaseUrl)
-            val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?: ""
-            buildConfigField("String", "supabaseKey", supabaseKey)
-            val googleClientId: String = gradleLocalProperties(rootDir, providers).getProperty("GOOGLE_CLIENT_ID") ?: ""
-            buildConfigField("String", "googleClientId", googleClientId)
+            val localProps = gradleLocalProperties(rootDir, providers)
+            val supabaseUrl: String = System.getenv("SUPABASE_URL") ?: localProps.getProperty("SUPABASE_URL") ?: ""
+            buildConfigField("String", "supabaseUrl", "\"$supabaseUrl\"")
+            val supabaseKey: String = System.getenv("SUPABASE_KEY") ?: localProps.getProperty("SUPABASE_KEY") ?: ""
+            buildConfigField("String", "supabaseKey", "\"$supabaseKey\"")
+            val googleClientId: String = System.getenv("GOOGLE_CLIENT_ID") ?: localProps.getProperty("GOOGLE_CLIENT_ID") ?: ""
+            buildConfigField("String", "googleClientId", "\"$googleClientId\"")
         }
     }
     compileOptions {
