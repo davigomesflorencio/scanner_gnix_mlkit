@@ -9,6 +9,7 @@ import androidx.credentials.exceptions.GetCredentialException
 import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.davi.dev.scannermlkit.BuildConfig
 import com.davi.dev.scannermlkit.supabase
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -136,7 +137,7 @@ class AuthViewModel : ViewModel() {
             val digest = md.digest(bytes)
             val hashedNonce = digest.fold("") { str, it -> str + "%02x".format(it) }
 
-            val serverClientId = "174909366998-f8b915l6vl2djslndqsas5athj7hprab.apps.googleusercontent.com"
+            val serverClientId = BuildConfig.googleClientId
 
             val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
                 .setFilterByAuthorizedAccounts(false)
