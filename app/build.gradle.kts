@@ -98,6 +98,8 @@ android {
             buildConfigField("String", "supabaseUrl", supabaseUrl)
             val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?: ""
             buildConfigField("String", "supabaseKey", supabaseKey)
+            val googleClientId: String = gradleLocalProperties(rootDir, providers).getProperty("GOOGLE_CLIENT_ID") ?: ""
+            buildConfigField("String", "googleClientId", googleClientId)
         }
         debug {
             signingConfig = signingConfigs.getByName("debug")
@@ -110,6 +112,8 @@ android {
             buildConfigField("String", "supabaseUrl", supabaseUrl)
             val supabaseKey: String = gradleLocalProperties(rootDir, providers).getProperty("SUPABASE_KEY") ?: ""
             buildConfigField("String", "supabaseKey", supabaseKey)
+            val googleClientId: String = gradleLocalProperties(rootDir, providers).getProperty("GOOGLE_CLIENT_ID") ?: ""
+            buildConfigField("String", "googleClientId", googleClientId)
         }
     }
     compileOptions {

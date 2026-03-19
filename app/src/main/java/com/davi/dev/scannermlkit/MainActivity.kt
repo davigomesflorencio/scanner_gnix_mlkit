@@ -33,11 +33,14 @@ import io.github.jan.supabase.createSupabaseClient
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
-val supabase = createSupabaseClient(
-    supabaseUrl = BuildConfig.supabaseUrl,
-    supabaseKey = BuildConfig.supabaseKey
-) {
-    install(Auth)
+val supabase = run {
+    val url = BuildConfig.supabaseUrl
+    val key = BuildConfig.supabaseKey
+    require(url.isNotEmpty()) { "SUPABASE_URL is missing from local.properties" }
+    require(key.isNotEmpty()) { "SUPABASE_KEY is missing from local.properties" }
+    createSupabaseClient(supabaseUrl = url, supabaseKey = key) {
+        install(Auth)
+    }
 }
 
 class MainActivity : ComponentActivity() {
