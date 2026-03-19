@@ -25,17 +25,16 @@ object PdfManager {
         val writer = PdfWriter(outputStream)
         val pdfDoc = PdfDocument(writer)
         val document = Document(pdfDoc)
-
-        for (inputStream in inputStreams) {
-            val reader = PdfReader(inputStream)
-            val sourcePdf = PdfDocument(reader)
-            sourcePdf.copyPagesTo(1, sourcePdf.numberOfPages, pdfDoc)
-            sourcePdf.close()
-            inputStream.close()
+        try {
+            for (inputStream in inputStreams) {
+                val reader = PdfReader(inputStream)
+                val sourcePdf = PdfDocument(reader)
+                sourcePdf.copyPagesTo(1, sourcePdf.numberOfPages, pdfDoc)
+                sourcePdf.close() // closes reader and inputStream internally
+            }
+        } finally {
+            document.close() // closes pdfDoc and writer internally
         }
-
-        document.close()
-        pdfDoc.close()
     }
 
     fun splitPdf(
@@ -100,12 +99,14 @@ object PdfManager {
         val writerProperties = WriterProperties()
             .setCompressionLevel(compressionLevel)
             .setFullCompressionMode(true)
-
         val writer = PdfWriter(outputStream, writerProperties)
-        val pdfDoc = PdfDocument(reader, writer)
-
-        pdfDoc.close()
-        reader.close()
+        try {
+            PdfDocument(reader, writer).close() // closes reader, writer, and streams internally
+        } catch (e: Exception) {
+            runCatching { reader.close() }
+            runCatching { writer.close() }
+            throw e
+        }
     }
 
     fun isPdfEncrypted(inputStream: InputStream): Boolean {

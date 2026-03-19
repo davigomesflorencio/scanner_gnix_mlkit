@@ -134,9 +134,11 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                 callback: WriteResultCallback?
             ) {
                 try {
-                    val input = FileInputStream(file.absolutePath)
-                    val output = FileOutputStream(destination?.fileDescriptor)
-                    input.copyTo(output)
+                    FileInputStream(file.absolutePath).use { input ->
+                        FileOutputStream(destination?.fileDescriptor).use { output ->
+                            input.copyTo(output)
+                        }
+                    }
                     callback?.onWriteFinished(arrayOf(PageRange.ALL_PAGES))
                 } catch (e: Exception) {
                     callback?.onWriteFailed(e.message)

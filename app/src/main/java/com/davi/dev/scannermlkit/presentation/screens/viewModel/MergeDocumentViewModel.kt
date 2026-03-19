@@ -35,15 +35,13 @@ class MergeDocumentViewModel(application: Application) : AndroidViewModel(applic
         if (uris.isEmpty()) return
 
         viewModelScope.launch(Dispatchers.IO) {
+            val context = getApplication<Application>().applicationContext
+            val outputDir = context.filesDir
+            val outputFile = File(outputDir, "$fileName.pdf")
+            val inputStreams = uris.mapNotNull { uri ->
+                context.contentResolver.openInputStream(uri)
+            }
             try {
-                val context = getApplication<Application>().applicationContext
-                val outputDir = context.filesDir
-                val outputFile = File(outputDir, "$fileName.pdf")
-
-                val inputStreams = uris.mapNotNull { uri ->
-                    context.contentResolver.openInputStream(uri)
-                }
-
                 if (inputStreams.isNotEmpty()) {
                     FileOutputStream(outputFile).use { outputStream ->
                         PdfManager.mergePdfs(inputStreams, outputStream)
@@ -55,6 +53,8 @@ class MergeDocumentViewModel(application: Application) : AndroidViewModel(applic
                 cleanPdfs()
             } catch (e: Exception) {
                 _mergeStatus.emit("Error merging PDFs: ${e.message}")
+            } finally {
+                inputStreams.forEach { runCatching { it.close() } }
             }
         }
     }

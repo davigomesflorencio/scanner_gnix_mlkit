@@ -45,9 +45,10 @@ class ScannerDocumentViewModel(application: Application) : AndroidViewModel(appl
 
             result?.pdf?.let { pdf ->
                 val file = File(filesDir, "scan_${System.currentTimeMillis()}.pdf")
-                val fos = FileOutputStream(file)
-                contentResolver.openInputStream(pdf.uri)?.use { inputStream ->
-                    inputStream.copyTo(fos)
+                FileOutputStream(file).use { fos ->
+                    contentResolver.openInputStream(pdf.uri)?.use { inputStream ->
+                        inputStream.copyTo(fos)
+                    }
                 }
                 _pdfFile.value = file
             }
